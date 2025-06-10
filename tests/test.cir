@@ -1,0 +1,97 @@
+* test 
+
+* 1-bit ADC
+.subckt ad1bit in ref comp out ref_out vcc
+B1 ref_out 0 V = v(ref)/2
+B2 comp    0 V = (v(in) > v(ref_out)) ? v(vcc) : 0
+B3 out     0 V = (v(in) > v(ref_out)) ? v(in)-v(ref_out) : v(in)
+.ends
+
+.subckt adc_ideal in ref vcc ad7 ad6 ad5 ad4 ad3 ad2 ad1 ad0
+Xad7  in  ref  ad7  in7  ref7  vcc ad1bit
+Xad6  in7  ref7  ad6  in6  ref6  vcc ad1bit
+Xad5  in6  ref6  ad5  in5  ref5  vcc ad1bit
+Xad4  in5  ref5  ad4  in4  ref4  vcc ad1bit
+Xad3  in4  ref4  ad3  in3  ref3  vcc ad1bit
+Xad2  in3  ref3  ad2  in2  ref2  vcc ad1bit
+Xad1  in2  ref2  ad1  in1  ref1  vcc ad1bit
+Xad0  in1  ref1  ad0  in0  ref0  vcc ad1bit
+.ends
+
+Vadc_in in 0 0 external
+Vcc vcc 0 1
+Vref ref 0 1.0
+
+Xad in ref vcc ad7 ad6 ad5 ad4 ad3 ad2 ad1 ad0 adc_ideal
+
+* Add some diffrent delays for testing
+adelay7 ad7 out_7 vcc mydel8ns
+.model mydel8ns delay(delay=16ns)
+Vout7 out_7 adc_out[7] 0
+
+adelay6 ad6 out_6 vcc mydel7ns
+.model mydel7ns delay(delay=14ns)
+Vout6 out_6 adc_out[6] 0
+
+adelay5 ad5 out_5 vcc mydel6ns
+.model mydel6ns delay(delay=12ns)
+Vout5 out_5 adc_out[5] 0
+
+adelay4 ad4 out_4 vcc mydel5ns
+.model mydel5ns delay(delay=10ns)
+Vout4 out_4 adc_out[4] 0
+
+adelay3 ad3 out_3 vcc mydel4ns
+.model mydel4ns delay(delay=8ns)
+Vout3 out_3 adc_out[3] 0
+
+adelay2 ad2 out_2 vcc mydel3ns
+.model mydel3ns delay(delay=6ns)
+Vout2 out_2 adc_out[2] 0
+
+adelay1 ad1 out_1 vcc mydel2ns
+.model mydel2ns delay(delay=4ns)
+Vout1 out_1 adc_out[1] 0
+
+adelay0 ad0 out_0 vcc mydelns
+.model mydelns delay(delay=2ns)
+Vout0 out_0 adc_out[0] 0
+
+* Vout0 ad0 adc_out[0] 0
+* Vout1 ad1 adc_out[1] 0
+* Vout2 ad2 adc_out[2] 0
+* Vout3 ad3 adc_out[3] 0
+* Vout4 ad4 adc_out[4] 0
+* Vout5 ad5 adc_out[5] 0
+* Vout6 ad6 adc_out[6] 0
+* Vout7 ad7 adc_out[7] 0
+
+Vdac_in[0] dac_in[0] 0 0 external
+Vdac_in[1] dac_in[1] 0 0 external
+Vdac_in[2] dac_in[2] 0 0 external
+Vdac_in[3] dac_in[3] 0 0 external
+Vdac_in[4] dac_in[4] 0 0 external
+Vdac_in[5] dac_in[5] 0 0 external
+Vdac_in[6] dac_in[6] 0 0 external
+Vdac_in[7] dac_in[7] 0 0 external
+
+
+Vpwmin pwmin 0 0 external
+Rpwm pwmin pwmout 100k
+Cpwm pwmout 0 20p
+
+* A simple DAC so that the result may be compared to the input.
+r7 dac_in[7] dac_out 2
+r6 dac_in[6] dac_out 4
+r5 dac_in[5] dac_out 8
+r4 dac_in[4] dac_out 16
+r3 dac_in[3] dac_out 32
+r2 dac_in[2] dac_out 64
+r1 dac_in[1] dac_out 128
+r0 dac_in[0] dac_out 256
+
+
+* .tran 1ns 10us 0 0.1ns
+.tran 1ns 1
+
+.end

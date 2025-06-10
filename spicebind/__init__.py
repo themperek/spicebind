@@ -1,0 +1,49 @@
+"""
+spicebind - Mixed-signal simulation for RTL simulators.
+
+A Python package for integrating ngspice simulation into Verilog simulators
+using the VPI interface.
+"""
+
+__version__ = "0.0.1"
+
+def get_package_path():
+    """Get the path to the installed spicebind package directory."""
+    import os
+    from pathlib import Path
+    return str(Path(__file__).parent)
+
+
+def get_lib_dir():
+    """Get the directory to the spicebind library."""
+    import os
+    return os.path.dirname(get_vpi_module_path())
+
+
+def get_vpi_module_path():
+    """Get the path to the VPI module."""
+    import os
+    from pathlib import Path
+    
+    # Check in package directory
+    package_dir = Path(__file__).parent
+    vpi_path = package_dir / "spicebind_vpi.vpi"
+    if vpi_path.exists():
+        return str(vpi_path)
+    
+    # Check in current directory
+    local_vpi = Path("spicebind_vpi.vpi")
+    if local_vpi.exists():
+        return str(local_vpi)
+    
+    return None
+
+def print_installation_info():
+    """Print information about the spicebind installation."""
+    print(f"spicebind v{__version__}")
+    print(f"Package location: {get_package_path()}")
+    vpi_path = get_vpi_module_path()
+    if vpi_path:
+        print(f"VPI module location: {vpi_path}")
+    else:
+        print("VPI module not found") 
