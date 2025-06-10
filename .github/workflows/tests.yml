@@ -17,7 +17,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install pytest cocotb
-        sudo apt-get install ngspice iverilog
+        sudo apt-get install ngspice iverilog ngspice-dev
     - name: Install 
       run: |
         pip install -e .
