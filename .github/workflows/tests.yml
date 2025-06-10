@@ -20,7 +20,7 @@ jobs:
         sudo apt-get install ngspice iverilog ngspice-dev libngspice0-dev
     - name: Install 
       run: |
-        pip install -e .
+        pip  install -vvv -e .
         make
     - name: Teset
       run: |
