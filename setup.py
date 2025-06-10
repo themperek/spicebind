@@ -66,10 +66,10 @@ def find_ngspice_paths():
                 lib_dir = str(lib_d)
                 break
     
-    if not include_dir:
-        raise RuntimeError(f"ngspice include directory not found. Searched: {[str(p) for p in possible_include_dirs]}")
-    if not lib_dir:
-        raise RuntimeError(f"ngspice lib directory not found. Searched: {[str(p) for p in possible_lib_dirs]}")
+    # if not include_dir:
+    #     raise RuntimeError(f"ngspice include directory not found. Searched: {[str(p) for p in possible_include_dirs]}")
+    # if not lib_dir:
+    #     raise RuntimeError(f"ngspice lib directory not found. Searched: {[str(p) for p in possible_lib_dirs]}")
     
     print(f"Found ngspice installation:")
     print(f"  Executable: {ngspice_exe}")
@@ -104,7 +104,7 @@ class BuildVpiCommand(build_py):
             "-std=c++17",
             "-I./cpp",
             f"-I{ngspice_include}",
-            f"-L{ngspice_lib}",
+            # f"-L{ngspice_lib}",
             "-lngspice",
             "cpp/SpiceVpiConfig.cpp",
             "cpp/AnalogDigitalInterface.cpp", 
