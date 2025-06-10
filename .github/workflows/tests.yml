@@ -16,7 +16,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        pip install pytest
+        pip install pytest cocotb
         sudo apt-get install ngspice iverilog
     - name: Install 
       run: |
