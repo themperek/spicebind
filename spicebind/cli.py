@@ -3,7 +3,7 @@
 Command line interface for spicebind.
 """
 
-def get_vpi_module_path():
+def get_lib_dir():
     """Get the path to the VPI module."""
     import os
     from pathlib import Path
@@ -21,10 +21,6 @@ def get_vpi_module_path():
     
     return None
 
-def get_lib_dir():
-    """Get the directory to the spicebind library."""
-    import os
-    return os.path.dirname(get_vpi_module_path())
 
 def main():
     """Main entry point for spicebind-vpi-path command."""

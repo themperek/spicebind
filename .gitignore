@@ -195,3 +195,6 @@ cython_debug/
 
 # cocotb
 sim_build
+
+spicebind/*.vpi
+.vscode/
