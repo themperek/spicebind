@@ -46,6 +46,7 @@ module adc(
     input  real vin,
     output reg [3:0] code
 );
+```
 
 SPICE netlist needs to include: 
 ```
@@ -55,13 +56,13 @@ Xadc vin code[3] code[2] code[1] code[0] sar_adc
 ```
 
 In order to enable mixed-signal mode, you need to at minimum define `SPICE_NETLIST` and `HDL_INSTANCE` environmental variables:
-```
+```cmd
 export SPICE_NETLIST=./tests/test.cir 
 export HDL_INSTANCE=tb.adc
 ``` 
 
 and load VPI module. For Icarus:
-```
+```cmd
 vvp -M $(spicebind-vpi-path) -m spicebind_vpi tb.vvp
 ```
 
