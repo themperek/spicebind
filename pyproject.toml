@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=45", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["scikit-build-core"]
+build-backend = "scikit_build_core.build"
 
 [project]
 name = "spicebind"
@@ -18,8 +18,18 @@ classifiers = [
 ]
 
 [project.scripts]
-spicebind-lib-dir = "spicebind.cli:main"
+spicebind-vpi-path = "spicebind.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/themperek/spicebind"
-Repository = "https://github.com/themperek/spicebind" 
+Repository = "https://github.com/themperek/spicebind"
+
+[tool.scikit-build]
+# Specify the CMake version
+cmake.version = ">=3.15"
+# Use ninja generator for faster builds
+ninja.version = ">=1.10"
+
+[tool.scikit-build.cmake.define]
+# Pass any CMake defines if needed
+# CMAKE_BUILD_TYPE = "Release" 
