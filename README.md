@@ -8,16 +8,32 @@ SpiceBind is a lightweight bridge that lets you co-simulate **true-transistor ng
 
 ### Prerequisites
 
-- Python
 - g++ compiler with C++17 support
 - ngspice library and development headers
 - Verilog simulator (only tested with Icarus)
+- Python (optional)
 
 ### Install
+
+Clone repository:
 
 ```cmd
 git clone https://github.com/themperek/spicebind.git
 cd spicebind
+```
+
+Foe standalone vpi module in `spicebind` folder:
+
+```
+mkdir build && cd build
+cmake ..                   # (optionally -DNGSPICE_ROOT=/path)
+cmake --build .            # builds release flavour
+cmake --build . --target debug       # builds the debug
+```
+
+With python:
+
+```cmd
 pip install -e .
 ```
 
