@@ -2,7 +2,7 @@
 
 ⚠️ **Warning**: This is a very early proof of concept.
 
-SpiceBind is a lightweight bridge that lets you co-simulate **true-transistor ngspice** circuits alongside **HDL simulators**. You keep your existing RTL, testbench, and waveform viewer, but analog blocks now run at SPICE accuracy inside the same timeline. Mixed-signal simulation with zero vendor lock-in—from Icarus Verilog all the way to commercial tools. You can even use [cocotb](https://www.cocotb.org/) on top for verification.
+SpiceBind is a lightweight bridge that lets you co-simulate **true-transistor [ngspice](https://ngspice.sourceforge.io/)** circuits alongside **HDL simulators**. You keep your existing RTL, testbench, and waveform viewer, but analog blocks now run at SPICE accuracy inside the same timeline. Mixed-signal simulation with zero vendor lock-in—from Icarus Verilog all the way to commercial tools. You can even use [cocotb](https://www.cocotb.org/) on top for verification.
 
 ## Installation
 
@@ -57,7 +57,7 @@ Xadc vin code[3] code[2] code[1] code[0] sar_adc
 
 In order to enable mixed-signal mode, you need to at minimum define `SPICE_NETLIST` and `HDL_INSTANCE` environmental variables:
 ```cmd
-export SPICE_NETLIST=./tests/test.cir 
+export SPICE_NETLIST=adc.cir 
 export HDL_INSTANCE=tb.adc
 ``` 
 
