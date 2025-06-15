@@ -59,6 +59,7 @@ In order to enable mixed-signal mode, you need to at minimum define `SPICE_NETLI
 ```cmd
 export SPICE_NETLIST=adc.cir 
 export HDL_INSTANCE=tb.adc
+export VCC=3.3
 ``` 
 
 and load VPI module. For Icarus:
