@@ -16,7 +16,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        pip install pytest cocotb numpy matplotlib
+        pip install pytest cocotb numpy matplotlib cocotbext-spi
         sudo apt-get install ngspice iverilog ngspice-dev libngspice0-dev
     - name: Install 
       run: |

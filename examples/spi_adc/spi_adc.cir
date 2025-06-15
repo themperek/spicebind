@@ -1,0 +1,31 @@
+* flash ADC 8-bit
+
+* 1-bit ADC
+.subckt ad1bit in ref comp out ref_out vcc
+B1 ref_out 0 V = v(ref)/2
+B2 comp    0 V = (v(in) > v(ref_out)) ? v(vcc) : 0
+B3 out     0 V = (v(in) > v(ref_out)) ? v(in)-v(ref_out) : v(in)
+.ends
+
+.subckt adc_ideal_8bit in ref vcc ad7 ad6 ad5 ad4 ad3 ad2 ad1 ad0
+Xad7  in  ref  ad7  in7  ref7  vcc ad1bit
+Xad6  in7  ref7  ad6  in6  ref6  vcc ad1bit
+Xad5  in6  ref6  ad5  in5  ref5  vcc ad1bit
+Xad4  in5  ref5  ad4  in4  ref4  vcc ad1bit
+Xad3  in4  ref4  ad3  in3  ref3  vcc ad1bit
+Xad2  in3  ref3  ad2  in2  ref2  vcc ad1bit
+Xad1  in2  ref2  ad1  in1  ref1  vcc ad1bit
+Xad0  in1  ref1  ad0  in0  ref0  vcc ad1bit
+.ends
+
+Vvin vin 0 0 external
+Vcc vcc 0 1
+Vrange0 range0 0 0 external
+Vrange1 range1 0 0 external
+Bref ref 0 V = (v(range1) > 0.5 ? 3.3 : (v(range0) > 0.5 ? 2.0 : 1.0))
+
+Xadc vin ref vcc code[7] code[6] code[5] code[4] code[3] code[2] code[1] code[0] adc_ideal_8bit
+
+.tran 1ns 1
+
+.end
