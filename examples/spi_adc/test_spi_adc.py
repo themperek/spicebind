@@ -19,7 +19,10 @@ async def run_test(dut):
     # range 1V
     await master.write([0x00])
     await master.read()
-    await master.write([0x00])
+    await Timer(100, units="ns")
+    await master.write([0x00])  # capture new code
+    await master.read()
+    await master.write([0x00])  # shift out updated code
     code = (await master.read())[0]
     dut._log.info(f"range=1V code={code}")
     dut._log.info(f"range bits {int(dut.range.value)}")
@@ -30,20 +33,24 @@ async def run_test(dut):
     await master.read()
     await Timer(100, units="ns")
     await master.write([0x01])
+    await master.read()
+    await master.write([0x01])
     code = (await master.read())[0]
     dut._log.info(f"range=2V code={code}")
     dut._log.info(f"range bits {int(dut.range.value)}")
-    assert code == 255
+    assert 125 <= code <= 130
 
     # range 3.3V
     await master.write([0x02])
     await master.read()
     await Timer(100, units="ns")
     await master.write([0x02])
+    await master.read()
+    await master.write([0x02])
     code = (await master.read())[0]
     dut._log.info(f"range=3.3V code={code}")
     dut._log.info(f"range bits {int(dut.range.value)}")
-    assert code == 127
+    assert 75 <= code <= 80
 
 
 def test_spi_adc():
