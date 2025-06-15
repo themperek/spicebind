@@ -163,11 +163,11 @@ async def run_adc_characterisation(dut):
     fig, (ax0, ax1) = plt.subplots(2, 1, figsize=(6.4, 6.4), sharex=True)
 
     codes = np.arange(256)
-    ax0.stem(codes, dnl, basefmt=" ", use_line_collection=True)
+    ax0.stem(codes, dnl, basefmt=" ")
     ax0.set_ylabel("DNL [LSB]")
     ax0.grid(True, ls=":")
 
-    ax1.stem(codes, inl, basefmt=" ", use_line_collection=True)
+    ax1.stem(codes, inl, basefmt=" ")
     ax1.set_xlabel("Code")
     ax1.set_ylabel("INL [LSB]")
     ax1.grid(True, ls=":")
