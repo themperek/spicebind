@@ -233,6 +233,10 @@ auto vpi_start_of_sim_cb(p_cb_data cb_data_p) -> PLI_INT32 {
 
     if (ngSpice_Init_Sync(ng_srcdata, nullptr, ng_sync, nullptr, nullptr) == 0) {
         ngSpice_Command((char *)"bg_run");
+        if (ngSpice_running()==0) {
+            ERROR("Failed to initialize run ngspice.");
+            return 1;
+        }
     } else {
         ERROR("Failed to initialize ngSpice_Init_Sync interface.");
         return 1;
