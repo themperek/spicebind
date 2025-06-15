@@ -1,0 +1,7 @@
+* test error 
+
+Vdd vdd 0 {ERROR_PARAM}
+
+.tran 1ns 1
+
+.end
