@@ -1,5 +1,7 @@
 * test 
 
+*.param VCC = 1.8
+
 * 1-bit ADC
 .subckt ad1bit in ref comp out ref_out vcc
 B1 ref_out 0 V = v(ref)/2
@@ -19,7 +21,7 @@ Xad0  in1  ref1  ad0  in0  ref0  vcc ad1bit
 .ends
 
 Vadc_in in 0 0 external
-Vcc vcc 0 1
+Vcc vcc 0 {VCC}
 Vref ref 0 1.0
 
 Xad in ref vcc ad7 ad6 ad5 ad4 ad3 ad2 ad1 ad0 adc_ideal
