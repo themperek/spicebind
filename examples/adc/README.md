@@ -1,12 +1,12 @@
 # Simple ADC example
 
 
-### For simple Verilog only testbech
-```cmd
+## For a simple Verilog-only testbench
+```
 make
 ```
 
-### For cocotb based testbech
+## For a cocotb-based testbench
 
 Install dependencies:
 ```
@@ -17,4 +17,3 @@ Run test:
 ```
 python test_flash_adc8.py
 ```
-

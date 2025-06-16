@@ -31,7 +31,10 @@ def test_error():
         hdl_toplevel="error_tb",
         test_module="test_error,",
         test_args=["-M", spicebind.get_lib_dir(), "-m", "spicebind_vpi"],
-        extra_env={"SPICE_NETLIST": str(proj_path / "error.cir"), "HDL_INSTANCE": "error_tb.error_cir"},
+        extra_env={
+            "SPICE_NETLIST": str(proj_path / "error.cir"),
+            "HDL_INSTANCE": "error_tb.error_cir",
+        },
     )
 
 

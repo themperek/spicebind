@@ -6,7 +6,6 @@ Command line interface for spicebind.
 
 def get_lib_dir():
     """Get the path to the VPI module."""
-    import os
     from pathlib import Path
 
     # Check in package directory (same directory as this file)
