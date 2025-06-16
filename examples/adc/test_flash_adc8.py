@@ -20,7 +20,9 @@ import matplotlib.pyplot as plt
 # User-tunable parameters
 # -----------------------------------------------------------------------------
 VREF = 1.0  # full-scale voltage of the ADC model
-FS = 50e6  # sample rate [Hz] (informational only)
+FS_NS = 20  # sample rate in [ns]
+FS = int(1/FS_NS * 1e9)  # sample rate [Hz] (informational only)
+
 N_SAMPLES = 4096  # record length for FFT (power of two)
 K_BIN = 601  # coherent-tone bin index (1 ≤ K < N/2)
 F_IN = K_BIN * FS / N_SAMPLES
@@ -63,6 +65,8 @@ def calc_dynamic_metrics(codes: np.ndarray, vref: float = VREF):
     sfdr = 10 * np.log10(fund_power / max(harmonics)) if harmonics else float("nan")
     enob = (sinad - 1.76) / 6.02
 
+    assert 7.5 <= enob <= 8.0
+
     return {"SINAD": sinad, "SNR": snr, "THD": thd, "SFDR": sfdr, "ENOB": enob, "freqs": freqs, "spec": spec}
 
 
@@ -104,6 +108,9 @@ def calc_inl_dnl(codes: np.ndarray, vref: float = VREF):
     mids_ideal = (np.arange(n_codes) + 0.5) * ideal_step
     inl = (mids_actual - mids_ideal) / ideal_step
 
+    assert 0 <= np.max(np.abs(inl)) <= 1
+    assert 0 <= np.max(np.abs(dnl)) <= 1
+
     return inl, dnl
 
 
@@ -124,7 +131,7 @@ async def run_adc_characterisation(dut):
         t = n / FS
         vin = 0.5 * VREF * (1 + math.sin(2 * math.pi * F_IN * t))
         dut.vin.value = vin
-        await Timer(2, units="ns")
+        await Timer(FS_NS, units="ns")
         codes_fft[n] = dut.code.value.integer
 
     dyn = calc_dynamic_metrics(codes_fft)
@@ -145,14 +152,14 @@ async def run_adc_characterisation(dut):
     dut._log.info(f"Spectrum saved to {spec_pdf.resolve()}")
 
     dut.vin.value = 0.0
-    await Timer(1, units="us")
+    await Timer(10, units="us")
 
     # ------------------------------------------------------------- ramp run
     codes_ramp = np.empty(RAMP_SAMPLES, dtype=np.int16)
     for n in range(RAMP_SAMPLES):
         vin = (n / (RAMP_SAMPLES - 1)) * VREF
         dut.vin.value = vin
-        await Timer(2, units="ns")
+        await Timer(FS_NS, units="ns")
         codes_ramp[n] = dut.code.value.integer
 
     inl, dnl = calc_inl_dnl(codes_ramp)
