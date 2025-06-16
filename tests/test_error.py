@@ -6,10 +6,12 @@ from pathlib import Path
 import spicebind
 import pytest
 
+
 @cocotb.test()
 async def run_error_test(dut):
     await Timer(10, units="ns")
     # assert False, "Error"
+
 
 @pytest.mark.xfail(reason="Expected error from spice simulation")
 def test_error():

@@ -42,3 +42,6 @@ ninja.version = ">=1.10"
 [tool.scikit-build.cmake.define]
 # Pass any CMake defines if needed
 # CMAKE_BUILD_TYPE = "Release" 
+
+[tool.black]
+line-length = 120

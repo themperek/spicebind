@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 # -----------------------------------------------------------------------------
 VREF = 1.0  # full-scale voltage of the ADC model
 FS_NS = 20  # sample rate in [ns]
-FS = int(1/FS_NS * 1e9)  # sample rate [Hz] (informational only)
+FS = int(1 / FS_NS * 1e9)  # sample rate [Hz] (informational only)
 
 N_SAMPLES = 4096  # record length for FFT (power of two)
 K_BIN = 601  # coherent-tone bin index (1 ≤ K < N/2)
@@ -196,7 +196,7 @@ def test_flash_adc8():
     extra_env = {}
     defines = {}
     if verilog_model:
-        defines = {"VERILOG_MODEL":"1"}
+        defines = {"VERILOG_MODEL": "1"}
     else:
         test_args = ["-M", spicebind.get_lib_dir(), "-m", "spicebind_vpi"]
         extra_env = {"SPICE_NETLIST": str(proj_path / "flash_adc8.cir"), "HDL_INSTANCE": "flash_adc8"}

@@ -8,6 +8,7 @@ from cocotbext.spi import SpiBus, SpiMaster, SpiConfig
 from cocotb.runner import get_runner
 import spicebind
 
+
 @cocotb.test()
 async def run_test(dut):
     bus = SpiBus.from_entity(dut)
