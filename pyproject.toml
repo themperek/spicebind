@@ -17,6 +17,15 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "cocotb",
+    "numpy",
+    "matplotlib",
+    "cocotbext-spi"
+]
+
 [project.scripts]
 spicebind-vpi-path = "spicebind.cli:main"
 
