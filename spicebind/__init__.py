@@ -10,7 +10,6 @@ __version__ = "0.0.1"
 
 def get_package_path():
     """Get the path to the installed spicebind package directory."""
-    import os
     from pathlib import Path
 
     return str(Path(__file__).parent)
@@ -25,7 +24,6 @@ def get_lib_dir():
 
 def get_vpi_module_path():
     """Get the path to the VPI module."""
-    import os
     from pathlib import Path
 
     # Check in package directory

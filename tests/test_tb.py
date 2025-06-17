@@ -1,5 +1,5 @@
 import cocotb
-from cocotb.triggers import Timer, Join, Combine
+from cocotb.triggers import Timer, Combine
 from cocotb.runner import get_runner
 import os
 from pathlib import Path
@@ -9,7 +9,6 @@ import pytest
 
 
 async def run_adc_test(dut):
-
     dut.adc_in.value = 0.0
     await Timer(20, units="ns")
     assert dut.adc_out.value == 0
@@ -57,7 +56,6 @@ async def run_adc_test(dut):
 
 
 async def run_dac_test(dut):
-
     vcc = float(os.getenv("VCC", "1.0"))
 
     dut.dac_in.value = 0
@@ -107,7 +105,6 @@ async def run_pwm_test(dut):
 
 @cocotb.test()
 async def run_test(dut):
-
     adc_task = await cocotb.start(run_adc_test(dut))
     dac_task = await cocotb.start(run_dac_test(dut))
     pwm_task = await cocotb.start(run_pwm_test(dut))
@@ -144,7 +141,11 @@ def test_tb(vcc):
         hdl_toplevel="tb",
         test_module="test_tb,",
         test_args=["-M", spicebind.get_lib_dir(), "-m", "spicebind_vpi"],
-        extra_env={"SPICE_NETLIST": str(cir_path), "HDL_INSTANCE": "tb.test_cir", "VCC": str(vcc)},
+        extra_env={
+            "SPICE_NETLIST": str(cir_path),
+            "HDL_INSTANCE": "tb.test_cir",
+            "VCC": str(vcc),
+        },
     )
 
 

@@ -17,7 +17,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get install ngspice iverilog ngspice-dev libngspice0-dev
-    - name: Install 
+    - name: Install Python packages
       run: |
         pip install -e ".[dev]"
     - name: Test

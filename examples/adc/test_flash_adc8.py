@@ -67,7 +67,15 @@ def calc_dynamic_metrics(codes: np.ndarray, vref: float = VREF):
 
     assert 7.5 <= enob <= 8.0
 
-    return {"SINAD": sinad, "SNR": snr, "THD": thd, "SFDR": sfdr, "ENOB": enob, "freqs": freqs, "spec": spec}
+    return {
+        "SINAD": sinad,
+        "SNR": snr,
+        "THD": thd,
+        "SFDR": sfdr,
+        "ENOB": enob,
+        "freqs": freqs,
+        "spec": spec,
+    }
 
 
 # -----------------------------------------------------------------------------
@@ -163,7 +171,9 @@ async def run_adc_characterisation(dut):
         codes_ramp[n] = dut.code.value.integer
 
     inl, dnl = calc_inl_dnl(codes_ramp)
-    dut._log.info(f"Max |INL| = {np.max(np.abs(inl)):.3f} LSB,  Max |DNL| = {np.max(np.abs(dnl)):.3f} LSB")
+    dut._log.info(
+        f"Max |INL| = {np.max(np.abs(inl)):.3f} LSB,  Max |DNL| = {np.max(np.abs(dnl)):.3f} LSB"
+    )
 
     # --------------------------------------------------------------- INL/DNL plot
     lin_pdf = pathlib.Path("flash_adc8_inl_dnl.pdf")
@@ -199,7 +209,10 @@ def test_flash_adc8():
         defines = {"VERILOG_MODEL": "1"}
     else:
         test_args = ["-M", spicebind.get_lib_dir(), "-m", "spicebind_vpi"]
-        extra_env = {"SPICE_NETLIST": str(proj_path / "flash_adc8.cir"), "HDL_INSTANCE": "flash_adc8"}
+        extra_env = {
+            "SPICE_NETLIST": str(proj_path / "flash_adc8.cir"),
+            "HDL_INSTANCE": "flash_adc8",
+        }
 
     sources = [proj_path / "flash_adc8.v"]
 

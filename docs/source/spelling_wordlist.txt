@@ -1,0 +1,11 @@
+HDL
+SpiceBind
+Verilog
+cocotb
+femtosecond
+netlist
+ngspice
+roadmap
+spicebind
+testbench
+timeline
