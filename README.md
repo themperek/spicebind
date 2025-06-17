@@ -1,5 +1,10 @@
 # SpiceBind
 
+[![Tests](https://github.com/themperek/spicebind/actions/workflows/tests.yml/badge.svg)](https://github.com/themperek/spicebind/actions/workflows/tests.yml)
+[![Docs](https://github.com/themperek/spicebind/actions/workflows/docs.yml/badge.svg)](https://themperek.github.io/spicebind/)
+
+
+
 ⚠️ **Warning**: This is a very early proof of concept.
 
 SpiceBind is a lightweight bridge that lets you co-simulate **true-transistor [ngspice](https://ngspice.sourceforge.io/)** circuits
