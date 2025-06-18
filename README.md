@@ -19,7 +19,7 @@ You can even use [cocotb](https://www.cocotb.org/) on top for verification.
 
 - A C++ compiler with C++17 support
 - The ngspice library and development headers
-- A Verilog simulator (only tested with Icarus)
+- A Verilog VPI compatible simulator (only tested with [Icarus](https://github.com/steveicarus/iverilog) )
 - Python (optional)
 
 ### Install
