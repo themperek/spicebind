@@ -178,9 +178,22 @@ auto vpi_start_of_sim_cb(p_cb_data cb_data_p) -> PLI_INT32 {
         g_interface = std::make_unique<spice_vpi::AnalogDigitalInterface>(g_config);
         
         vpi_printf("** Info: Using SPICE netlist: %s\n", g_config.spice_netlist_path.c_str());
-        vpi_printf("** Info: Using HDL instance: %s\n", g_config.hdl_instance_name.c_str());
+        
+        // Log all HDL instances
+        vpi_printf("** Info: Using HDL instances: ");
+        for (size_t i = 0; i < g_config.hdl_instance_names.size(); ++i) {
+            vpi_printf("%s", g_config.hdl_instance_names[i].c_str());
+            if (i < g_config.hdl_instance_names.size() - 1) {
+                vpi_printf(", ");
+            }
+        }
+        if (g_config.full_path_discovery) {
+            vpi_printf(" (full path discovery mode)");
+        }
+        vpi_printf("\n");
+        
         vpi_printf("** Info: Using VCC: %g\n", g_config.vcc_voltage);
-        vpi_printf("** Info: Using logic thresholds: low=%g, high=%g\n", 
+        vpi_printf("** Info: Using logic thresholds: LOGIC_THRESHOLD_LOW=%g, LOGIC_THRESHOLD_HIGH=%g\n", 
                    g_config.logic_threshold_low, g_config.logic_threshold_high);
         
     } catch (const std::exception& e) {
@@ -188,35 +201,40 @@ auto vpi_start_of_sim_cb(p_cb_data cb_data_p) -> PLI_INT32 {
         return 1;
     }
 
-    vpiHandle inst = vpi_handle_by_name(const_cast<char*>(g_config.hdl_instance_name.c_str()), nullptr);
-    if (inst == nullptr) {
-        ERROR("ERROR: instance \"%s\" not found", g_config.hdl_instance_name.c_str());
-        return 0;
-    }
+    // Process each HDL instance
+    for (const std::string& instance_name : g_config.hdl_instance_names) {
+        vpiHandle inst = vpi_handle_by_name(const_cast<char*>(instance_name.c_str()), nullptr);
+        if (inst == nullptr) {
+            ERROR("ERROR: instance \"%s\" not found", instance_name.c_str());
+            continue; // Continue with other instances instead of returning
+        }
 
-    vpiHandle iter = vpi_iterate(vpiPort, inst);
-    vpiHandle port = nullptr;
-    while ((port = vpi_scan(iter)) != nullptr) {
+        vpi_printf("** Info: Processing instance: %s\n", instance_name.c_str());
 
-        const char *pname = vpi_get_str(vpiName, port);
-        int dir = vpi_get(vpiDirection, port);
+        vpiHandle iter = vpi_iterate(vpiPort, inst);
+        vpiHandle port = nullptr;
+        while ((port = vpi_scan(iter)) != nullptr) {
 
-        if (dir == vpiInout) {
-            ERROR(" port %s inout - not supported", pname);
-        } else {
-            g_interface->add_port(port);
+            const char *pname = vpi_get_str(vpiName, port);
+            int dir = vpi_get(vpiDirection, port);
 
-            vpiHandle module = vpi_handle(vpiParent, port);
-            vpiHandle net = vpi_handle_by_name(const_cast<char*>(pname), module);
-            if (dir == vpiInput) {
-                // Set up a value-change callback on that handle
-                s_cb_data cb_data_s;
-                cb_data_s.reason = cbValueChange;
-                cb_data_s.cb_rtn = vpi_port_change_cb;
-                cb_data_s.obj = net;
-                cb_data_s.time = nullptr;
-                cb_data_s.value = nullptr;
-                vpi_register_cb(&cb_data_s);
+            if (dir == vpiInout) {
+                ERROR(" port %s inout - not supported", pname);
+            } else {
+                g_interface->add_port(port);
+
+                vpiHandle module = vpi_handle(vpiParent, port);
+                vpiHandle net = vpi_handle_by_name(const_cast<char*>(pname), module);
+                if (dir == vpiInput) {
+                    // Set up a value-change callback on that handle
+                    s_cb_data cb_data_s;
+                    cb_data_s.reason = cbValueChange;
+                    cb_data_s.cb_rtn = vpi_port_change_cb;
+                    cb_data_s.obj = net;
+                    cb_data_s.time = nullptr;
+                    cb_data_s.value = nullptr;
+                    vpi_register_cb(&cb_data_s);
+                }
             }
         }
     }

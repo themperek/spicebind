@@ -1,0 +1,18 @@
+* multi instance test 
+
+.param VCC = 1.8
+
+Vtb.inv0.A tb.inv0.A_port 0 0 external
+atb.inv0.A tb.inv0.A_port tb.inv0.A ie_input
+Binv0 tb.inv0.Y 0 V = VCC-v(tb.inv0.A)
+
+Vtb.inv1.A tb.inv1.A_port 0 0 external
+atb.inv1.A tb.inv1.A_port tb.inv1.A ie_input
+Binv1 tb.inv1.Y 0 V = VCC-v(tb.inv1.A)
+
+* 10ns ries and fall time
+.model ie_input slew(rise_slope=0.18e9 fall_slope=0.18e9)
+
+.tran 1ns 1
+
+.end
