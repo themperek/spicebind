@@ -3,6 +3,7 @@
 #include "ngspice/sharedspice.h"
 #include <cstring>
 #include <cmath>
+#include <algorithm>
 
 namespace spice_vpi {
 
@@ -82,32 +83,42 @@ std::string AnalogDigitalInterface::create_indexed_name(const std::string &base_
 }
 
 void AnalogDigitalInterface::add_port(vpiHandle port) {
-    const char *pname = vpi_get_str(vpiName, port);
-    int dir = vpi_get(vpiDirection, port);
-    int port_size = vpi_get(vpiSize, port);
 
-    // Get the internal net/reg
+    std::string pname = vpi_get_str(vpiName, port);
+
     vpiHandle module = vpi_handle(vpiParent, port);
     if (module == nullptr) {
-        ERROR("add_port: no parent module for port %s", pname);
+        ERROR("add_port: no parent module for port %s", pname.c_str());
         return;
     }
 
-    vpiHandle net = vpi_handle_by_name(const_cast<char*>(pname), module);
+    const std::string module_path = vpi_get_str(vpiFullName, module);
+
+    vpiHandle net = vpi_handle_by_name(const_cast<char*>(pname.c_str()), module);
     if (net == nullptr) {
-        ERROR("add_port: net %s not found", pname);
+        ERROR("add_port: net %s in module %s not found", pname.c_str(), module_path.c_str());
         return;
     }
 
+    // If full path discovery is enabled, add the module path to the port name
+    if (config_->full_path_discovery) {
+        pname = module_path + "." + pname;
+    }
+    
+    //Lowercase the port name - spice is case insensitive
+    std::transform(pname.begin(), pname.end(), pname.begin(), ::tolower);
+
+    int dir = vpi_get(vpiDirection, port);
+    int port_size = vpi_get(vpiSize, port);
     int net_type = vpi_get(vpiType, net);
 
     // Validate net type
     if (net_type != vpiNet && net_type != vpiReg && net_type != vpiRealVar) {
-        ERROR("add_port: unsupported net type %d for %s", net_type, pname);
+        ERROR("add_port: unsupported net type %d for %s", net_type, pname.c_str());
         return;
     }
 
-    DBG("Adding port: %s, dir=%d, size=%d, net_type=%d", pname, dir, port_size, net_type);
+    DBG("Adding port: %s, dir=%d, size=%d, net_type=%d", pname.c_str(), dir, port_size, net_type);
 
     if (port_size > 1) {
         // Vector port - create entries for each bit
@@ -155,11 +166,11 @@ void AnalogDigitalInterface::add_port(vpiHandle port) {
         if (dir == vpiInput) {
             std::lock_guard<std::mutex> lock(inputs_mutex_);
             analog_inputs_.emplace(pname, std::move(port_info));
-            DBG("Added analog input: %s", pname);
+            DBG("Added analog input: %s", pname.c_str());
         } else if (dir == vpiOutput) {
             std::lock_guard<std::mutex> lock(outputs_mutex_);
             analog_outputs_.emplace(pname, std::move(port_info));
-            DBG("Added analog output: %s", pname);
+            DBG("Added analog output: %s", pname.c_str());
         }
     }
 }
@@ -224,13 +235,21 @@ void AnalogDigitalInterface::set_digital_output() {
 }
 
 void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
-    const char *name = vpi_get_str(vpiName, handle);
+    std::string name = vpi_get_str(vpiName, handle);
     int size = vpi_get(vpiSize, handle);
     int net_type = vpi_get(vpiType, handle);
 
+    //If full path discovery is enabled, add the module path to the port name
+    if (config_->full_path_discovery) {
+        name = vpi_get_str(vpiFullName, handle);
+    }
+
+    //Lowercase the port name - spice is case insensitive
+    std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+
     std::lock_guard<std::mutex> lock(inputs_mutex_);
 
-    DBG("Digital input update: %s size=%d net_type=%d", name, size, net_type);
+    DBG("Digital input update: %s size=%d net_type=%d", name.c_str(), size, net_type);
 
     if (net_type == vpiRealVar) {
         auto it = analog_inputs_.find(name);
@@ -243,8 +262,11 @@ void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
             if (std::abs(old_value - val.value.real) > config_->min_analog_change_threshold) {
                 it->second.value.store(val.value.real);
                 it->second.changed.store(true);
-                DBG("Digital input %s updated: %g -> %g", name, old_value, val.value.real);
+                DBG("Digital input %s updated: %g -> %g", name.c_str(), old_value, val.value.real);
             }
+        }
+        else {
+            ERROR("Digital input %s not found", name.c_str());
         }
     } else {
         for (int i = 0; i < size; i++) {
@@ -272,6 +294,9 @@ void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
                         it->second.changed.store(true);
                         DBG("Digital input %s updated: %g -> %g", indexed_name.c_str(), old_value, new_analog_value);
                     }
+                }
+                else {
+                    ERROR("Digital input %s not found", indexed_name.c_str());
                 }
             }
         }
