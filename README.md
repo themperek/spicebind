@@ -58,7 +58,7 @@ pip install -e .
 
 ### 1. Define Your Analog Block
 
-Create a Verilog module with matching SPICE netlist ports.
+Create a Verilog module with matching SPICE netlist with external voltage sources and ouptut ports.
 
 **Verilog module** (e.g., `adc.v`):
 ```verilog
@@ -72,10 +72,10 @@ endmodule
 **SPICE netlist** (e.g., `adc.cir`):
 ```spice
 * External voltage source for input
-Vvin vin 0 0 external
+Vvin adc_in 0 0 external
 
 * ADC subcircuit instantiation
-Xadc vin code[3] code[2] code[1] code[0] sar_adc
+Xadc adc_in code[3] code[2] code[1] code[0] sar_adc
 
 * Simulation settings
 .tran 1ns 1
