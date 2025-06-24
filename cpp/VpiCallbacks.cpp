@@ -3,7 +3,7 @@
 #include "Debug.h"
 #include "TimeBarrier.h"
 #include "AnalogDigitalInterface.h"
-#include "SpiceVpiConfig.h"
+#include "Config.h"
 #include "ngspice/sharedspice.h"
 #include <memory>
 #include <exception>

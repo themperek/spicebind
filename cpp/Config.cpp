@@ -1,4 +1,4 @@
-#include "SpiceVpiConfig.h"
+#include "Config.h"
 #include "Debug.h"
 #include <cstdlib>
 #include <stdexcept>

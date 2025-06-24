@@ -1,6 +1,6 @@
 
 #include "TimeBarrier.h"
-#include "SpiceVpiConfig.h"
+#include "Config.h"
 #include "AnalogDigitalInterface.h"
 
 #include "VpiCallbacks.h"
