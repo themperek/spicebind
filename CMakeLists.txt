@@ -35,7 +35,7 @@ endif()
 #  Source files and common configuration
 # ---------------------------------------------------------------------------
 set(SPICEBIND_SRC
-    cpp/SpiceVpiConfig.cpp
+    cpp/Config.cpp
     cpp/AnalogDigitalInterface.cpp
     cpp/NgSpiceCallbacks.cpp
     cpp/VpiCallbacks.cpp

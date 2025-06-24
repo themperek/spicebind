@@ -6,8 +6,8 @@ API
 .. .. doxygenfile:: Debug.h
 .. .. doxygenfile:: NgSpiceCallbacks.cpp
 .. doxygenfile:: NgSpiceCallbacks.h
-.. .. doxygenfile:: SpiceVpiConfig.cpp
-.. doxygenfile:: SpiceVpiConfig.h
+.. .. doxygenfile:: Config.cpp
+.. doxygenfile:: Config.h
 .. doxygenfile:: TimeBarrier.h
 .. .. doxygenfile:: VpiCallbacks.cpp
 .. doxygenfile:: VpiCallbacks.h

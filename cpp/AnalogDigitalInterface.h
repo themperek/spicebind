@@ -2,7 +2,7 @@
 #define ANALOG_DIGITAL_INTERFACE_H
 
 #include "vpi_user.h"
-#include "SpiceVpiConfig.h"
+#include "Config.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
