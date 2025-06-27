@@ -24,6 +24,37 @@ Perfect for ASIC designers working on:
 
 ⚠️ **Note**: This is an early release. We welcome feedback and contributions from the community.
 
+## How It Works
+
+SpiceBind enables you to write Verilog source code that includes an empty Verilog module and have it implemented by ngspice. Here's how the magic happens:
+
+### The Process
+
+1. **Create a Verilog Module Shell**: Write a Verilog module with the desired interface (inputs and outputs). The module body can be empty - it will be implemented in SPICE.
+
+2. **Design the SPICE Implementation**: Create a corresponding SPICE netlist that implements the analog behavior of your module.
+
+3. **Name-Based Connection**: 
+   - **Verilog input ports** appear in the SPICE circuit as external voltage sources
+   - **Selected SPICE circuit nodes** drive the Verilog output ports
+   - Connections are established by **matching names** between Verilog ports and SPICE nodes
+
+4. **VPI Integration**: A VPI (Verilog Procedural Interface) module links to ngspice's shared library, enabling communication between the digital simulator and the analog engine.
+
+### Example Flow
+
+```
+Verilog: input real vin    →    SPICE: Vvin external_node 0 0 external
+Verilog: output [3:0] code ←    SPICE: circuit nodes code[3], code[2], code[1], code[0]
+```
+
+During simulation, the VPI module:
+- Reads values from Verilog input ports and sets corresponding SPICE voltage sources
+- Runs SPICE analysis for the current time step  
+- Reads SPICE node voltages and drives corresponding Verilog output ports
+
+This creates a co-simulation where analog and digital domains remain synchronized on a unified timeline.
+
 ## Installation
 
 ### Prerequisites
