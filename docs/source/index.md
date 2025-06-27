@@ -40,11 +40,13 @@ spi_adc
 % - making connections
 % - no instruction or technical description
 
-% ```{toctree}
-% :caption: Explanation
-% :hidden: true
-% :maxdepth: 2
-% ```
+```{toctree}
+:caption: Explanation
+:hidden: true
+:maxdepth: 2
+
+timing_synchronization
+```
 
 % How-To Guides - guides that take the reader through the steps required to solve a common problem
 % (Example: recipe; problem-oriented)
