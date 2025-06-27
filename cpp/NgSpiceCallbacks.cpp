@@ -9,7 +9,6 @@
 
 // TODO:  Maybe add another step after redo with 1 unit time for fast pulses
 
-// External global variables (defined in vpi_module.cpp)
 extern spice_vpi::TimeBarrier<unsigned long long> g_time_barrier;
 extern std::unique_ptr<spice_vpi::AnalogDigitalInterface> g_interface;
 extern spice_vpi::Config::Settings g_config;
@@ -93,9 +92,7 @@ int ng_srcdata(double *vp, double time, char *source, int id, void *udp) {
     //
     // set analog inputs values
     //
-    std::string port_name(source);
-    port_name = port_name.substr(1);
-    g_interface->set_analog_input(port_name, vp);
+    g_interface->set_analog_input(source + 1, vp);
 
     DBG("end source=%s time_spice_to_vpi=%lld time=%g vp=%g time_ns=%g", source, time_spice_to_vpi, time, *vp, time * 1e9);
 

@@ -14,7 +14,7 @@ AnalogDigitalInterface::PortInfo::PortInfo()
 AnalogDigitalInterface::PortInfo::PortInfo(const PortInfo &other)
     : name(other.name), base_name(other.base_name), handle(other.handle), direction(other.direction), 
       net_type(other.net_type), size(other.size), is_vector(other.is_vector),
-      bit_index(other.bit_index), value(other.value.load()), changed(other.changed.load()) {}
+      bit_index(other.bit_index), value(other.value), changed(other.changed) {}
 
 auto AnalogDigitalInterface::PortInfo::operator=(const PortInfo &other) -> AnalogDigitalInterface::PortInfo & {
     if (this != &other) {
@@ -26,8 +26,8 @@ auto AnalogDigitalInterface::PortInfo::operator=(const PortInfo &other) -> Analo
         size = other.size;
         is_vector = other.is_vector;
         bit_index = other.bit_index;
-        value.store(other.value.load());
-        changed.store(other.changed.load());
+        value = other.value;
+        changed = other.changed;
     }
     return *this;
 }
@@ -35,7 +35,7 @@ auto AnalogDigitalInterface::PortInfo::operator=(const PortInfo &other) -> Analo
 AnalogDigitalInterface::PortInfo::PortInfo(PortInfo &&other) noexcept
     : name(std::move(other.name)), base_name(std::move(other.base_name)), handle(other.handle), 
       direction(other.direction), net_type(other.net_type), size(other.size),
-      is_vector(other.is_vector), bit_index(other.bit_index), value(other.value.load()), changed(other.changed.load()) {}
+      is_vector(other.is_vector), bit_index(other.bit_index), value(other.value), changed(other.changed) {}
 
 auto AnalogDigitalInterface::PortInfo::operator=(PortInfo &&other) noexcept -> AnalogDigitalInterface::PortInfo & {
     if (this != &other) {
@@ -47,8 +47,8 @@ auto AnalogDigitalInterface::PortInfo::operator=(PortInfo &&other) noexcept -> A
         size = other.size;
         is_vector = other.is_vector;
         bit_index = other.bit_index;
-        value.store(other.value.load());
-        changed.store(other.changed.load());
+        value = (other.value);
+        changed = (other.changed);
     }
     return *this;
 }
@@ -135,16 +135,17 @@ void AnalogDigitalInterface::add_port(vpiHandle port) {
                 port_info.size = port_size;
                 port_info.is_vector = true;
                 port_info.bit_index = i;
-                port_info.value.store(0.0);
-                port_info.changed.store(true);
+                port_info.value = 0.0;
+                port_info.changed = true;
 
+                std::string spice_name = "v(" + indexed_name + ")";
                 if (dir == vpiInput) {
                     std::lock_guard<std::mutex> lock(inputs_mutex_);
                     analog_inputs_.emplace(indexed_name, std::move(port_info));
                     DBG("Added analog input: %s", indexed_name.c_str());
                 } else if (dir == vpiOutput) {
                     std::lock_guard<std::mutex> lock(outputs_mutex_);
-                    analog_outputs_.emplace(indexed_name, std::move(port_info));
+                    analog_outputs_.emplace(spice_name, std::move(port_info));
                     DBG("Added analog output: %s", indexed_name.c_str());
                 }
             }
@@ -160,28 +161,29 @@ void AnalogDigitalInterface::add_port(vpiHandle port) {
         port_info.size = 1;
         port_info.is_vector = false;
         port_info.bit_index = -1;
-        port_info.value.store(0.0);
-        port_info.changed.store(true);
+        port_info.value = 0.0;
+        port_info.changed = true;
 
+        std::string spice_name = "v(" + pname + ")";
         if (dir == vpiInput) {
             std::lock_guard<std::mutex> lock(inputs_mutex_);
             analog_inputs_.emplace(pname, std::move(port_info));
             DBG("Added analog input: %s", pname.c_str());
         } else if (dir == vpiOutput) {
             std::lock_guard<std::mutex> lock(outputs_mutex_);
-            analog_outputs_.emplace(pname, std::move(port_info));
+            analog_outputs_.emplace(spice_name, std::move(port_info));
             DBG("Added analog output: %s", pname.c_str());
         }
     }
 }
 
-void AnalogDigitalInterface::set_analog_input(const std::string &name, double *value) {
+void AnalogDigitalInterface::set_analog_input(const char* name, double *value) {
     std::lock_guard<std::mutex> lock(inputs_mutex_);
     auto it = analog_inputs_.find(name);
     if (it != analog_inputs_.end()) {
-        *value = it->second.value.load();
+        *value = it->second.value;
     } else {
-        ERROR("analog input %s not found", name.c_str());
+        ERROR("analog input %s not found", name);
     }
 }
 
@@ -189,22 +191,16 @@ void AnalogDigitalInterface::set_analog_input(const std::string &name, double *v
 void AnalogDigitalInterface::analog_outputs_update() {
     std::lock_guard<std::mutex> lock(outputs_mutex_);
 
-    // TODO: this seems slow
-
     for (auto &[name, port_info] : analog_outputs_) {
-        std::string spice_name = "v(" + name + ")";
-        std::vector<char> mutable_buffer(spice_name.begin(), spice_name.end());
-        mutable_buffer.push_back('\0');
 
-        pvector_info vector_info = ngGet_Vec_Info(mutable_buffer.data());
+        pvector_info vector_info = ngGet_Vec_Info(const_cast<char*>(name.c_str())); // TODO: this can be cashed (no need to call ngspice every time)
         if ((vector_info != nullptr) && vector_info->v_length > 0) {
             double new_value = vector_info->v_realdata[vector_info->v_length - 1];
-            double old_value = port_info.value.load();
 
-            if (std::abs(old_value - new_value) > config_->min_analog_change_threshold) {
-                port_info.value.store(new_value);
-                port_info.changed.store(true);
-                DBG("Analog output %s updated: %g -> %g", name.c_str(), old_value, new_value);
+            if (std::abs(port_info.value - new_value) > config_->min_analog_change_threshold) {
+                DBG("Analog output %s updated: %g -> %g", name.c_str(), port_info.value, new_value);
+                port_info.value = new_value;
+                port_info.changed = true;
             }
         }
     }
@@ -214,8 +210,9 @@ void AnalogDigitalInterface::set_digital_output() {
     std::lock_guard<std::mutex> lock(outputs_mutex_);
 
     for (auto &[name, port_info] : analog_outputs_) {
-        if (port_info.changed.exchange(false)) { // Read and clear change flag
-            double analog_value = port_info.value.load();
+        if (port_info.changed) { // Read and clear change flag
+            port_info.changed = false;
+            double analog_value = port_info.value;
             
             if(port_info.net_type == vpiRealVar) {
                 s_vpi_value val;
@@ -277,12 +274,12 @@ void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
             val.format = vpiRealVal;
             vpi_get_value(handle, &val);
 
-            double old_value = it->second.value.load();
+            double old_value = it->second.value;
             DBG("Digital X input %s : %g -> %g", name.c_str(), old_value, val.value.real);
 
             if (std::abs(old_value - val.value.real) > config_->min_analog_change_threshold) {
-                it->second.value.store(val.value.real);
-                it->second.changed.store(true);
+                it->second.value= val.value.real;
+                it->second.changed = true;
                 DBG("Digital input %s updated: %g -> %g", name.c_str(), old_value, val.value.real);
             }
         }
@@ -298,12 +295,12 @@ void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
             vpi_get_value(handle, &val);
 
             double new_value = digital_to_analog(val.value.integer);
-            double old_value = it->second.value.load();
+            double old_value = it->second.value;
             DBG("Digital Z input %s : %g -> %g", name.c_str(), old_value, new_value);
 
             if (std::abs(old_value - new_value) > config_->min_analog_change_threshold) {
-                it->second.value.store(new_value);
-                it->second.changed.store(true);
+                it->second.value = new_value;
+                it->second.changed = true;
                 DBG("Digital input %s updated: %g -> %g", name.c_str(), old_value, new_value);
             }
         }
@@ -330,12 +327,12 @@ void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
                     vpi_get_value(bit_handle, &bit_val);
 
                     double new_analog_value = digital_to_analog(bit_val.value.integer);
-                    double old_value = it->second.value.load();
+                    double old_value = it->second.value;
                     DBG("Digital Y input %s : %g -> %g", indexed_name.c_str(), old_value, new_analog_value);
 
                     if (std::abs(old_value - new_analog_value) > config_->min_analog_change_threshold) {
-                        it->second.value.store(new_analog_value);
-                        it->second.changed.store(true);
+                        it->second.value = new_analog_value;
+                        it->second.changed = true;
                         DBG("Digital input %s updated: %g -> %g", indexed_name.c_str(), old_value, new_analog_value);
                     }
                 }
@@ -365,14 +362,14 @@ void AnalogDigitalInterface::print_status() const {
         std::lock_guard<std::mutex> lock(inputs_mutex_);
         DBG("=== Analog Inputs (Digital->Analog) ===");
         for (const auto &[name, port_info] : analog_inputs_) {
-            DBG("  %s: value=%g, changed=%d, type=%d", name.c_str(), port_info.value.load(), port_info.changed.load(), port_info.net_type);
+            DBG("  %s: value=%g, changed=%d, type=%d", name.c_str(), port_info.value, port_info.changed, port_info.net_type);
         }
     }
     {
         std::lock_guard<std::mutex> lock(outputs_mutex_);
         DBG("=== Analog Outputs (Analog->Digital) ===");
         for (const auto &[name, port_info] : analog_outputs_) {
-            DBG("  %s: value=%g, changed=%d, type=%d", name.c_str(), port_info.value.load(), port_info.changed.load(), port_info.net_type);
+            DBG("  %s: value=%g, changed=%d, type=%d", name.c_str(), port_info.value, port_info.changed, port_info.net_type);
         }
     }
 }
