@@ -17,7 +17,12 @@ void (*vlog_startup_routines[])(void) = {
 };
 
 // Build command:
-// g++ -shared -fPIC -std=c++17 -I./cpp -I/home/tomasz.hemperek/miniconda3/include -L/home/tomasz.hemperek/miniconda3/lib -lngspice cpp/SpiceVpiConfig.cpp cpp/AnalogDigitalInterface.cpp cpp/NgSpiceCallbacks.cpp cpp/VpiCallbacks.cpp cpp/vpi_module.cpp -o fusehdl/fusehdl_vpi.vpi
+// g++ -shared -fPIC -std=c++17 -I./cpp -I/home/tomasz.hemperek/miniconda3/include -L/home/tomasz.hemperek/miniconda3/lib -lngspice cpp/Config.cpp cpp/AnalogDigitalInterface.cpp cpp/NgSpiceCallbacks.cpp cpp/VpiCallbacks.cpp cpp/vpi_module.cpp -o spicebind/spicebind_vpi.vpi
+
+// Build command profiler:
+// g++ -shared -fPIC -std=c++17 -g -lprofiler -I./cpp -I/home/tomasz.hemperek/miniconda3/include -L/home/tomasz.hemperek/miniconda3/lib -lngspice cpp/Config.cpp cpp/AnalogDigitalInterface.cpp cpp/NgSpiceCallbacks.cpp cpp/VpiCallbacks.cpp cpp/vpi_module.cpp -o spicebind/spicebind_vpi.vpi  
+// CPUPROFILE=./myprof.prof  python examples/adc/test_flash_adc8.py
+// pprof --cum  --line --text spicebind/spicebind_vpi.vpi sim_build/myprof.prof > profline
 
 // Usage:
 // iverilog tests/tb.sv -o tests/tb

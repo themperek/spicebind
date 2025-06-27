@@ -11,7 +11,7 @@ import pytest
 async def run_multi_instance(dut):
     dut.A0.value = 0
     dut.A1.value = 0
-    
+
     await Timer(5, units="ns")
     assert dut.Y0.value == 1
     assert dut.Y1.value == 1
@@ -41,6 +41,7 @@ async def run_multi_instance(dut):
     await Timer(10, units="ns")
     dut.A1.value = 0
     await Timer(10, units="ns")
+
 
 def test_multi_instance():
     proj_path = Path(__file__).resolve().parent

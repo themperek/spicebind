@@ -9,7 +9,8 @@
 // Compile with a simulator that supports IEEE Verilog-2001 real data types
 
 
-`timescale 1ns/1ns
+`timescale 1ns/1ps
+
 module flash_adc8(
     input  real vin,          // analog input
     output reg [7:0] code     // digital output

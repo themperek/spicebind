@@ -5,8 +5,11 @@
 #include "AnalogDigitalInterface.h"
 #include "Config.h"
 #include "ngspice/sharedspice.h"
+#include "vpi_user.h"
 #include <memory>
 #include <exception>
+#include <thread>
+#include <chrono>
 
 // External global variables (defined in vpi_module.cpp)
 extern spice_vpi::TimeBarrier<unsigned long long> g_time_barrier;
@@ -14,7 +17,7 @@ extern spice_vpi::Config::Settings g_config;
 extern std::unique_ptr<spice_vpi::AnalogDigitalInterface> g_interface;
 
 // Global VPI state variables
-static bool rw_sync_done = false;
+static bool add_ngspice_timestep = false;
 static vpiHandle next_time_cb_handle;
 
 namespace spice_vpi {
@@ -49,83 +52,44 @@ auto vpi_port_change_cb(p_cb_data cb_data_p) -> PLI_INT32 {
     simtime.type = vpiSimTime;
     vpi_get_time(nullptr, &simtime);
     unsigned long long current_time = (simtime.high * (1ULL << 32)) + simtime.low;
-    DBG("enter %s size=%d value=%f t=%llu", name, vsize, val_s.value.real, current_time);
+    DBG("enter %s current_time=%llu size=%d value=%f", name, current_time, vsize, val_s.value.real);
 
+
+    // since we may go back in time in ngspice we need to remove the next time callback
     if (next_time_cb_handle != nullptr) {
-        DBG("removing next_time_cb"); // ngspice will update - cancel next time callback will be added in rw_sync
+        DBG("removing next_time_cb"); 
+        // ngspice will update - cancel next time callback will be added in rw_sync
+        // what if time_cb is registered for current time
         vpi_remove_cb(next_time_cb_handle);
         next_time_cb_handle = nullptr;
     }
 
-    if (!rw_sync_done) { // only once if multiple input changes same time
-        DBG("register cbReadOnlySynch");
-        s_vpi_time time_data;
-        time_data.type = vpiSimTime;
-        time_data.high = 0;
-        time_data.low = 0;
-        time_data.real = 0;
+    if (!add_ngspice_timestep) { // only once if multiple input changes same time
+        DBG("register vpi_timestep_cb current_time=%llu next_time_spice=%lld", current_time, g_time_barrier.get_next_spice_step_time());
 
-        s_cb_data cb_data_next;
-        cb_data_next.reason = cbReadOnlySynch;
-        cb_data_next.cb_rtn = vpi_rw_sync_cb;
-        cb_data_next.obj = nullptr;
-        cb_data_next.time = &time_data;
-        cb_data_next.value = nullptr;
-        cb_data_next.index = 0;
-        cb_data_next.user_data = nullptr;
+        // register next time callback for current time once
+        s_vpi_time next_delay;
+        next_delay.type = vpiSimTime;
+        next_delay.high = 0;
+        next_delay.low = 0; 
 
-        vpi_register_cb(&cb_data_next);
-        rw_sync_done = true;
+        s_cb_data next_cb_data;
+        next_cb_data.reason = cbAfterDelay;    
+        next_cb_data.cb_rtn = vpi_timestep_cb;
+        next_cb_data.obj = nullptr;
+        next_cb_data.time = &next_delay;
+        next_cb_data.value = nullptr;
+
+        vpi_register_cb(&next_cb_data);
+
+        add_ngspice_timestep = true;
+
     }
-
-    //
-    //  read/update digital values
-    //
-
-    g_interface->digital_input_update(value_handle);
 
     // Returning 0 keeps the callback installed (so it will fire again on the next value change)
     return 0;
 }
 
-auto vpi_rw_sync_cb(p_cb_data cb_data_p) -> PLI_INT32 {
-
-    rw_sync_done = false;
-
-    s_vpi_time simtime;
-    simtime.type = vpiSimTime;
-    vpi_get_time(nullptr, &simtime);
-    unsigned long long current_time = (simtime.high * (1ULL << 32)) + simtime.low;
-
-    DBG("enter t=%llu next_time_spice=%lld", current_time, g_time_barrier.get_next_spice_step_time());
-
-    // manage wait time for ngspice to redo last step
-    g_time_barrier.update_no_wait(spice_vpi::TimeBarrier<unsigned long long>::SPICE_ENGINE_ID, current_time);
-
-    DBG("set redo step");
-
-    g_time_barrier.set_needs_redo(true);
-
-    g_time_barrier.update(spice_vpi::TimeBarrier<unsigned long long>::HDL_ENGINE_ID, current_time + 1);
-
-    DBG("aftertime_sync.update t=%llu", current_time + 1);
-
-    s_vpi_time next_delay;
-    next_delay.type = vpiSimTime;
-    next_delay.high = 0;
-    next_delay.low = 1; //-> update in the next step time
-
-    s_cb_data next_cb_data;
-    next_cb_data.reason = cbAfterDelay;    // cbReadWriteSynch;
-    next_cb_data.cb_rtn = vpi_timestep_cb; // call this function again -> this is wrong, it should be cbNextSimTime
-    next_cb_data.obj = nullptr;
-    next_cb_data.time = &next_delay;
-    next_cb_data.value = nullptr;
-
-    next_time_cb_handle = vpi_register_cb(&next_cb_data);
-
-    return 0;
-}
 
 auto vpi_timestep_cb(p_cb_data cb_data_p) -> PLI_INT32 {
 
@@ -134,11 +98,24 @@ auto vpi_timestep_cb(p_cb_data cb_data_p) -> PLI_INT32 {
     vpi_get_time(nullptr, &simtime);
     unsigned long long current_time = (simtime.high * (1ULL << 32)) + simtime.low;
 
-    DBG("enter t=%llu next_time_spice=%lld", current_time, g_time_barrier.get_next_spice_step_time());
+    DBG("enter current_time=%llu next_time_spice=%lld", current_time, g_time_barrier.get_next_spice_step_time());
+
+    if (add_ngspice_timestep) {
+        DBG("add ngspice time step at current_time=%llu", current_time);
+        g_time_barrier.update_no_wait(spice_vpi::TimeBarrier<unsigned long long>::SPICE_ENGINE_ID, current_time);
+        g_time_barrier.set_needs_redo(true);
+    }
 
     g_time_barrier.update(spice_vpi::TimeBarrier<unsigned long long>::HDL_ENGINE_ID, current_time + 1);
+    DBG("after time_sync.update (+1) current_time=%llu next_time_spice=%lld", current_time, g_time_barrier.get_next_spice_step_time());
 
-    DBG("after time_sync.update t=%llu next_time_spice=%lld", current_time + 1, g_time_barrier.get_next_spice_step_time());
+    if (add_ngspice_timestep) {
+        DBG("update_all_digital_inputs after ngspice time new timestep");
+        g_interface->update_all_digital_inputs();
+
+        // TODO: add one more ngspice step (+1) to have inputs rise faster?
+    }
+    add_ngspice_timestep = false;
 
     //
     //  update digital outputs
@@ -148,15 +125,13 @@ auto vpi_timestep_cb(p_cb_data cb_data_p) -> PLI_INT32 {
     unsigned long long next_spice_step = g_time_barrier.get_next_spice_step_time();
     unsigned long long time_low = next_spice_step - current_time;
 
-    // TODO: something is wrong here
     if (time_low < 1) {
-        ERROR(" t=%llu next_spice_step=%llu time_step==0", current_time, next_spice_step);
+        DBG("SMALL STEP: current_time=%llu next_spice_step=%llu time_step==0", current_time, next_spice_step);
         time_low = 1;
     }
 
     cb_data_p->reason = cbAfterDelay;
     cb_data_p->cb_rtn = vpi_timestep_cb; // call this function again
-
     cb_data_p->time->type = vpiSimTime;
     cb_data_p->time->high = 0;
     cb_data_p->time->low = time_low;
@@ -246,27 +221,31 @@ auto vpi_start_of_sim_cb(p_cb_data cb_data_p) -> PLI_INT32 {
         ngSpice_Command((char *)g_config.spice_netlist_path.c_str());
     } else {
         ERROR("Failed to initialize ngspice.");
+        vpi_control(vpiFinish, 1);
         return 1;
     }
 
     if (ngSpice_Init_Sync(ng_srcdata, nullptr, ng_sync, nullptr, nullptr) == 0) {
         ngSpice_Command((char *)"bg_run");
+        std::this_thread::sleep_for(std::chrono::seconds(1)); // wait for ngspice to start
         if (ngSpice_running()==0) {
             ERROR("Failed to initialize run ngspice.");
+            vpi_control(vpiFinish, 1);
             return 1;
         }
     } else {
         ERROR("Failed to initialize ngSpice_Init_Sync interface.");
+        vpi_control(vpiFinish, 1);
         return 1;
     }
 
     g_time_barrier.update(spice_vpi::TimeBarrier<unsigned long long>::HDL_ENGINE_ID, 1);
+    DBG("update time_barrier.update t=%llu", 1);
 
     s_vpi_time next_delay;
     next_delay.type = vpiSimTime;
     next_delay.high = 0;
     next_delay.low = 0;
-
     s_cb_data next_cb_data;
     next_cb_data.reason = cbAfterDelay;
     next_cb_data.cb_rtn = vpi_timestep_cb;

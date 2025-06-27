@@ -25,7 +25,9 @@ async def run_adc_test(dut):
     dut.adc_in.value = 1.0
     for i in range(10):
         await Timer(2, units="ns")
-        assert int(dut.adc_out.value) == expected[i]
+        assert (
+            int(dut.adc_out.value) == expected[i]
+        ), f"i={i} dut.adc_out.value={dut.adc_out.value} expected={expected[i]}"
 
     expected = [
         0b11111111,

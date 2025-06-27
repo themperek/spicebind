@@ -103,6 +103,11 @@ public:
      * @brief Print debug status information
      */
     void print_status() const;
+
+    /**
+     * @brief Update all digital inputs
+     */
+    void update_all_digital_inputs();
 };
 
 } // namespace spice_vpi

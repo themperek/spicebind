@@ -46,16 +46,6 @@ PLI_INT32 vpi_end_of_sim_cb(p_cb_data cb_data_p);
  */
 PLI_INT32 vpi_timestep_cb(p_cb_data cb_data_p);
 
-/**
- * @brief Read-write synchronization callback
- * 
- * Called during HDL read-write synchronization phase to handle
- * signal updates and coordinate with SPICE.
- * 
- * @param cb_data_p Callback data structure
- * @return 0 on success
- */
-PLI_INT32 vpi_rw_sync_cb(p_cb_data cb_data_p);
 
 /**
  * @brief Port change callback

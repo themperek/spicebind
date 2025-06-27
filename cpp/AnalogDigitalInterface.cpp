@@ -185,8 +185,11 @@ void AnalogDigitalInterface::set_analog_input(const std::string &name, double *v
     }
 }
 
+
 void AnalogDigitalInterface::analog_outputs_update() {
     std::lock_guard<std::mutex> lock(outputs_mutex_);
+
+    // TODO: this seems slow
 
     for (auto &[name, port_info] : analog_outputs_) {
         std::string spice_name = "v(" + name + ")";
@@ -234,6 +237,22 @@ void AnalogDigitalInterface::set_digital_output() {
     }
 }
 
+
+void AnalogDigitalInterface::update_all_digital_inputs() {
+    std::lock_guard<std::mutex> lock(inputs_mutex_);
+    
+    // TODO: this can be optimezed
+
+    for (const auto &[name, port_info] : analog_inputs_) {
+        // Get the VPI handle for this input
+        vpiHandle handle = port_info.handle;
+        if (handle != nullptr) {
+            digital_input_update(handle);
+        }
+    }
+}
+
+
 void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
     std::string name = vpi_get_str(vpiName, handle);
     int size = vpi_get(vpiSize, handle);
@@ -247,7 +266,7 @@ void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
     //Lowercase the port name - spice is case insensitive
     std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 
-    std::lock_guard<std::mutex> lock(inputs_mutex_);
+    // std::lock_guard<std::mutex> lock(inputs_mutex_);
 
     DBG("Digital input update: %s size=%d net_type=%d", name.c_str(), size, net_type);
 
@@ -259,6 +278,8 @@ void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
             vpi_get_value(handle, &val);
 
             double old_value = it->second.value.load();
+            DBG("Digital X input %s : %g -> %g", name.c_str(), old_value, val.value.real);
+
             if (std::abs(old_value - val.value.real) > config_->min_analog_change_threshold) {
                 it->second.value.store(val.value.real);
                 it->second.changed.store(true);
@@ -268,7 +289,29 @@ void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
         else {
             ERROR("Digital input %s not found", name.c_str());
         }
-    } else {
+    }
+    else if (net_type == vpiNetBit) {
+        auto it = analog_inputs_.find(name);
+        if (it != analog_inputs_.end()) {
+            s_vpi_value val;
+            val.format = vpiIntVal;
+            vpi_get_value(handle, &val);
+
+            double new_value = digital_to_analog(val.value.integer);
+            double old_value = it->second.value.load();
+            DBG("Digital Z input %s : %g -> %g", name.c_str(), old_value, new_value);
+
+            if (std::abs(old_value - new_value) > config_->min_analog_change_threshold) {
+                it->second.value.store(new_value);
+                it->second.changed.store(true);
+                DBG("Digital input %s updated: %g -> %g", name.c_str(), old_value, new_value);
+            }
+        }
+        else {
+            ERROR("Digital input %s not found", name.c_str());
+        }
+    }
+    else {
         for (int i = 0; i < size; i++) {
             vpiHandle bit_handle = vpi_handle_by_index(handle, i);
 
@@ -288,6 +331,7 @@ void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
 
                     double new_analog_value = digital_to_analog(bit_val.value.integer);
                     double old_value = it->second.value.load();
+                    DBG("Digital Y input %s : %g -> %g", indexed_name.c_str(), old_value, new_analog_value);
 
                     if (std::abs(old_value - new_analog_value) > config_->min_analog_change_threshold) {
                         it->second.value.store(new_analog_value);
@@ -299,6 +343,9 @@ void AnalogDigitalInterface::digital_input_update(vpiHandle handle) {
                     ERROR("Digital input %s not found", indexed_name.c_str());
                 }
             }
+            else {
+                ERROR("Digital input %s not found", name.c_str());
+            }
         }
     }
 }
@@ -307,7 +354,7 @@ auto AnalogDigitalInterface::get_analog_input_names() const -> std::vector<std::
     std::lock_guard<std::mutex> lock(inputs_mutex_);
     std::vector<std::string> names;
     names.reserve(analog_inputs_.size());
-for (const auto &[name, port_info] : analog_inputs_) {
+    for (const auto &[name, port_info] : analog_inputs_) {
         names.push_back(name);
     }
     return names;
