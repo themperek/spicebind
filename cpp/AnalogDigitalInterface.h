@@ -1,13 +1,13 @@
 #ifndef ANALOG_DIGITAL_INTERFACE_H
 #define ANALOG_DIGITAL_INTERFACE_H
 
+#include "ngspice/sharedspice.h"
 #include "vpi_user.h"
 #include "Config.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
 #include <mutex>
-#include <atomic>
 
 namespace spice_vpi {
 
@@ -31,8 +31,8 @@ private:
         int size;                  // Port size (1 for scalar, >1 for vector)
         bool is_vector;            // True if vector port
         int bit_index;             // Bit index for vector elements (-1 for scalar)
-        std::atomic<double> value; // Current value
-        std::atomic<bool> changed; // Change flag
+        double value;              // Current value
+        bool changed;              // Change flag
 
         PortInfo();
         PortInfo(const PortInfo &other);
@@ -75,7 +75,7 @@ public:
      * @param name Port name
      * @param value Pointer to receive the analog value
      */
-    void set_analog_input(const std::string &name, double *value);
+    void set_analog_input(const char* name, double *value);
 
     /**
      * @brief Update analog output values from SPICE
