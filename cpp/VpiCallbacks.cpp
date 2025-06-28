@@ -10,6 +10,7 @@
 #include <exception>
 #include <thread>
 #include <chrono>
+#include <cmath>
 
 // External global variables (defined in vpi_module.cpp)
 extern spice_vpi::TimeBarrier<unsigned long long> g_time_barrier;
@@ -148,7 +149,7 @@ auto vpi_start_of_sim_cb(p_cb_data cb_data_p) -> PLI_INT32 {
     try {
         // Load configuration from environment variables
         g_config = spice_vpi::Config::load_from_environment();
-        
+
         // Initialize the interface with the configuration
         g_interface = std::make_unique<spice_vpi::AnalogDigitalInterface>(g_config);
         
@@ -170,6 +171,11 @@ auto vpi_start_of_sim_cb(p_cb_data cb_data_p) -> PLI_INT32 {
         vpi_printf("** Info: Using VCC: %g\n", g_config.vcc_voltage);
         vpi_printf("** Info: Using logic thresholds: LOGIC_THRESHOLD_LOW=%g, LOGIC_THRESHOLD_HIGH=%g\n", 
                    g_config.logic_threshold_low, g_config.logic_threshold_high);
+        
+        int time_unit = vpi_get(vpiTimeUnit, nullptr);
+        int time_precision = vpi_get(vpiTimePrecision, nullptr);
+        g_config.time_precision = static_cast<unsigned long long>(std::pow(10, -time_precision));
+        vpi_printf("** Info: Simulation precision: %lld (10e%d)\n", g_config.time_precision, time_precision);
         
     } catch (const std::exception& e) {
         ERROR("Configuration error: %s", e.what());
