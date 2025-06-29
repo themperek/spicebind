@@ -5,6 +5,8 @@
 
 SpiceBind is a lightweight bridge that enables co-simulation of **analog [ngspice](https://ngspice.sourceforge.io/)** circuits alongside **HDL simulators**. This tool allows design engineers to seamlessly integrate SPICE-accurate analog models into their existing digital verification flows.
 
+⚠️ **Note**: This is an early release. We welcome feedback and contributions from the community.
+
 ### Key Benefits
 
 - **Preserve Your Existing Flow**: Keep your RTL, testbenches, and waveform viewers unchanged
@@ -21,8 +23,6 @@ Perfect for ASIC designers working on:
 - PLLs, oscillators, and clock generation circuits
 - Power management units
 - Sensor interfaces and analog front-ends
-
-⚠️ **Note**: This is an early release. We welcome feedback and contributions from the community.
 
 ## How It Works
 
