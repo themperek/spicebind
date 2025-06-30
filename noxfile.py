@@ -7,18 +7,57 @@
 
 """Setup file for nox (https://nox.thea.codes/en/stable/tutorial.html)."""
 
-from functools import cache
 
 import nox
 
-import tomllib  # Python 3.11+; use `tomli` for earlier versions
+# Python 3.11+ has tomllib built-in, use tomli for earlier versions
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib
 
 
-@cache
 def get_doc_dependencies():
     with open("pyproject.toml", "rb") as f:
         pyproject = tomllib.load(f)
     return pyproject["project"]["optional-dependencies"]["docs"]
+
+
+def get_dev_dependencies():
+    with open("pyproject.toml", "rb") as f:
+        pyproject = tomllib.load(f)
+    return pyproject["project"]["optional-dependencies"]["dev"]
+
+
+@nox.session
+def test(session: nox.Session) -> None:
+    """Run the test suite with pytest."""
+    dev_deps = get_dev_dependencies()
+    session.install(".", *dev_deps)
+    session.run("pytest", *session.posargs)
+
+
+@nox.session
+def test_sdist(session: nox.Session) -> None:
+    """Test that the package works after creating and installing from sdist."""
+    # Install build tool
+    session.install("build")
+    
+    # Create source distribution
+    session.run("python", "-m", "build", "--sdist", "--outdir", session.cache_dir)
+    
+    # Find the created sdist file
+    import glob
+    sdist_files = glob.glob(str(session.cache_dir / "*.tar.gz"))
+    if not sdist_files:
+        session.error("No sdist file found")
+    
+    # Install from sdist along with dev dependencies
+    dev_deps = get_dev_dependencies()
+    session.install(sdist_files[0], *dev_deps)
+    
+    # Run tests to ensure everything works
+    session.run("pytest", *session.posargs)
 
 
 @nox.session

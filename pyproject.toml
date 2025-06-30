@@ -24,6 +24,7 @@ dev = [
     "numpy",
     "matplotlib",
     "cocotbext-spi",
+    "tomli",
 ]
 
 docs = [
