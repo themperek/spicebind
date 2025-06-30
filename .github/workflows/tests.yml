@@ -15,12 +15,12 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt-get install ngspice iverilog ngspice-dev libngspice0-dev
-    - name: Install Python packages
+    - name: Install nox
       run: |
-        pip install -e ".[dev]"
-    - name: Test
+        pip install nox
+    - name: Run tests
       run: |
-        pytest
+        nox -s test
