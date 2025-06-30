@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "spicebind"
-version = "0.0.1"
+version = "0.0.2"
 description = "SpiceBind is a bridge that embeds the ngspice analog engine inside VPI-capable Verilog simulator for mixed-signal co-simulation."
 authors = [{name = "Tomasz Hemperek"}]
 readme = "README.md"
