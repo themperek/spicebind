@@ -3,7 +3,7 @@
 SRC           := flash_adc8.v flash_adc8_tb.v
 SRC_SPICE     := flash_adc8.cir
 HDL_INSTANCE  := flash_adc8_tb.dut
-SPICEBIND_DIR := $(shell spicebind-vpi-path)
+SPICEBIND_DIR := ../../spicebind
 
 OUT      := flash_adc8_tb.vvp
 
