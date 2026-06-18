@@ -1,0 +1,4 @@
+export SPICE_NETLIST=adder_mos.cir
+export HDL_INSTANCE=adder_tb.dut
+export VCC=3.3
+vvp -m ../../spicebind/spicebind_vpi.vpi tb.vvp
