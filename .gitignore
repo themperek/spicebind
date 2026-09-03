@@ -210,3 +210,6 @@ spicebind/*.vpi
 # Emacs tmp files
 \#*\#
 \.\#*
+
+*.vvp
+*.raw

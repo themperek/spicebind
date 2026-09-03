@@ -20,7 +20,7 @@ classifiers = [
 [project.optional-dependencies]
 dev = [
     "pytest",
-    "cocotb",
+    "cocotb>=2",
     "numpy",
     "matplotlib",
     "cocotbext-spi",

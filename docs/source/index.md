@@ -81,6 +81,7 @@ timing_synchronization
 :name: reference
 
 api
+configuration
 ```
 % release_notes
 % license

@@ -3,9 +3,24 @@ import pathlib
 
 os.environ.setdefault("COCOTB_RESOLVE_X", "ZEROS")
 import cocotb
+import cocotb.clock as cocotb_clock
+from cocotb.types import Logic
 from cocotb.triggers import Timer
+
+# cocotb 2.0 removed BaseClock, but cocotbext-spi 0.5.0 still imports it.
+if not hasattr(cocotb_clock, "BaseClock"):
+    class BaseClock:
+        def __init__(self, signal):
+            self.signal = signal
+
+    cocotb_clock.BaseClock = BaseClock
+
+# cocotb 2.x replaced Logic.integer with int(Logic).
+if not hasattr(Logic, "integer"):
+    Logic.integer = property(lambda value: int(value))
+
 from cocotbext.spi import SpiBus, SpiMaster, SpiConfig
-from cocotb.runner import get_runner
+from cocotb_tools.runner import get_runner
 import spicebind
 
 
@@ -15,12 +30,12 @@ async def run_test(dut):
     master = SpiMaster(bus, SpiConfig(sclk_freq=1e6))
 
     dut.vin.value = 1.0
-    await Timer(1, units="us")
+    await Timer(1, unit="us")
 
     # range 1V
     await master.write([0x00])
     await master.read()
-    await Timer(100, units="ns")
+    await Timer(100, unit="ns")
     await master.write([0x00])  # capture new code
     await master.read()
     await master.write([0x00])  # shift out updated code
@@ -32,7 +47,7 @@ async def run_test(dut):
     # range 2V
     await master.write([0x01])
     await master.read()
-    await Timer(100, units="ns")
+    await Timer(100, unit="ns")
     await master.write([0x01])
     await master.read()
     await master.write([0x01])
@@ -44,7 +59,7 @@ async def run_test(dut):
     # range 3.3V
     await master.write([0x02])
     await master.read()
-    await Timer(100, units="ns")
+    await Timer(100, unit="ns")
     await master.write([0x02])
     await master.read()
     await master.write([0x02])

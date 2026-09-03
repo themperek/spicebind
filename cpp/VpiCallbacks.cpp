@@ -11,6 +11,7 @@
 #include <thread>
 #include <chrono>
 #include <cmath>
+#include <cstdlib>
 
 // External global variables (defined in vpi_module.cpp)
 extern spice_vpi::TimeBarrier<unsigned long long> g_time_barrier;
@@ -270,8 +271,12 @@ auto vpi_end_of_sim_cb(p_cb_data cb_data_p) -> PLI_INT32 {
     g_time_barrier.shutdown();
 
     ngSpice_Command((char *)"bg_halt");
-    // ngSpice_Command((char *)"set filetype=ascii");
-    ngSpice_Command((char *)"write dump.raw");
+    // A full transient dump can be hundreds of megabytes for co-simulation.
+    // Keep it opt-in so ending a test does not block while writing dump.raw.
+    if (std::getenv("SPICE_DUMP_RAW") != nullptr) {
+        // ngSpice_Command((char *)"set filetype=ascii");
+        ngSpice_Command((char *)"write dump.raw");
+    }
 
     vpi_printf("End of simulation\n");
 

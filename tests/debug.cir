@@ -117,6 +117,6 @@ mp1  out in  vdd  vdd  p1  w=4u l=0.35u  AS=7p AD=7p PS=6u PD=6u
 +Ua1= 4.312e-9 Ub1= 6.65e-19  Uc1= 0
 +Kt1l=0
 
-.tran 1ns 1
+.tran 1ns 1m
 
 .end

@@ -1,6 +1,8 @@
 import cocotb
 from cocotb.triggers import Timer
-from cocotb.runner import get_runner
+
+from cocotb_tools.runner import get_runner
+
 import os
 from pathlib import Path
 import spicebind
@@ -21,37 +23,37 @@ async def run_debug(dut):
     dut.A2.value = 0
     dut.A1.value = 0
     dut.A0.value = 0
-    await Timer(0.1, units="ns")
+    await Timer(0.1, unit="ns")
 
     assert dut.Y0.value == 0
     assert dut.Y1.value == 0
     assert dut.Y2.value == 0
-    await Timer(2, units="ns")
+    await Timer(2, unit="ns")
 
     dut.A2.value = 1
-    await Timer(0.1, units="ns")
+    await Timer(0.1, unit="ns")
     dut.A0.value = 1
-    await Timer(0.1, units="ns")
+    await Timer(0.1, unit="ns")
     assert dut.Y0.value == 1
 
     dut.A1.value = 1
-    await Timer(0.1, units="ns")
-    await Timer(2, units="ns")
+    await Timer(0.1, unit="ns")
+    await Timer(2, unit="ns")
     dut.A2.value = 0
-    await Timer(0.1, units="ns")
+    await Timer(0.1, unit="ns")
 
     assert dut.Y1.value == 1
     assert dut.Y2.value == 1
 
     dut.A0.value = 0
-    await Timer(0.1, units="ns")
+    await Timer(0.1, unit="ns")
     assert dut.Y0.value == 0
 
-    await Timer(1, units="ns")
+    await Timer(1, unit="ns")
     assert dut.Y2.value == 0
 
     dut.A1.value = 0
-    await Timer(0.1, units="ns")
+    await Timer(0.1, unit="ns")
 
 
 def test_debug():
@@ -75,6 +77,7 @@ def test_debug():
             "SPICE_NETLIST": str(proj_path / "debug.cir"),
             "HDL_INSTANCE": "tb.debug",
             "VCC": "1.8",
+            "SPICE_DUMP_RAW": "1",
         },
     )
 
