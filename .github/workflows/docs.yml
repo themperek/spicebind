@@ -18,9 +18,8 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo apt-get install \
-          --yes --no-install-recommends \
-          doxygen ngspice iverilog ngspice-dev libngspice0-dev
+        sudo apt-get update
+        sudo apt-get install --yes --no-install-recommends doxygen ngspice iverilog ngspice-dev libngspice0-dev
     - name: Install Python packages
       run: |
         pip install -e ".[docs]"
