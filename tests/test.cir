@@ -94,6 +94,6 @@ r0 dac_in[0] dac_out 256
 
 
 * .tran 1ns 10us 0 0.1ns
-.tran 1ns 1
+.tran 1ns 1m
 
 .end

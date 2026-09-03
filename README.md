@@ -157,6 +157,7 @@ export HDL_INSTANCE=tb.adc,tb.inv
 - `SPICE_NETLIST`: Path to your SPICE netlist file
 - `HDL_INSTANCE`: Comma-separated list of HDL instance paths
 - `VCC`: Supply voltage for analog simulation
+- `SPICE_DUMP_RAW`: When set, write ngspice transient data to `dump.raw` at shutdown. Disabled by default because large co-simulation runs can produce very large files.
 - Additional options available in the documentation
 
 ## Documentation

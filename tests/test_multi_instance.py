@@ -1,6 +1,6 @@
 import cocotb
 from cocotb.triggers import Timer
-from cocotb.runner import get_runner
+from cocotb_tools.runner import get_runner
 import os
 from pathlib import Path
 import spicebind
@@ -12,35 +12,35 @@ async def run_multi_instance(dut):
     dut.A0.value = 0
     dut.A1.value = 0
 
-    await Timer(5, units="ns")
+    await Timer(5, unit="ns")
     assert dut.Y0.value == 1
     assert dut.Y1.value == 1
 
     # A0 -> 1
-    await Timer(10, units="ns")
+    await Timer(10, unit="ns")
     dut.A0.value = 1
 
-    await Timer(2, units="ns")
+    await Timer(2, unit="ns")
     assert dut.Y0.value == 1
     assert dut.Y1.value == 1
 
-    await Timer(3, units="ns")
+    await Timer(3, unit="ns")
     assert dut.Y0.value == "x"
     assert dut.Y1.value == 1
 
-    await Timer(5, units="ns")
+    await Timer(5, unit="ns")
     assert dut.Y0.value == 0
     assert dut.Y1.value == 1
 
     # A1 -> 1
-    await Timer(10, units="ns")
+    await Timer(10, unit="ns")
     dut.A1.value = 1
 
-    await Timer(10, units="ns")
+    await Timer(10, unit="ns")
     dut.A0.value = 0
-    await Timer(10, units="ns")
+    await Timer(10, unit="ns")
     dut.A1.value = 0
-    await Timer(10, units="ns")
+    await Timer(10, unit="ns")
 
 
 def test_multi_instance():

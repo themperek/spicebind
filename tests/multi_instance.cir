@@ -13,6 +13,6 @@ Binv1 tb.inv1.Y 0 V = VCC-v(tb.inv1.A)
 * 10ns ries and fall time
 .model ie_input slew(rise_slope=0.18e9 fall_slope=0.18e9)
 
-.tran 1ns 1
+.tran 1ns 1m
 
 .end

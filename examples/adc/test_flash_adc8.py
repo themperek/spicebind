@@ -9,7 +9,10 @@ import os
 
 import cocotb
 from cocotb.triggers import Timer
-from cocotb.runner import get_runner
+
+from cocotb_tools.runner import get_runner
+import spicebind
+
 import spicebind
 
 import numpy as np
@@ -131,7 +134,7 @@ def calc_inl_dnl(codes: np.ndarray, vref: float = VREF):
 async def run_adc_characterisation(dut):
     """Drive coherent sine + ramp, analyse dynamic specs and INL/DNL."""
 
-    await Timer(10, units="ns")
+    await Timer(10, unit="ns")
 
     # ------------------------------------------------------------------ FFT run
     codes_fft = np.empty(N_SAMPLES, dtype=np.int16)
@@ -139,8 +142,8 @@ async def run_adc_characterisation(dut):
         t = n / FS
         vin = 0.5 * VREF * (1 + math.sin(2 * math.pi * F_IN * t))
         dut.vin.value = vin
-        await Timer(FS_NS, units="ns")
-        codes_fft[n] = dut.code.value.integer
+        await Timer(FS_NS, unit="ns")
+        codes_fft[n] = dut.code.value.to_unsigned()
 
     dyn = calc_dynamic_metrics(codes_fft)
     for k in ("SINAD", "ENOB", "SNR", "THD", "SFDR"):
@@ -160,15 +163,15 @@ async def run_adc_characterisation(dut):
     dut._log.info(f"Spectrum saved to {spec_pdf.resolve()}")
 
     dut.vin.value = 0.0
-    await Timer(10, units="us")
+    await Timer(10, unit="us")
 
     # ------------------------------------------------------------- ramp run
     codes_ramp = np.empty(RAMP_SAMPLES, dtype=np.int16)
     for n in range(RAMP_SAMPLES):
         vin = (n / (RAMP_SAMPLES - 1)) * VREF
         dut.vin.value = vin
-        await Timer(FS_NS, units="ns")
-        codes_ramp[n] = dut.code.value.integer
+        await Timer(FS_NS, unit="ns")
+        codes_ramp[n] = dut.code.value.to_unsigned()
 
     inl, dnl = calc_inl_dnl(codes_ramp)
     dut._log.info(

@@ -1,6 +1,8 @@
 import cocotb
 from cocotb.triggers import Timer
-from cocotb.runner import get_runner
+
+from cocotb_tools.runner import get_runner
+
 import os
 from pathlib import Path
 import spicebind
@@ -9,7 +11,7 @@ import pytest
 
 @cocotb.test()
 async def run_error_test(dut):
-    await Timer(10, units="ns")
+    await Timer(10, unit="ns")
     # assert False, "Error"
 
 
