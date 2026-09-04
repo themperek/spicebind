@@ -19,7 +19,9 @@
 % - no distractions
 
 ```{include}  ../../README.md
+:relative-images:
 ```
+
 
 ```{toctree}
 :caption: Tutorials
@@ -28,6 +30,7 @@
 
 adc
 spi_adc
+serv_dco_calibration
 ```
 
 
