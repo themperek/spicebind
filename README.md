@@ -13,9 +13,8 @@ This is an HDL-first mixed-signal flow. It is intended for designs where most of
 
 > SpiceBind is currently tested with Icarus Verilog and ngspice. The VPI-based architecture is simulator-independent, but other VPI-capable simulators have not yet been qualified.
 
-<p align="center">
-  <img src="docs/assets/spi_adc_surfer.png" alt="SPI ADC mixed-signal simulation in Surfer" width="900">
-</p>
+![SPI ADC mixed-signal simulation in Surfer](docs/assets/spi_adc_surfer.png)
+
 
 The `spi_adc` example above crosses the HDL/SPICE boundary in both directions. `vin` is passed from HDL into ngspice, the ADC code is calculated by the SPICE model, and HDL logic shifts the result out over SPI.
 
@@ -197,6 +196,7 @@ The examples use the cocotb runner or small shell scripts to set this up automat
 | [`examples/adc`](examples/adc) | 8-bit ADC with Verilog and cocotb testbenches |
 | [`examples/adder_mos`](examples/adder_mos) | Four-bit CMOS adder derived from the ngspice MOS adder example |
 | [`examples/spi_adc`](examples/spi_adc) | HDL SPI interface connected to an ADC implemented in SPICE |
+| [`examples/serv_dco_calibration`](examples/serv_dco_calibration) | SERV firmware calibrates a transistor-level DCO through SpiceBind |
 
 ## How this differs from other open-source flows
 
@@ -239,3 +239,9 @@ Bug reports, examples, and pull requests are welcome. Use the [GitHub issue trac
 ## License
 
 SpiceBind is distributed under the BSD 3-Clause License. See [LICENSE](LICENSE).
+
+## Development note
+
+SpiceBind is developed with assistance from generative AI tools.
+All generated or modified code is reviewed, tested, and maintained
+like any other contribution.

@@ -1,4 +1,5 @@
 ```{include} ../../examples/adc/README.md
+:relative-images:
 ```
 
 ```{literalinclude} ../../examples/adc/flash_adc8.cir

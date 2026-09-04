@@ -39,6 +39,7 @@ docs = [
     "sphinx-autobuild",
     "sphinx-codeautolink",
     "myst-parser",
+    "sphinxcontrib-mermaid",
 ]
 
 [project.scripts]

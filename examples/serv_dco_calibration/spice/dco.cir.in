@@ -1,0 +1,62 @@
+* 5-stage ring DCO for SpiceBind.
+* Higher trim disconnects binary-weighted load capacitors -> higher frequency.
+* Python str.format() fills VDD, TEMP, MODELS, CUNIT, TRAN_STEP, TRAN_STOP.
+* Doubled braces are ngspice expressions (see tests/test.cir).
+
+.param VDD={VDD}
+.param CUNIT={CUNIT}
+.temp {TEMP}
+.include {MODELS}
+
+.subckt inv a y vdd
+M1 y a vdd vdd pdco w=4u l=0.35u
+M2 y a 0   0   ndco w=2u l=0.35u
+.ends inv
+
+.subckt nand2 a b y vdd
+Mp1 y a vdd vdd pdco w=4u l=0.35u
+Mp2 y b vdd vdd pdco w=4u l=0.35u
+Mn1 mid a 0   0   ndco w=2u l=0.35u
+Mn2 y   b mid 0   ndco w=2u l=0.35u
+.ends nand2
+
+Vdd vdd 0 {{VDD}}
+
+Venable enable 0 0 external
+Vtrim[0] trim[0] 0 0 external
+Vtrim[1] trim[1] 0 0 external
+Vtrim[2] trim[2] 0 0 external
+Vtrim[3] trim[3] 0 0 external
+
+* Invert trim: trim=1 opens the cap switch (less C, faster).
+Xit0 trim[0] ntrim0 vdd inv
+Xit1 trim[1] ntrim1 vdd inv
+Xit2 trim[2] ntrim2 vdd inv
+Xit3 trim[3] ntrim3 vdd inv
+
+* Ring. enable=0 holds n0 high through the NAND and stops oscillation.
+Xen enable n4 n0 vdd nand2
+X1 n0 n1 vdd inv
+X2 n1 n2 vdd inv
+X3 n2 n3 vdd inv
+X4 n3 n4 vdd inv
+
+Cfix n1 0 {{CUNIT}}
+C0 n1 m0 {{CUNIT}}
+C1 n1 m1 {{CUNIT*2}}
+C2 n1 m2 {{CUNIT*4}}
+C3 n1 m3 {{CUNIT*8}}
+Ms0 m0 ntrim0 0 0 ndco w=8u l=0.35u
+Ms1 m1 ntrim1 0 0 ndco w=8u l=0.35u
+Ms2 m2 ntrim2 0 0 ndco w=8u l=0.35u
+Ms3 m3 ntrim3 0 0 ndco w=8u l=0.35u
+
+Xb1 n2 oscb vdd inv
+Xb2 oscb osc vdd inv
+
+* Kick the ring out of metastability.
+.ic v(n0)=0 v(n2)={{VDD}}
+
+.option reltol=1e-3 noinit
+.tran {TRAN_STEP} {TRAN_STOP} uic
+.end

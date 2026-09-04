@@ -7,6 +7,7 @@
 
 import datetime
 import os
+import shutil
 import subprocess
 import sys
 from sphinx.highlighting import lexers
@@ -43,6 +44,7 @@ extensions = [
     "sphinx_design",
     "sphinx_codeautolink",
     "myst_parser",
+    "sphinxcontrib.mermaid",
 ]
 
 # https://myst-parser.readthedocs.io/en/latest/syntax/optional.html
@@ -50,6 +52,9 @@ myst_enable_extensions = [
     "colon_fence",
     "deflist",
 ]
+
+# GitHub-style ```mermaid fences plus the {mermaid} directive.
+myst_fence_as_directive = ["mermaid"]
 
 # https://myst-parser.readthedocs.io/en/latest/syntax/optional.html#auto-generated-header-anchors
 myst_heading_anchors = 3
@@ -215,6 +220,22 @@ html_theme_options = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
 # html_css_files = ["spicebind.css"]
+
+def _html_extra_for_readme_images():
+    """Copy docs/assets so included README images resolve as docs/assets/... in HTML."""
+    extra = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "_html_extra"))
+    src = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "assets"))
+    dst = os.path.join(extra, "docs", "assets")
+    os.makedirs(dst, exist_ok=True)
+    if os.path.isdir(src):
+        for name in os.listdir(src):
+            if name.lower().endswith((".png", ".jpg", ".jpeg", ".svg", ".gif")):
+                shutil.copy2(os.path.join(src, name), os.path.join(dst, name))
+    return extra
+
+
+html_extra_path = [_html_extra_for_readme_images()]
+
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.

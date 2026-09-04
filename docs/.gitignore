@@ -1,3 +1,5 @@
 .venv
 source/master-notes.rst
 source/doxygen
+_html_extra
+

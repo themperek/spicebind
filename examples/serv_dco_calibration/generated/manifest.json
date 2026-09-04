@@ -1,0 +1,12 @@
+{
+  "generated": true,
+  "do_not_edit": true,
+  "serv_repository": "https://github.com/olofk/serv",
+  "serv_commit": "f200eb2ed7b69ac1c6b8eddd47654522aeee5ce8",
+  "iic_osic_tools_image": "docker.io/hpretl/iic-osic-tools:2026.07",
+  "march": "rv32i",
+  "mabi": "ilp32",
+  "serv_width": 1,
+  "firmware_hex_sha256": "558539368b670bd26729458500982b50de0979b6aafb5b7512208d5d5ea2a3a2",
+  "serv_rtl_sha256": "ccd5a727395498d65d8456556b151a7db3f81cb6becece40e7c33b1043e5c94c"
+}
