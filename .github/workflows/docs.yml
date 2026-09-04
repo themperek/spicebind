@@ -31,7 +31,7 @@ jobs:
 
     - name: Upload static files as artifact
       id: deployment
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-pages-artifact@v7
       with:
         path: .nox/.cache/docs_out
 
