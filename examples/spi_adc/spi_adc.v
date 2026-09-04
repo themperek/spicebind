@@ -30,7 +30,7 @@ module spi_adc(
 
     // SPI logic
     reg [7:0] mosi_shift = 0;
-    reg [7:0] miso_shift = 0;
+    reg [7:0] miso_shift;
     reg [3:0] bit_cnt = 0;
 
     always @(posedge sclk or posedge cs) begin

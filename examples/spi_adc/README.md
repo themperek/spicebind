@@ -13,3 +13,8 @@ Execute the cocotb test:
 ```bash
 python test_spi_adc.py
 ```
+
+In order to save weforms in `sim_build/spi_adc.fst`
+```bash
+WAVES=1 python test_spi_adc.py
+```

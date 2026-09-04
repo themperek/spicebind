@@ -29,6 +29,38 @@ async def run_test(dut):
     bus = SpiBus.from_entity(dut)
     master = SpiMaster(bus, SpiConfig(sclk_freq=1e6))
 
+    async def get_code():
+        await master.write([0x00])  # trigger sampling
+        await master.write([0x00])  # ransfer code
+        code = (await master.read())[1]
+        return code
+
+    dut.vin.value = 1.0
+    await Timer(0.1, unit="us")
+    code = await get_code()
+    dut._log.info(f"code={code}")
+    assert code == 255
+    
+    dut.vin.value = 0.75
+    await Timer(0.1, unit="us")
+    code = await get_code()
+    dut._log.info(f"code={code}")
+    assert abs(code - 191) < 2
+
+    dut.vin.value = 0.25
+    await Timer(0.1, unit="us")
+    code = await get_code()
+    dut._log.info(f"code={code}")
+    assert abs(code - 63) < 2
+
+    dut.vin.value = 0.0
+    await Timer(0.1, unit="us")
+    code = await get_code()
+    dut._log.info(f"code={code}")
+    assert code == 0
+    
+    await Timer(1, unit="us") 
+
     dut.vin.value = 1.0
     await Timer(1, unit="us")
 
@@ -36,10 +68,7 @@ async def run_test(dut):
     await master.write([0x00])
     await master.read()
     await Timer(100, unit="ns")
-    await master.write([0x00])  # capture new code
-    await master.read()
-    await master.write([0x00])  # shift out updated code
-    code = (await master.read())[0]
+    code = await get_code()
     dut._log.info(f"range=1V code={code}")
     dut._log.info(f"range bits {int(dut.range.value)}")
     assert code == 255
@@ -48,10 +77,7 @@ async def run_test(dut):
     await master.write([0x01])
     await master.read()
     await Timer(100, unit="ns")
-    await master.write([0x01])
-    await master.read()
-    await master.write([0x01])
-    code = (await master.read())[0]
+    code = await get_code()
     dut._log.info(f"range=2V code={code}")
     dut._log.info(f"range bits {int(dut.range.value)}")
     assert 125 <= code <= 130
@@ -60,10 +86,7 @@ async def run_test(dut):
     await master.write([0x02])
     await master.read()
     await Timer(100, unit="ns")
-    await master.write([0x02])
-    await master.read()
-    await master.write([0x02])
-    code = (await master.read())[0]
+    code = await get_code()
     dut._log.info(f"range=3.3V code={code}")
     dut._log.info(f"range bits {int(dut.range.value)}")
     assert 75 <= code <= 80
