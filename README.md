@@ -57,39 +57,46 @@ This creates a co-simulation where analog and digital domains remain synchronize
 
 ## Installation
 
+```bash
+pip install spicebind
+```
+
+This builds the VPI plugin and installs the `spicebind-vpi-path` command.
+
+If ngspice is not on `PATH`, point CMake at its install prefix (`include/` and `lib/`):
+
+```bash
+NGSPICE_ROOT=/path/to/ngspice pip install spicebind
+```
+
 ### Prerequisites
 
-- C++ compiler with C++17 support
+- Python 3.10+
+- C++ compiler with C++17 support (needed to build the VPI plugin)
 - ngspice library and development headers
 - Verilog VPI compatible simulator (tested with [Icarus Verilog](https://github.com/steveicarus/iverilog))
-- Python 3.6+ (optional)
 
-### Build Instructions
+### From source
 
-Clone the repository:
 ```bash
 git clone https://github.com/themperek/spicebind.git
 cd spicebind
-```
-
-**Option 1: Standalone VPI Module**
-```bash
-mkdir build && cd build
-cmake ..
-cmake --build .
-cmake --build . --target debug  # Optional: builds debug version
-```
-
-**Option 2: Python Integration**
-```bash
 pip install -e .
+```
+
+Standalone VPI build (no Python package):
+
+```bash
+cmake -S . -B build  # optional: -DNGSPICE_ROOT=/path/to/ngspice
+cmake --build build
+cmake --build build --target debug  # Optional: debug VPI
 ```
 
 ## Quick Start
 
 ### 1. Define Your Analog Block
 
-Create a Verilog module with matching SPICE netlist with external voltage sources and ouptut ports.
+Create a Verilog module with matching SPICE netlist with external voltage sources and output ports.
 
 **Verilog module** (e.g., `adc.v`):
 ```verilog
@@ -166,10 +173,14 @@ For detailed documentation, examples, and API reference, visit: [https://themper
 
 ## Contributing
 
-We welcome contributions! Please see our contributing guidelines and feel free to:
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) and feel free to:
 - Report bugs and request features via GitHub Issues
 - Submit pull requests for improvements
 - Share your use cases and examples
+
+## License
+
+SpiceBind is licensed under the [BSD 3-Clause License](LICENSE).
 
 ## Roadmap
 

@@ -8,10 +8,6 @@ using the VPI interface.
 try:
     from importlib.metadata import version
     __version__ = version("spicebind")
-except ImportError:
-    # Fallback for Python < 3.8 (though you require 3.8+)
-    from importlib_metadata import version
-    __version__ = version("spicebind")
 except Exception:
     # Fallback for development environments where package isn't installed
     __version__ = "dev"
