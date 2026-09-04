@@ -8,12 +8,13 @@ version = "0.0.2"
 description = "SpiceBind is a bridge that embeds the ngspice analog engine inside VPI-capable Verilog simulator for mixed-signal co-simulation."
 authors = [{name = "Tomasz Hemperek"}]
 readme = "README.md"
-requires-python = ">=3.8"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
 ]
 
@@ -54,8 +55,7 @@ cmake.version = ">=3.15"
 ninja.version = ">=1.10"
 
 [tool.scikit-build.cmake.define]
-# Pass any CMake defines if needed
-# CMAKE_BUILD_TYPE = "Release"
+NGSPICE_ROOT = {env = "NGSPICE_ROOT"}
 
 [tool.black]
 line-length = 120
