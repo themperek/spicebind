@@ -26,6 +26,6 @@ Bref ref 0 V = (v(range1) > 0.5 ? 3.3 : (v(range0) > 0.5 ? 2.0 : 1.0))
 
 Xadc vin ref vcc code[7] code[6] code[5] code[4] code[3] code[2] code[1] code[0] adc_ideal_8bit
 
-.tran 1ns 100us
+.tran 1ns 1m
 
 .end
