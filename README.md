@@ -44,15 +44,15 @@ SpiceBind takes the opposite approach: keep the HDL simulator as the top-level s
 ## Architecture
 
 ```mermaid
-flowchart TB
+flowchart LR
 
     TB["Testbench / cocotb"]
 
     subgraph HDL["HDL simulator"]
-        direction TB
+        direction LR
 
         subgraph DUT["Design under test"]
-            direction TB
+            direction LR
 
             RTL["Digital RTL"]
 
@@ -67,7 +67,7 @@ flowchart TB
         end
     end
 
-    SB["SpiceBind<br/><br/>time synchronization<br/>D/A + A/D"]
+    SB["SpiceBind<br/>time synchronization<br/>D/A + A/D"]
 
     subgraph NG["ngspice"]
         direction LR
