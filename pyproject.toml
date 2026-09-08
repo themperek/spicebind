@@ -54,6 +54,8 @@ Repository = "https://github.com/themperek/spicebind"
 cmake.version = ">=3.15"
 # Use ninja generator for faster builds
 ninja.version = ">=1.10"
+# GitHub is the home for these; pip only needs C++/CMake/Python to build the VPI.
+sdist.exclude = ["tests/", "docs/", "examples/", ".github/"]
 
 [tool.scikit-build.cmake.define]
 NGSPICE_ROOT = {env = "NGSPICE_ROOT"}
