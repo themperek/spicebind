@@ -7,6 +7,7 @@
 
 """Setup file for nox (https://nox.thea.codes/en/stable/tutorial.html)."""
 
+import os
 
 import nox
 
@@ -29,12 +30,24 @@ def get_dev_dependencies():
     return pyproject["project"]["optional-dependencies"]["dev"]
 
 
+def _install_dev(session: nox.Session) -> None:
+    session.install(".", *get_dev_dependencies())
+
+
+def _pytest(session: nox.Session, *paths: str) -> None:
+    # session.env is an overlay: setdefault("SIM", "icarus") would always
+    # pin Icarus and hide SIM=verilator from the outer environment (CI).
+    sim = os.environ.get("SIM", "icarus")
+    session.env["SIM"] = sim
+    session.log(f"SIM={sim}")
+    session.run("pytest", *paths, *session.posargs)
+
+
 @nox.session
 def test(session: nox.Session) -> None:
-    """Run the test suite with pytest."""
-    dev_deps = get_dev_dependencies()
-    session.install(".", *dev_deps)
-    session.run("pytest", *session.posargs)
+    """Run tests and examples. Simulator from $SIM (icarus or verilator)."""
+    _install_dev(session)
+    _pytest(session)
 
 
 @nox.session
@@ -52,12 +65,8 @@ def test_sdist(session: nox.Session) -> None:
     if not sdist_files:
         session.error("No sdist file found")
     
-    # Install from sdist along with dev dependencies
-    dev_deps = get_dev_dependencies()
-    session.install(sdist_files[0], *dev_deps)
-    
-    # Run tests to ensure everything works
-    session.run("pytest", *session.posargs)
+    session.install(sdist_files[0], *get_dev_dependencies())
+    _pytest(session, "tests")
 
 
 @nox.session

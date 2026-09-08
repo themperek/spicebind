@@ -307,6 +307,15 @@ matplotlib is already a SpiceBind `[dev]` extra. It is not required to run the
 tests. The script writes `figures/serv_dco_counts.png` and
 `figures/serv_dco_trims.png` (the images above) plus copies under `results/`.
 
+Dumping the raw file is opt-in. Default pytest does not write it.
+
+```bash
+SPICE_DUMP_RAW=1 pytest -v examples/serv_dco_calibration/test_serv_dco.py -k test_serv_dco
+python3 examples/serv_dco_calibration/tools/plot_osc.py
+```
+
+`dump.raw` lands in `sim_build/serv_<corner>/` (gitignored).
+
 ## Limitations
 
 - MOS models are generic BSIM3 files in the example. Voltage and temperature

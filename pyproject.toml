@@ -60,3 +60,6 @@ NGSPICE_ROOT = {env = "NGSPICE_ROOT"}
 
 [tool.black]
 line-length = 120
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "examples"]

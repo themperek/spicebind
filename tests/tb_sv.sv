@@ -15,7 +15,7 @@ module tb_sv #(
     parameter bit EXPECT_FAILURE = 0
 );
     real adc_in;
-    wire real dac_out;
+    real dac_out;
     wire [7:0] adc_out;
     reg [7:0] dac_in;
     reg pwm_in;
@@ -156,7 +156,9 @@ module tb_sv #(
             pwm_in = 0;
             #50;
         end
+`ifndef VERILATOR
         check_pwm(1'bx, "50 percent duty cycle");
+`endif
 
         for (i = 0; i < 100; i = i + 1) begin
             pwm_in = 1;

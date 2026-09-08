@@ -46,22 +46,28 @@ async def run_oscillator_enable_and_edges(dut):
 
 def test_dco_smoke():
     corner = CORNERS["nominal"]
-    build_dir = (EXAMPLE / "sim_build" / "dco_smoke").resolve()
+    args = spicebind.cocotb_vpi_args()
+    sim = args["sim"]
+    build_dir = (EXAMPLE / "sim_build" / sim / "dco_smoke").resolve()
     build_dir.mkdir(parents=True, exist_ok=True)
     cir_path = build_dir / "dco.cir"
     render_netlist(cir_path, corner, tran_step="0.1ns", tran_stop="20us")
 
-    runner = get_runner(os.getenv("SIM", "icarus"))
+    runner = get_runner(sim)
     runner.build(
         sources=[EXAMPLE / "rtl" / "tb_dco_smoke.v", EXAMPLE / "rtl" / "dco_core.v"],
         hdl_toplevel="tb_dco_smoke",
         always=True,
         build_dir=build_dir,
+        build_args=args["build_args"],
+        timescale=("1ns", "1ps"),
+        waves=args["waves"],
     )
     runner.test(
         hdl_toplevel="tb_dco_smoke",
         test_module="test_dco_smoke",
-        test_args=["-M", spicebind.get_lib_dir(), "-m", "spicebind_vpi"],
+        test_args=args["test_args"],
+        plusargs=args["plusargs"],
         extra_env={
             "SPICE_NETLIST": str(cir_path),
             "HDL_INSTANCE": "tb_dco_smoke.dco",

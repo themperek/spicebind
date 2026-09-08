@@ -9,12 +9,17 @@ Install the required Python packages:
 pip install pytest cocotb cocotbext-spi
 ```
 
-Execute the cocotb test:
+Execute the cocotb test (Icarus Verilog by default):
 ```bash
 python test_spi_adc.py
 ```
 
-In order to save weforms in `sim_build/spi_adc.fst`
+Verilator 5:
+```bash
+SIM=verilator python test_spi_adc.py
+```
+
+Build products go under `sim_build/<simulator>/`.
 ```bash
 WAVES=1 python test_spi_adc.py
 ```

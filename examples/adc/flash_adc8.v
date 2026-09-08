@@ -7,13 +7,16 @@
 // Code is straight binary (000…255)
 //
 // Compile with a simulator that supports IEEE Verilog-2001 real data types
-
+//
+// adc_core is the empty analog shell (SpiceBind) or the VERILOG_MODEL body.
+// A nested instance is required for Verilator: iterating vpiReg on the
+// --top-module substitutes TOP wrapper ports, which cocotb does not read.
 
 `timescale 1ns/1ps
 
-module flash_adc8(
-    input  real vin,          // analog input
-    output reg [7:0] code     // digital output
+module adc_core(
+    input  real vin,
+    output reg [7:0] code
 );
 
     `ifdef VERILOG_MODEL
@@ -48,6 +51,19 @@ module flash_adc8(
             end
         end
     `endif
+
+endmodule
+
+module flash_adc8(
+    input  real vin,
+    output [7:0] code
+);
+
+    adc_core adc_inst(
+        .vin(vin),
+        .code(code)
+    );
+
 
     initial begin
         $dumpfile("flash_adc8.vcd");

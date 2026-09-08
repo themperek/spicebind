@@ -104,8 +104,14 @@ int ng_printf(char *output, int ident, void *userdata) {
     return 0;
 }
 
-int ng_exit(int status, bool immediate, bool quit, int id, void *data) { 
-    return 0; 
+int ng_exit(int status, bool immediate, bool quit, int id, void *data) {
+    (void)status;
+    (void)immediate;
+    (void)quit;
+    (void)id;
+    (void)data;
+    g_time_barrier.shutdown();
+    return 0;
 }
 
 } // namespace spice_vpi 

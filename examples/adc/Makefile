@@ -2,7 +2,7 @@
 
 SRC           := flash_adc8.v flash_adc8_tb.v
 SRC_SPICE     := flash_adc8.cir
-HDL_INSTANCE  := flash_adc8_tb.dut
+HDL_INSTANCE  := flash_adc8_tb.dut.adc_inst
 SPICEBIND_DIR := ../../spicebind
 
 OUT      := flash_adc8_tb.vvp

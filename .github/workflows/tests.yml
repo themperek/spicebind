@@ -5,10 +5,12 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.10", "3.13"]
+        sim: [icarus, verilator]
     steps:
     - uses: actions/checkout@v7
     - name: Set up Python ${{ matrix.python-version }}
@@ -18,10 +20,26 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y ngspice iverilog ngspice-dev libngspice0-dev
+        sudo apt-get install -y ngspice ngspice-dev libngspice0-dev
+    - name: Install Icarus
+      if: matrix.sim == 'icarus'
+      run: |
+        sudo apt-get install -y iverilog
+    - name: Install Verilator
+      if: matrix.sim == 'verilator'
+      run: |
+        sudo apt-get install -y --no-install-recommends help2man make g++ perl python3 autoconf flex bison libfl2 libfl-dev zlib1g zlib1g-dev
+        git clone --depth 1 https://github.com/verilator/verilator.git
+        cd verilator
+        autoconf
+        ./configure
+        make -j $(nproc)
+        sudo make install
     - name: Install nox
       run: |
         pip install nox
     - name: Run tests
+      env:
+        SIM: ${{ matrix.sim }}
       run: |
         nox -s test
