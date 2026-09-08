@@ -28,12 +28,13 @@ async def run_adc_test(dut):
     await ReadWrite()
     assert dut.adc_out.value == 0
 
-    # Bits arrive at 2, 4, … 16 ns. Sample at 1, 3, … 19 ns so Icarus (put
-    # after #delay) and Verilator (put in ReadWriteSynch, possibly flushed by
-    # the concurrent DAC task) see the same settled code.
+    # Bits arrive at 2, 4, … 16 ns. Sample at 1.5, 3.5, … ns (between 1 ns
+    # spice ticks). Checking on an integer ns races Icarus AfterDelay vs
+    # cocotb ReadWrite and the concurrent DAC task, so this flake is
+    # seed-dependent (got 0, expected 1 at 63.00 ns).
     expected = [0, 1, 3, 7, 15, 31, 63, 127, 255, 255]
     dut.adc_in.value = 1.0
-    await Timer(1, unit="ns")
+    await Timer(1.5, unit="ns")
     await ReadWrite()
     for i, exp in enumerate(expected):
         got = int(dut.adc_out.value)
@@ -54,7 +55,7 @@ async def run_adc_test(dut):
         0b00000000,
     ]
     dut.adc_in.value = 0.0
-    await Timer(1, unit="ns")
+    await Timer(1.5, unit="ns")
     await ReadWrite()
     for i, exp in enumerate(expected):
         got = int(dut.adc_out.value)
