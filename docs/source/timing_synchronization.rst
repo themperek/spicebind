@@ -173,11 +173,11 @@ The ``TimeBarrier`` class provides several synchronization methods:
 - Signals when NGSPICE needs to redo a simulation step
 - Used when VPI changes require NGSPICE to backtrack in time
 
-``set_next_spice_step_time(time)`` / ``get_next_spice_step_time()``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Next spice step time
+^^^^^^^^^^^^^^^^^^^^
 
-- Manages the next scheduled NGSPICE timestep
-- Ensures VPI callbacks are scheduled at the correct times
+``set_next_spice_step_time`` and ``get_next_spice_step_time`` store the next
+scheduled NGSPICE timestep so VPI callbacks run at the matching HDL time.
 
 Timing Diagram
 --------------

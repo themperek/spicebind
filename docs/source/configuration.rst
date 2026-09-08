@@ -22,3 +22,11 @@ To enable the raw dump:
 .. code-block:: console
 
    export SPICE_DUMP_RAW=1
+
+HDL simulator
+-------------
+
+The test suite and examples select the HDL simulator with ``SIM``. The
+default is ``icarus``. Set ``SIM=verilator`` for Verilator 5 (needs
+``--timing`` and ``--vpi``). This variable is read by the Python runners,
+not by the VPI plugin.

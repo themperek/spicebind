@@ -1,5 +1,7 @@
 (index)=
 
+# SpiceBind
+
 % This documentation tries to follow https://diataxis.fr/ (Daniele Procida)
 % Other media about the same topic:
 % - https://ep2018.europython.eu/media/conference/slides/get-your-documentation-right.pdf
@@ -50,6 +52,15 @@ serv_dco_calibration
 
 timing_synchronization
 ```
+
+```{toctree}
+:caption: Talks
+:hidden: true
+:maxdepth: 1
+
+orconf_2026
+```
+
 
 % How-To Guides - guides that take the reader through the steps required to solve a common problem
 % (Example: recipe; problem-oriented)

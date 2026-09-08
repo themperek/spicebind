@@ -13,7 +13,7 @@ Install dependencies:
 pip install pytest cocotb numpy matplotlib
 ```
 
-Run test (Icarus Verilog by default):
+Run test. Icarus Verilog is the default; Verilator is also supported:
 ```
 python test_flash_adc8.py
 ```

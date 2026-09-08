@@ -1,15 +1,8 @@
 API
 ===
 
-.. .. doxygenfile:: AnalogDigitalInterface.cpp
-.. doxygenfile:: AnalogDigitalInterface.h
-.. .. doxygenfile:: Debug.h
-.. .. doxygenfile:: NgSpiceCallbacks.cpp
-.. doxygenfile:: NgSpiceCallbacks.h
-.. .. doxygenfile:: Config.cpp
-.. doxygenfile:: Config.h
-.. doxygenfile:: TimeBarrier.h
-.. .. doxygenfile:: VpiCallbacks.cpp
-.. doxygenfile:: VpiCallbacks.h
-.. .. doxygenfile:: vpi_module.cpp
-.. .. doxygenfile:: vpi_user.h
+C++ types and callbacks in the ``spice_vpi`` namespace. Source is under ``cpp/``.
+
+.. doxygennamespace:: spice_vpi
+   :members:
+   :undoc-members:

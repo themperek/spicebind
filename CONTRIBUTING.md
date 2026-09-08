@@ -4,7 +4,7 @@ Thanks for helping with SpiceBind.
 
 ## Setup
 
-You need a C++17 compiler, ngspice (library and headers), a VPI-capable Verilog simulator (Icarus Verilog is what CI uses), and Python 3.10+.
+You need a C++17 compiler, ngspice (library and headers), a VPI-capable Verilog simulator, and Python 3.10+. The test suite and CI cover **Icarus Verilog** (default) and **Verilator** 5.
 
 ```bash
 pip install -e ".[dev]"
@@ -22,11 +22,11 @@ Rebuild the VPI after C++ changes.
 ## Tests
 
 ```bash
-nox -s test
+nox -s test                 # Icarus Verilog (default)
 SIM=verilator nox -s test
 ```
 
-CI runs that session on Python 3.10 and 3.13 with Icarus and Verilator.
+CI runs that session on Python 3.10 and 3.13 with Icarus and Verilator. Verilator needs a recent 5.x build with `--timing` and `--vpi`; CI compiles it from git.
 
 ## Pull requests
 

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="600"
+   height="330"
+   viewBox="0 0 600 330"
+   version="1.1"
+   id="svg33"
+   sodipodi:docname="analog_quasi_continuous.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs33" />
+  <sodipodi:namedview
+     id="namedview33"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.83281465"
+     inkscape:cx="238.94873"
+     inkscape:cy="176.50986"
+     inkscape:window-width="1732"
+     inkscape:window-height="891"
+     inkscape:window-x="0"
+     inkscape:window-y="62"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg33" />
+  <!-- plot frame -->
+  <!-- axes -->
+  <line
+     x1="39.920898"
+     y1="320.16895"
+     x2="551.9209"
+     y2="320.16895"
+     stroke="#aab3ba"
+     stroke-width="2"
+     id="line2" />
+  <polygon
+     points="603,481 620,472 603,463 "
+     fill="#aab3ba"
+     id="polygon2"
+     transform="translate(-68.079102,-151.83105)" />
+  <text
+     x="559.9209"
+     y="327.16895"
+     font-family="Arial, Helvetica, sans-serif"
+     font-size="18px"
+     fill="#626970"
+     id="text3">time</text>
+  <line
+     x1="39.920898"
+     y1="314.16895"
+     x2="39.920898"
+     y2="26.168945"
+     stroke="#aab3ba"
+     stroke-width="2"
+     id="line3" />
+  <polygon
+     points="117,195 108,178 99,195 "
+     fill="#aab3ba"
+     id="polygon3"
+     transform="translate(-68.079102,-151.83105)" />
+  <text
+     x="5.3242617"
+     y="60.579781"
+     font-family="Arial, Helvetica, sans-serif"
+     font-size="18px"
+     fill="#626970"
+     id="text4">V / I</text>
+  <!-- waveform -->
+  <path
+     d="m 39.920898,263.16895 c 37,-5 63.000002,-18 90.000002,-44 33,-31 54,-79 88,-115 28,-29.000005 53,-37.000005 78,-22.000005 33,20.000005 52,77.000005 86,117.000005 30,36 64,42 94,3 26,-34 46,-80 76,-108.000005"
+     fill="none"
+     stroke="#d1772a"
+     stroke-width="6"
+     id="path4" />
+  <!-- sample points: sparse where smooth, dense where curve changes quickly -->
+  <g
+     fill="#d1772a"
+     id="g26"
+     transform="translate(-68.079102,-151.83105)">
+    <circle
+       cx="108"
+       cy="415"
+       r="5"
+       id="circle4" />
+    <circle
+       cx="151"
+       cy="407"
+       r="5"
+       id="circle5" />
+    <circle
+       cx="191"
+       cy="377"
+       r="5"
+       id="circle6" />
+    <circle
+       cx="221"
+       cy="349"
+       r="5"
+       id="circle7" />
+    <circle
+       cx="243"
+       cy="313"
+       r="5"
+       id="circle8" />
+    <circle
+       cx="260"
+       cy="285"
+       r="5"
+       id="circle9" />
+    <circle
+       cx="275"
+       cy="266"
+       r="5"
+       id="circle10" />
+    <circle
+       cx="288"
+       cy="254"
+       r="5"
+       id="circle11" />
+    <circle
+       cx="302"
+       cy="242"
+       r="5"
+       id="circle12" />
+    <circle
+       cx="318"
+       cy="231"
+       r="5"
+       id="circle13" />
+    <circle
+       cx="338"
+       cy="222"
+       r="5"
+       id="circle14" />
+    <circle
+       cx="360"
+       cy="232"
+       r="5"
+       id="circle15" />
+    <circle
+       cx="386"
+       cy="247"
+       r="5"
+       id="circle16" />
+    <circle
+       cx="411"
+       cy="300"
+       r="5"
+       id="circle17" />
+    <circle
+       cx="437"
+       cy="339"
+       r="5"
+       id="circle18" />
+    <circle
+       cx="467"
+       cy="372"
+       r="5"
+       id="circle19" />
+    <circle
+       cx="505"
+       cy="389"
+       r="5"
+       id="circle20" />
+    <circle
+       cx="538"
+       cy="362"
+       r="5"
+       id="circle21" />
+    <circle
+       cx="561"
+       cy="332"
+       r="5"
+       id="circle22" />
+    <circle
+       cx="578"
+       cy="300"
+       r="5"
+       id="circle23" />
+    <circle
+       cx="593"
+       cy="277"
+       r="5"
+       id="circle24" />
+    <circle
+       cx="606"
+       cy="259"
+       r="5"
+       id="circle25" />
+    <circle
+       cx="620"
+       cy="246"
+       r="5"
+       id="circle26" />
+  </g>
+  <!-- adaptive time-step guide -->
+  <g
+     stroke="#e6c6a5"
+     stroke-width="2"
+     stroke-dasharray="5, 6"
+     id="g31"
+     transform="translate(-68.079102,-151.83105)">
+    <line
+       x1="260"
+       y1="285"
+       x2="260"
+       y2="472"
+       id="line26" />
+    <line
+       x1="275"
+       y1="266"
+       x2="275"
+       y2="472"
+       id="line27" />
+    <line
+       x1="288"
+       y1="254"
+       x2="288"
+       y2="472"
+       id="line28" />
+    <line
+       x1="302"
+       y1="242"
+       x2="302"
+       y2="472"
+       id="line29" />
+    <line
+       x1="318"
+       y1="231"
+       x2="318"
+       y2="472"
+       id="line30" />
+    <line
+       x1="338"
+       y1="222"
+       x2="338"
+       y2="472"
+       id="line31" />
+  </g>
+  <!-- key idea -->
+</svg>
