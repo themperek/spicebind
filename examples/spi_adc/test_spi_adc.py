@@ -1,7 +1,5 @@
-import os
 import pathlib
 
-os.environ.setdefault("COCOTB_RESOLVE_X", "ZEROS")
 import cocotb
 import cocotb.clock as cocotb_clock
 from cocotb.types import Logic
@@ -93,27 +91,37 @@ async def run_test(dut):
 
 
 def test_spi_adc():
-    sim = os.getenv("SIM", "icarus")
     proj_path = pathlib.Path(__file__).resolve().parent
     sources = [proj_path / "spi_adc.v"]
+    args = spicebind.cocotb_vpi_args()
+    sim = args["sim"]
+
+    extra_env = {
+        "SPICE_NETLIST": str(proj_path / "spi_adc.cir"),
+        "HDL_INSTANCE": "spi_adc.adc_inst",
+        "COCOTB_RESOLVE_X": "ZEROS",
+    }
 
     runner = get_runner(sim)
+
     runner.build(
         sources=sources,
         hdl_toplevel="spi_adc",
         always=True,
+        build_args=args["build_args"],
+        timescale=("1ns", "1ps"),
+        waves=args["waves"],
+        build_dir=str(proj_path / "sim_build" / sim),
     )
 
     runner.test(
         hdl_toplevel="spi_adc",
         test_module="test_spi_adc",
-        test_args=["-M", spicebind.get_lib_dir(), "-m", "spicebind_vpi"],
-        extra_env={
-            "SPICE_NETLIST": str(proj_path / "spi_adc.cir"),
-            "HDL_INSTANCE": "spi_adc.adc_inst",
-            "COCOTB_RESOLVE_X": "ZEROS",
-        },
+        test_args=args["test_args"],
+        plusargs=args["plusargs"],
+        extra_env=extra_env,
     )
+
 
 
 if __name__ == "__main__":

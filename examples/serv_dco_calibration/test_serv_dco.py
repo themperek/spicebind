@@ -179,11 +179,26 @@ def _append_csv(row: dict) -> None:
         writer.writerow(row)
 
 
-def _run(build_dir: Path, sources: list[Path], extra_env: dict, plusargs=None, test_args=None) -> dict:
+SERV_VERILATOR_FLAGS = (
+    "--Wno-UNOPTFLAT",
+    "--Wno-WIDTHTRUNC",
+    "--Wno-WIDTHEXPAND",
+    "--Wno-CASEINCOMPLETE",
+    "--Wno-CMPCONST",
+    "--Wno-SYNCASYNCNET",
+    "--Wno-TIMESCALEMOD",
+    "--Wno-PINCONNECTEMPTY",
+    "--Wno-LATCH",
+)
+
+
+def _run(build_dir: Path, sources: list[Path], extra_env: dict, plusargs=None, vpi=True) -> dict:
     build_dir.mkdir(parents=True, exist_ok=True)
     shutil.copy2(GENERATED / "firmware.hex", build_dir / "firmware.hex")
 
-    runner = get_runner(os.getenv("SIM", "icarus"))
+    args = spicebind.cocotb_vpi_args(extra_build_args=SERV_VERILATOR_FLAGS, vpi=vpi)
+    sim = args["sim"]
+    runner = get_runner(sim)
     runner.build(
         sources=sources,
         hdl_toplevel="top",
@@ -192,17 +207,23 @@ def _run(build_dir: Path, sources: list[Path], extra_env: dict, plusargs=None, t
         defines={"SERV_CLEAR_RAM": 1},
         parameters={"WARMUP": WARMUP, "WINDOW": WINDOW, "SETTLE": SETTLE},
         timescale=("1ns", "1ps"),
+        build_args=args["build_args"],
+        waves=args["waves"],
     )
     env = {
         "COCOTB_RESOLVE_X": "ZEROS",
         "CLK_NS": str(CLK_NS),
         **extra_env,
     }
+    # Opt-in ngspice dump.raw at HDL end. Off unless the caller exported it.
+    dump_raw = os.environ.get("SPICE_DUMP_RAW")
+    if dump_raw:
+        env["SPICE_DUMP_RAW"] = dump_raw
     runner.test(
         hdl_toplevel="top",
         test_module="test_serv_dco",
-        test_args=test_args or [],
-        plusargs=plusargs or [],
+        test_args=args["test_args"],
+        plusargs=list(plusargs or []) + args["plusargs"],
         extra_env=env,
         build_dir=build_dir,
     )
@@ -214,7 +235,7 @@ def test_serv_dco_behavioral():
     assert (GENERATED / "firmware.hex").exists(), "generated/firmware.hex is missing"
     t0 = time.perf_counter()
     result = _run(
-        build_dir=(EXAMPLE / "sim_build" / "serv_beh").resolve(),
+        build_dir=(EXAMPLE / "sim_build" / os.getenv("SIM", "icarus") / "serv_beh").resolve(),
         sources=_local_sources(EXAMPLE / "rtl" / "dco_core_beh.v"),
         extra_env={
             "CORNER_NAME": "behavioral",
@@ -224,6 +245,7 @@ def test_serv_dco_behavioral():
             "EXPECTED_PASS": "1",
         },
         plusargs=["+DCO_BEH_SCALE=1"],
+        vpi=False,
     )
     wall = time.perf_counter() - t0
     assert result["fw_pass"]
@@ -267,7 +289,7 @@ def spice_trims():
 def test_serv_dco(corner, expected_pass, spice_trims):
     spec = CORNERS[corner]
     assert spec["expected_pass"] is expected_pass
-    build_dir = (EXAMPLE / "sim_build" / f"serv_{corner}").resolve()
+    build_dir = (EXAMPLE / "sim_build" / os.getenv("SIM", "icarus") / f"serv_{corner}").resolve()
     cir_path = build_dir / "dco.cir"
     render_netlist(cir_path, spec, tran_step="0.2ns", tran_stop="100us")
 
@@ -285,7 +307,6 @@ def test_serv_dco(corner, expected_pass, spice_trims):
             "CORNER_TEMP": str(spec["temp"]),
             "EXPECTED_PASS": "1" if expected_pass else "0",
         },
-        test_args=["-M", spicebind.get_lib_dir(), "-m", "spicebind_vpi"],
     )
     wall = time.perf_counter() - t0
     spice_trims[corner] = {

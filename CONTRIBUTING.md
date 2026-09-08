@@ -23,9 +23,10 @@ Rebuild the VPI after C++ changes.
 
 ```bash
 nox -s test
+SIM=verilator nox -s test
 ```
 
-CI runs that session on Python 3.10 and 3.13 with Icarus Verilog and ngspice.
+CI runs that session on Python 3.10 and 3.13 with Icarus and Verilator.
 
 ## Pull requests
 

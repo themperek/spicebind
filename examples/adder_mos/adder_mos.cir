@@ -66,6 +66,6 @@ r3 y[3] y3 1
 
 .option noinit acct norefvalue
 .save  a0 b0 a1 b1 a2 b2 a3 b3 y0 y1 y2 y3 y[0] y[1] y[2] y[3] 13
-.TRAN 10n 10m
+.TRAN 1n 10u
 
 .END

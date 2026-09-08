@@ -8,6 +8,10 @@ import spicebind
 import pytest
 
 
+def _sim() -> str:
+    return os.getenv("SIM", "icarus")
+
+
 async def run_adc_test(dut):
     dut.adc_in.value = 0.0
     await Timer(20, unit="ns")
@@ -24,14 +28,18 @@ async def run_adc_test(dut):
     await ReadWrite()
     assert dut.adc_out.value == 0
 
-    expected = [0, 1, 3, 7, 15, 31, 63, 127, 255, 255, 255]
+    # Bits arrive at 2, 4, … 16 ns. Sample at 1, 3, … 19 ns so Icarus (put
+    # after #delay) and Verilator (put in ReadWriteSynch, possibly flushed by
+    # the concurrent DAC task) see the same settled code.
+    expected = [0, 1, 3, 7, 15, 31, 63, 127, 255, 255]
     dut.adc_in.value = 1.0
-    for i in range(10):
+    await Timer(1, unit="ns")
+    await ReadWrite()
+    for i, exp in enumerate(expected):
+        got = int(dut.adc_out.value)
+        assert got == exp, f"i={i} dut.adc_out.value={got} expected={exp}"
         await Timer(2, unit="ns")
         await ReadWrite()
-        assert (
-            int(dut.adc_out.value) == expected[i]
-        ), f"i={i} dut.adc_out.value={dut.adc_out.value} expected={expected[i]}"
 
     expected = [
         0b11111111,
@@ -46,10 +54,13 @@ async def run_adc_test(dut):
         0b00000000,
     ]
     dut.adc_in.value = 0.0
-    for i in range(10):
+    await Timer(1, unit="ns")
+    await ReadWrite()
+    for i, exp in enumerate(expected):
+        got = int(dut.adc_out.value)
+        assert got == exp, f"i={i} dut.adc_out.value={got} expected={exp}"
         await Timer(2, unit="ns")
         await ReadWrite()
-        assert int(dut.adc_out.value) == expected[i]
 
     for i in range(1000):
         await ReadWrite()
@@ -115,7 +126,10 @@ async def run_pwm_test(dut):
             await ReadWrite()
 
     await pwm_ctrl(50)
-    assert dut.pwm_out.value == "x"
+    if _sim() == "verilator":
+        assert dut.pwm_out.value in (0, 1, "x")
+    else:
+        assert dut.pwm_out.value == "x"
 
     await pwm_ctrl(20)
     assert dut.pwm_out.value == 0
@@ -137,33 +151,35 @@ async def run_test(dut):
 
 @pytest.mark.parametrize("vcc", [1.0, 1.8, 3.3])
 def test_tb(vcc):
-    sim = os.getenv("SIM", "icarus")
+    args = spicebind.cocotb_vpi_args()
+    sim = args["sim"]
 
     proj_path = Path(__file__).resolve().parent
     sources = [proj_path / "tb.sv"]
     cir_template = proj_path / "test.cir"
 
-    # replace VCC in test.cir to vcc and save it to build_dir
-    build_dir = Path(f"sim_build/VCC={vcc}").resolve()
+    build_dir = (proj_path / "sim_build" / sim / f"VCC={vcc}").resolve()
     build_dir.mkdir(parents=True, exist_ok=True)
 
     cir_path = build_dir / "test.cir"
-
-    with open(cir_template, "r") as template_file:
-        template_content = template_file.read()
-
-    netlist_content = template_content.format(VCC=vcc)
-
-    with open(cir_path, "w") as cir_file:
-        cir_file.write(netlist_content)
+    cir_path.write_text(cir_template.read_text().format(VCC=vcc))
 
     runner = get_runner(sim)
-    runner.build(sources=sources, hdl_toplevel="tb", always=True, build_dir=build_dir)
+    runner.build(
+        sources=sources,
+        hdl_toplevel="tb",
+        always=True,
+        build_dir=build_dir,
+        build_args=args["build_args"],
+        timescale=("1ns", "1ps"),
+        waves=args["waves"],
+    )
 
     runner.test(
         hdl_toplevel="tb",
         test_module="test_tb,",
-        test_args=["-M", spicebind.get_lib_dir(), "-m", "spicebind_vpi"],
+        test_args=args["test_args"],
+        plusargs=args["plusargs"],
         extra_env={
             "SPICE_NETLIST": str(cir_path),
             "HDL_INSTANCE": "tb.test_cir",

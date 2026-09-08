@@ -21,7 +21,7 @@ module adder_tb;
 	 a = ai;
 	 for (bi = 0; bi < 16; bi = bi + 1) begin
 	    b = bi;
-	    #10;
+	    #20;
 	    if (y != a + b) begin
 	       $display("Fail: %d + %d = %d!", a, b, y);
 	       $finish;

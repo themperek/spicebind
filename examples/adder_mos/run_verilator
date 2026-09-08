@@ -1,0 +1,13 @@
+# Verilator 5 + SpiceBind. Empty adder ports are driven through VPI.
+# --public-flat-rw: vpi_put_value on dut outputs
+# --fno-inline: keep adder_tb.dut as a VPI instance
+# --timing: honour #10 in the testbench
+verilator --binary -j 0 --vpi --timing --public-flat-rw --fno-inline --trace \
+    --timescale 1ns/1ns --top-module adder_tb \
+    --Wno-UNDRIVEN --Wno-UNUSED --Wno-UNOPTFLAT --Wno-WIDTHTRUNC \
+    -o Vadder_tb tb.v
+
+export SPICE_NETLIST=adder_mos.cir
+export HDL_INSTANCE=adder_tb.dut
+export VCC=3.3
+./obj_dir/Vadder_tb +verilator+vpi+../../spicebind/spicebind_vpi.vpi

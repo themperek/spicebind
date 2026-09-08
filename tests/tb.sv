@@ -16,7 +16,7 @@ endmodule
 module tb();
 
     real adc_in;
-    wire real dac_out;
+    real dac_out;
     wire [7:0] adc_out;
     reg  [7:0] dac_in;
     wire pwm_in;

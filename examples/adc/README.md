@@ -13,7 +13,14 @@ Install dependencies:
 pip install pytest cocotb numpy matplotlib
 ```
 
-Run test:
+Run test (Icarus Verilog by default):
 ```
 python test_flash_adc8.py
 ```
+
+Verilator 5:
+```
+SIM=verilator python test_flash_adc8.py
+```
+
+Build products go under `sim_build/<simulator>/`.

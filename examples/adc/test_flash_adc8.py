@@ -13,8 +13,6 @@ from cocotb.triggers import Timer
 from cocotb_tools.runner import get_runner
 import spicebind
 
-import spicebind
-
 import numpy as np
 from numpy.fft import rfft, rfftfreq
 import matplotlib.pyplot as plt
@@ -200,23 +198,22 @@ async def run_adc_characterisation(dut):
 
 
 def test_flash_adc8():
-    sim = os.getenv("SIM", "icarus")
     verilog_model = os.getenv("VERILOG_MODEL", None)
-
     proj_path = pathlib.Path(__file__).resolve().parent
-
-    test_args = []
     extra_env = {}
     defines = {}
+
     if verilog_model:
         defines = {"VERILOG_MODEL": "1"}
+        args = spicebind.cocotb_vpi_args(vpi=False, extra_build_args=["--Wno-UNUSED"])
     else:
-        test_args = ["-M", spicebind.get_lib_dir(), "-m", "spicebind_vpi"]
         extra_env = {
             "SPICE_NETLIST": str(proj_path / "flash_adc8.cir"),
-            "HDL_INSTANCE": "flash_adc8",
+            "HDL_INSTANCE": "flash_adc8.adc_inst",
         }
+        args = spicebind.cocotb_vpi_args()
 
+    sim = args["sim"]
     sources = [proj_path / "flash_adc8.v"]
 
     runner = get_runner(sim)
@@ -225,12 +222,17 @@ def test_flash_adc8():
         hdl_toplevel="flash_adc8",
         defines=defines,
         always=True,
+        build_args=args["build_args"],
+        timescale=("1ns", "1ps"),
+        waves=args["waves"],
+        build_dir=str(proj_path / "sim_build" / sim),
     )
 
     runner.test(
         hdl_toplevel="flash_adc8",
         test_module="test_flash_adc8,",
-        test_args=test_args,
+        test_args=args["test_args"],
+        plusargs=args["plusargs"],
         extra_env=extra_env,
     )
 
