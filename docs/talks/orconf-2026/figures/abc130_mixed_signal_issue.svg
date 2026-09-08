@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1450"
+   height="600"
+   viewBox="0 0 1450 600"
+   version="1.1"
+   id="svg35"
+   sodipodi:docname="abc130_mixed_signal_issue.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs35" />
+  <sodipodi:namedview
+     id="namedview35"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.48180793"
+     inkscape:cx="728.50607"
+     inkscape:cy="-188.87194"
+     inkscape:window-width="1710"
+     inkscape:window-height="969"
+     inkscape:window-x="1399"
+     inkscape:window-y="499"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="digital-core" />
+  <!--
+    Inkscape-friendly SVG:
+    - no CSS classes
+    - no filters / drop shadows
+    - no marker arrowheads
+    - no foreignObject
+    - all labels remain editable SVG text
+    - major elements organized in named layers
+  -->
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Background"
+     id="layer-background">
+    <rect
+       x="67.964996"
+       y="38.667252"
+       width="1290.9082"
+       height="474.04132"
+       rx="0"
+       ry="0"
+       fill="#fcfcfb"
+       stroke="#d9dee2"
+       stroke-width="3.41142"
+       id="rect2" />
+    <text
+       x="734.61536"
+       y="91"
+       text-anchor="middle"
+       font-family="Aptos, Inter, Helvetica Neue, Arial, sans-serif"
+       font-size="27"
+       fill="#626970"
+       id="text2"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:36px;font-family:Aptos, Inter, 'Helvetica Neue', Arial, sans-serif;-inkscape-font-specification:'Aptos, Inter, Helvetica Neue, Arial, sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-anchor:middle;fill:#666666;fill-opacity:1"><tspan
+         style="fill:#666666;fill-opacity:1"
+         id="tspan3">ABC130 simplified system view</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Sensor inputs"
+     id="layer-inputs">
+    <text
+       x="-363.11868"
+       y="27.685688"
+       font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+       font-size="24px"
+       fill="#626970"
+       id="text3"
+       transform="rotate(-90.441681)"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:24px;font-family:Aptos, Inter, 'Helvetica Neue', Arial, sans-serif;-inkscape-font-specification:'Aptos, Inter, Helvetica Neue, Arial, sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#626970">256 strips</text>
+    <g
+       id="g1"
+       transform="translate(0,-6)">
+      <g
+         stroke="#aab2b8"
+         stroke-width="3"
+         id="g7"
+         transform="matrix(0.72069388,0,0,1,-10.765119,0)">
+        <line
+           x1="76"
+           y1="182"
+           x2="142"
+           y2="182"
+           id="line3" />
+        <line
+           x1="76"
+           y1="210"
+           x2="142"
+           y2="210"
+           id="line4" />
+        <line
+           x1="76"
+           y1="238"
+           x2="142"
+           y2="238"
+           id="line5" />
+        <line
+           x1="76"
+           y1="266"
+           x2="142"
+           y2="266"
+           id="line6" />
+        <line
+           x1="76"
+           y1="294"
+           x2="142"
+           y2="294"
+           id="line7" />
+      </g>
+      <g
+         stroke="#aab2b8"
+         stroke-width="3"
+         id="g7-7"
+         transform="matrix(0.72069388,0,0,1,-8.4994556,140.81579)">
+        <line
+           x1="76"
+           y1="182"
+           x2="142"
+           y2="182"
+           id="line3-9" />
+        <line
+           x1="76"
+           y1="210"
+           x2="142"
+           y2="210"
+           id="line4-0" />
+        <line
+           x1="76"
+           y1="238"
+           x2="142"
+           y2="238"
+           id="line5-2" />
+        <line
+           x1="76"
+           y1="266"
+           x2="142"
+           y2="266"
+           id="line6-3" />
+        <line
+           x1="76"
+           y1="294"
+           x2="142"
+           y2="294"
+           id="line7-9" />
+      </g>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Functional blocks"
+     id="layer-blocks">
+    <!-- Analog front-end -->
+    <rect
+       x="95.272278"
+       y="139.65689"
+       width="273.68622"
+       height="336.91498"
+       rx="0"
+       ry="0"
+       fill="#eaf7f4"
+       stroke="#59a99b"
+       stroke-width="5.31378"
+       id="rect7"
+       style="stroke-width:4;stroke-dasharray:none" />
+    <rect
+       x="1054.239"
+       y="127.87663"
+       width="264.12982"
+       height="354.07462"
+       rx="0"
+       ry="0"
+       fill="#eaf7f4"
+       stroke="#59a99b"
+       stroke-width="5.35147"
+       id="rect7-0" />
+    <g
+       id="g36"
+       transform="matrix(1.405053,0,0,1.405053,-187.72036,-234.45653)">
+      <rect
+         x="303.02405"
+         y="547.82928"
+         width="92"
+         height="30"
+         rx="0"
+         ry="0"
+         fill="#d7f0eb"
+         stroke="#59a99b"
+         stroke-width="2"
+         id="rect8" />
+      <text
+         x="349.02405"
+         y="569.82928"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="18px"
+         fill="#397f74"
+         id="text8">analog</text>
+    </g>
+    <g
+       id="g2"
+       transform="translate(0,-23.611336)">
+      <text
+         x="231.00748"
+         y="213.65126"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="31px"
+         font-weight="700"
+         fill="#202326"
+         id="text9">Analog FE ×256</text>
+      <text
+         x="231.00748"
+         y="261.65125"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="25px"
+         fill="#626970"
+         id="text10">preamp · shaper</text>
+      <text
+         x="231.00748"
+         y="295.65125"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="25px"
+         fill="#626970"
+         id="text11">comparator</text>
+    </g>
+    <!-- Digital core -->
+    <g
+       id="digital-core"
+       transform="translate(-65.384615)">
+      <rect
+         x="505"
+         y="139"
+         width="275"
+         height="190"
+         rx="0"
+         ry="0"
+         fill="#eef3fb"
+         stroke="#7b9ac5"
+         stroke-width="4"
+         id="rect11" />
+      <g
+         id="g35"
+         transform="matrix(1.51129,0,0,1.3916129,-135.31398,-213.48919)">
+        <rect
+           x="188.40463"
+           y="538.31055"
+           width="88"
+           height="30"
+           rx="0"
+           ry="0"
+           fill="#dce8f7"
+           stroke="#7b9ac5"
+           stroke-width="2"
+           id="rect12" />
+        <text
+           x="232.40463"
+           y="560.31055"
+           text-anchor="middle"
+           font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+           font-size="18px"
+           fill="#5576a4"
+           id="text12">digital</text>
+      </g>
+      <text
+         x="642"
+         y="212"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="31px"
+         font-weight="700"
+         fill="#202326"
+         id="text13">Digital core</text>
+      <text
+         x="642"
+         y="262"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="25px"
+         fill="#626970"
+         id="text14">pipeline · buffers</text>
+      <text
+         x="642"
+         y="296"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="25px"
+         fill="#626970"
+         id="text15">DCL · registers</text>
+    </g>
+    <!-- Readout -->
+    <g
+       id="readout"
+       transform="translate(-65.384615,-6)">
+      <rect
+         x="849.84094"
+         y="144.84096"
+         width="198.77962"
+         height="190.31807"
+         rx="0"
+         ry="0"
+         fill="#eef3fb"
+         stroke="#7b9ac5"
+         stroke-width="3.68193"
+         id="rect15" />
+      <text
+         x="955.46155"
+         y="210.38461"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="31px"
+         font-weight="700"
+         fill="#202326"
+         id="text16">Readout</text>
+      <text
+         x="955.46155"
+         y="258.38461"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="25px"
+         fill="#626970"
+         id="text17">arbiter</text>
+      <text
+         x="955.46155"
+         y="292.38461"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="25px"
+         fill="#626970"
+         id="text18">serializer</text>
+    </g>
+    <!-- Custom transceiver -->
+    <g
+       id="trcvr160"
+       transform="translate(-108.89631,52.596663)">
+      <text
+         x="1302"
+         y="174"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="31px"
+         font-weight="700"
+         fill="#202326"
+         id="text19">Line Driver</text>
+      <text
+         x="1302"
+         y="208"
+         text-anchor="middle"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="24px"
+         fill="#626970"
+         id="text20">custom SLVS I/O</text>
+      <!-- simple tri-state driver symbol: fully editable -->
+      <line
+         x1="1198"
+         y1="275"
+         x2="1240"
+         y2="275"
+         stroke="#b43832"
+         stroke-width="5"
+         id="line20" />
+      <polygon
+         points="1320,275 1240,238 1240,312 "
+         fill="#ffffff"
+         stroke="#b43832"
+         stroke-width="5"
+         id="polygon20" />
+      <line
+         x1="1320"
+         y1="275"
+         x2="1394"
+         y2="275"
+         stroke="#b43832"
+         stroke-width="5"
+         id="line21" />
+      <polygon
+         points="1375,286 1394,275 1375,264 "
+         fill="#b43832"
+         id="polygon21" />
+      <!-- enable input to driver -->
+      <line
+         x1="1280"
+         y1="332"
+         x2="1280"
+         y2="306"
+         stroke="#626970"
+         stroke-width="4"
+         id="line22" />
+      <circle
+         cx="1280"
+         cy="299"
+         r="8"
+         fill="#ffffff"
+         stroke="#b43832"
+         stroke-width="4"
+         id="circle22" />
+      <text
+         x="1293.1923"
+         y="328.42307"
+         font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+         font-size="19px"
+         fill="#626970"
+         id="text22"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:19px;font-family:Aptos, Inter, 'Helvetica Neue', Arial, sans-serif;-inkscape-font-specification:'Aptos, Inter, Helvetica Neue, Arial, sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#626970">TX_EN</text>
+    </g>
+    <g
+       id="g3"
+       transform="translate(54.301619,-365.56478)">
+      <circle
+         cx="137.16052"
+         cy="761.05017"
+         r="2.8896492"
+         fill="#202326"
+         id="circle12-8"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <circle
+         cx="75.8694"
+         cy="760.80127"
+         r="3.8528655"
+         fill="#ffffff"
+         stroke="#202326"
+         stroke-width="1.44483"
+         id="circle2"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="76.427475"
+         y1="761.16736"
+         x2="93.644966"
+         y2="761.16736"
+         stroke="#202326"
+         stroke-width="1.20087"
+         id="line3-7"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="93.644966"
+         y1="747.68231"
+         x2="93.644966"
+         y2="774.6524"
+         stroke="#202326"
+         stroke-width="1.92643"
+         id="line4-7"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="102.31391"
+         y1="747.68231"
+         x2="102.31391"
+         y2="774.6524"
+         stroke="#202326"
+         stroke-width="1.92643"
+         id="line5-4"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="102.31391"
+         y1="761.16736"
+         x2="151.43793"
+         y2="761.16736"
+         stroke="#202326"
+         stroke-width="1.92643"
+         id="line6-4"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <polygon
+         points="500,300 330,230 330,370 "
+         fill="#dfeef8"
+         stroke="#202326"
+         stroke-width="4"
+         id="polygon6"
+         transform="matrix(0.48160818,0,0,0.48160818,-7.4927624,616.68489)"
+         style="stroke-width:5.537;stroke-dasharray:none" />
+      <text
+         x="160.10689"
+         y="757.31451"
+         font-family="Arial, Helvetica, sans-serif"
+         font-size="14.4483px"
+         fill="#202326"
+         id="text6"
+         style="stroke-width:2.66667;stroke-dasharray:none">−</text>
+      <text
+         x="160.10689"
+         y="781.3949"
+         font-family="Arial, Helvetica, sans-serif"
+         font-size="14.4483px"
+         fill="#202326"
+         id="text7"
+         style="stroke-width:2.66667;stroke-dasharray:none">+</text>
+      <line
+         x1="151.43793"
+         y1="778.02368"
+         x2="136.98969"
+         y2="778.02368"
+         stroke="#202326"
+         stroke-width="1.92643"
+         id="line7-91"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="136.98969"
+         y1="778.02368"
+         x2="136.98969"
+         y2="806.92017"
+         stroke="#202326"
+         stroke-width="1.92643"
+         id="line8"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="124.94949"
+         y1="806.92017"
+         x2="149.02988"
+         y2="806.92017"
+         stroke="#202326"
+         stroke-width="1.92643"
+         id="line9" />
+      <line
+         x1="128.80235"
+         y1="811.73621"
+         x2="145.17702"
+         y2="811.73621"
+         stroke="#202326"
+         stroke-width="1.44483"
+         id="line10" />
+      <line
+         x1="132.65521"
+         y1="816.55231"
+         x2="141.32416"
+         y2="816.55231"
+         stroke="#202326"
+         stroke-width="0.963215"
+         id="line11" />
+      <line
+         x1="233.31133"
+         y1="761.16736"
+         x2="274.83377"
+         y2="761.16736"
+         stroke="#202326"
+         stroke-width="1.20597"
+         id="line12"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <circle
+         cx="245.02617"
+         cy="761.16736"
+         r="2.8896492"
+         fill="#202326"
+         id="circle12"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <circle
+         cx="276.29816"
+         cy="761.16736"
+         r="3.8528655"
+         fill="#ffffff"
+         stroke="#202326"
+         stroke-width="1.44483"
+         id="circle13"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="245.75832"
+         y1="761.16736"
+         x2="245.75832"
+         y2="683.29132"
+         stroke="#202326"
+         stroke-width="2.10835"
+         id="line13"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="245.02617"
+         y1="711.52594"
+         x2="213.62398"
+         y2="711.52594"
+         stroke="#202326"
+         stroke-width="2.19989"
+         id="line14"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <polyline
+         points="450,165 440,150 425,180 410,150 395,180 380,150 365,180 355,165"
+         fill="none"
+         stroke="#202326"
+         stroke-width="4"
+         id="polyline14"
+         transform="matrix(0.48160818,0,0,0.48160818,-3.0997154,632.06055)"
+         style="stroke-width:5.537;stroke-dasharray:none" />
+      <line
+         x1="167.87117"
+         y1="711.52594"
+         x2="138.99095"
+         y2="711.52594"
+         stroke="#202326"
+         stroke-width="2.98357"
+         id="line15"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="137.52663"
+         y1="682.84485"
+         x2="137.52663"
+         y2="760.48865"
+         stroke="#202326"
+         stroke-width="2.44603"
+         id="line16"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="137.16052"
+         y1="684.36218"
+         x2="182.81013"
+         y2="684.36218"
+         stroke="#202326"
+         stroke-width="2.52897"
+         id="line17"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="182.81013"
+         y1="673.76685"
+         x2="182.81013"
+         y2="694.95764"
+         stroke="#202326"
+         stroke-width="2.04778"
+         id="line18"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="193.69398"
+         y1="673.76685"
+         x2="193.69398"
+         y2="694.95764"
+         stroke="#202326"
+         stroke-width="2.04778"
+         id="line19"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+      <line
+         x1="193.69398"
+         y1="684.36218"
+         x2="245.39223"
+         y2="684.36218"
+         stroke="#202326"
+         stroke-width="2.04778"
+         id="line20-5"
+         style="stroke-width:2.66667;stroke-dasharray:none" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Data path arrows"
+     id="layer-data-path">
+    <!-- plain lines + polygons instead of SVG markers -->
+    <line
+       x1="369.61539"
+       y1="234"
+       x2="421.61539"
+       y2="234"
+       stroke="#147d92"
+       stroke-width="7"
+       id="line23" />
+    <polygon
+       points="481,226 481,254 505,240 "
+       fill="#147d92"
+       id="polygon23"
+       transform="translate(-65.384615,-6)" />
+    <line
+       x1="714.61536"
+       y1="234"
+       x2="766.61536"
+       y2="234"
+       stroke="#147d92"
+       stroke-width="7"
+       id="line24" />
+    <polygon
+       points="826,226 826,254 850,240 "
+       fill="#147d92"
+       id="polygon24"
+       transform="translate(-65.384615,-6)" />
+    <line
+       x1="983.0769"
+       y1="234"
+       x2="1035.0769"
+       y2="234"
+       stroke="#147d92"
+       stroke-width="7"
+       id="line25" />
+    <polygon
+       points="1131,254 1155,240 1131,226 "
+       fill="#147d92"
+       id="polygon25"
+       transform="translate(-101.92308,-6)" />
+    <line
+       x1="1324.96"
+       y1="235.35982"
+       x2="1384.96"
+       y2="235.35982"
+       stroke="#b43832"
+       stroke-width="7"
+       stroke-dasharray="13, 10"
+       id="line26" />
+    <polygon
+       points="1532,240 1504,223 1504,257 "
+       fill="#b43832"
+       id="polygon26"
+       transform="translate(-125.04003,-4.6401793)" />
+    <text
+       x="188.07124"
+       y="-1412.3307"
+       font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+       font-size="24px"
+       fill="#626970"
+       id="text26"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:28px;font-family:Aptos, Inter, 'Helvetica Neue', Arial, sans-serif;-inkscape-font-specification:'Aptos, Inter, Helvetica Neue, Arial, sans-serif, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#626970"
+       transform="rotate(90.405151)">DATA</text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Direction control"
+     id="layer-control">
+    <rect
+       x="440.41321"
+       y="355.21066"
+       width="565.07843"
+       height="114.79302"
+       rx="0"
+       ry="0"
+       fill="#eef3fb"
+       stroke="#7b9ac5"
+       stroke-width="5.20698"
+       id="rect27"
+       style="stroke-width:4;stroke-dasharray:none" />
+    <text
+       x="696.01715"
+       y="420.64465"
+       text-anchor="middle"
+       font-family="Aptos, Inter, 'Helvetica Neue', Arial, sans-serif"
+       font-size="31px"
+       font-weight="700"
+       fill="#202326"
+       id="text28">Configuration</text>
+    <!-- control line -->
+    <path
+       d="m 1007.8935,420.97564 c 33.8807,0 63.5263,-7.86574 93.1719,-22.16708 16.9402,-8.34245 31.7629,-11.9178 49.9737,-15.25479"
+       fill="none"
+       stroke="#626970"
+       stroke-width="1.88222"
+       id="path29"
+       style="stroke-width:4;stroke-dasharray:none" />
+    <polygon
+       points="1274,333 1289,312 1265,310 "
+       fill="#626970"
+       id="polygon29"
+       transform="matrix(0.9146249,0,0,0.88259222,-17.731851,102.03405)" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Mismatch highlight"
+     id="layer-issue">
+    <!-- dashed callout around the problematic interface -->
+    <!-- bottom comparison -->
+  </g>
+</svg>

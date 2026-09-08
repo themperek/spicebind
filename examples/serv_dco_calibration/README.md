@@ -16,7 +16,8 @@ exhaustion.
 The generated SERV RTL and firmware HEX are committed under `generated/`.
 
 ```bash
-pytest -v examples/serv_dco_calibration
+pytest -v examples/serv_dco_calibration                # Icarus Verilog (default)
+SIM=verilator pytest -v examples/serv_dco_calibration
 ```
 
 ## Why it is split this way
@@ -45,7 +46,7 @@ flowchart TB
         CFG["Select analog condition<br/>Load generated/firmware.hex<br/>Wait for FW_RESULT"]
     end
 
-    subgraph hdl ["Icarus Verilog"]
+    subgraph hdl ["HDL simulator"]
         SERV["SERV CPU width=1 RV32I"]
         RAM["Program / data RAM"]
         PERIPH["DCO MMIO + measure FSM"]
@@ -90,7 +91,7 @@ sequenceDiagram
 
 1. pytest renders `spice/dco.cir.in` for one entry in `corners.py` (VDD,
    temperature, MOS include, load capacitance).
-2. Icarus loads `generated/serv_rtl.v`, the local RTL, and either the empty
+2. The HDL simulator (Icarus Verilog or Verilator) loads `generated/serv_rtl.v`, the local RTL, and either the empty
    `dco_core` (SPICE tests) or `dco_core_beh.v` (bring-up).
 3. VPI (`spicebind_vpi`) binds `top.u_dco`. Verilog inputs become
    `Vname … external` sources. Node `osc` is read back as `v(osc)` and driven
@@ -238,7 +239,7 @@ flowchart LR
 | `generated/firmware.hex` | 32-bit little-endian words for `$readmemh`. Padded to the RAM depth. |
 | `generated/firmware.lst` | `objdump` listing for debugging. |
 | `generated/manifest.json` | SERV commit, container image tag, `march`/`mabi`, content hashes. |
-| `rtl/serv_rf_ram.v` | Copy of the upstream RAM file for layout. Simulation compiles it from `serv_rtl.v`; do not add both to `iverilog`. |
+| `rtl/serv_rf_ram.v` | Copy of the upstream RAM file for layout. Simulation compiles it from `serv_rtl.v`; do not add both to the same `iverilog` or Verilator command. |
 
 Rebuild with a local RISC-V GCC if one is on `PATH`, otherwise with the pinned
 [IIC-OSIC-TOOLS](https://github.com/iic-jku/IIC-OSIC-TOOLS) image:
@@ -262,7 +263,8 @@ normal simulation path.
 ## Running it
 
 ```bash
-pytest -v examples/serv_dco_calibration
+pytest -v examples/serv_dco_calibration                # Icarus Verilog (default)
+SIM=verilator pytest -v examples/serv_dco_calibration
 ```
 
 | Test | What it runs |

@@ -9,7 +9,7 @@ Install the required Python packages:
 pip install pytest cocotb cocotbext-spi
 ```
 
-Execute the cocotb test (Icarus Verilog by default):
+Execute the cocotb test. Icarus Verilog is the default; Verilator is also supported:
 ```bash
 python test_spi_adc.py
 ```

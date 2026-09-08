@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="937.07312"
+   height="528.44244"
+   viewBox="0 0 937.07312 528.44244"
+   version="1.1"
+   id="svg50"
+   sodipodi:docname="serv_dco_top_structure.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs50">
+    <rect
+       x="-32.8125"
+       y="682.8125"
+       width="915.625"
+       height="125"
+       id="rect51" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview50"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.478998"
+     inkscape:cx="670.04824"
+     inkscape:cy="269.43917"
+     inkscape:window-width="2820"
+     inkscape:window-height="1466"
+     inkscape:window-x="561"
+     inkscape:window-y="216"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g15" />
+  <!-- Palette: text #202326, muted #626970, line #D9DEE2, teal #147D92, soft #EAF5F7, analog #D9772B -->
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Top-level frame"
+     id="g5"
+     transform="translate(-75.693291,-122.56716)" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="CPU and register file"
+     id="g15"
+     transform="translate(-75.693291,-122.56716)">
+    <!-- CPU -->
+    <rect
+       x="80.679695"
+       y="179.84398"
+       width="259.76868"
+       height="202.98343"
+       rx="0"
+       fill="#eaf5f7"
+       stroke="#147d92"
+       stroke-width="2.98316"
+       id="rect5"
+       style="stroke-width:3;stroke-dasharray:none" />
+    <rect
+       x="79.193291"
+       y="426.83109"
+       width="260.39502"
+       height="126.76632"
+       rx="0"
+       fill="#eaf5f7"
+       stroke="#147d92"
+       stroke-width="2.98316"
+       id="rect5-7"
+       style="stroke-width:3;stroke-dasharray:none" />
+    <text
+       x="107"
+       y="217"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="29px"
+       font-weight="700"
+       fill="#202326"
+       id="text6">servile</text>
+    <text
+       x="90.373932"
+       y="152.00328"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="41.9521px"
+       font-weight="700"
+       fill="#202326"
+       id="text6-3"
+       style="stroke-width:1.44662"><tspan
+         sodipodi:role="line"
+         id="tspan52"
+         x="90.373932"
+         y="152.00328"
+         style="stroke-width:1.44662">top.v</tspan><tspan
+         sodipodi:role="line"
+         id="tspan53"
+         x="90.373932"
+         y="204.44341"
+         style="stroke-width:1.44662" /></text>
+    <text
+       x="107"
+       y="243"
+       font-family="'IBM Plex Mono', Consolas, monospace"
+       font-size="17px"
+       fill="#147d92"
+       id="text7">serv_rtl.v</text>
+    <text
+       x="220.58151"
+       y="151.19409"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="22.7776px"
+       fill="#202326"
+       id="text8"
+       style="stroke-width:1.08465">top-level RTL integration</text>
+    <text
+       x="106.30635"
+       y="277.76263"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="21px"
+       fill="#202326"
+       id="text8-4">SERV RISC-V CPU</text>
+    <text
+       x="107"
+       y="312"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="18px"
+       fill="#626970"
+       id="text9">runs calibration firmware</text>
+    <!-- Register file -->
+    <text
+       x="107"
+       y="464"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="24px"
+       font-weight="700"
+       fill="#202326"
+       id="text13">serv_rf_ram</text>
+    <text
+       x="107"
+       y="490"
+       font-family="'IBM Plex Mono', Consolas, monospace"
+       font-size="16px"
+       fill="#626970"
+       id="text14">gserv_rtl.v</text>
+    <text
+       x="107"
+       y="521"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="18px"
+       fill="#626970"
+       id="text15">CPU register file</text>
+    <path
+       d="m 276.34929,390.35194 v 12.7333 h -28 l 0.29297,16.63477"
+       fill="none"
+       stroke="#626970"
+       stroke-width="2.5"
+       id="path15"
+       sodipodi:nodetypes="cccc" />
+    <polygon
+       points="338,430 331,417 345,417 "
+       fill="#626970"
+       id="polygon15"
+       transform="translate(-89.650712,-3.4928849)" />
+    <polygon
+       points="345,417 338,430 331,417 "
+       fill="#626970"
+       id="polygon15-5"
+       transform="rotate(-179.32574,306.91505,406.48151)" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="DCO peripheral"
+     id="g24"
+     transform="translate(-75.693291,-122.56716)">
+    <rect
+       x="409.31277"
+       y="177.54753"
+       width="273.40494"
+       height="279.26248"
+       rx="0"
+       fill="#eaf5f7"
+       stroke="#147d92"
+       stroke-width="2.88273"
+       id="rect15"
+       style="stroke-width:2.89446;stroke-dasharray:none" />
+    <rect
+       x="408.0257"
+       y="484.91766"
+       width="274.30667"
+       height="164.59196"
+       rx="0"
+       fill="#eaf5f7"
+       stroke="#147d92"
+       stroke-width="2.13878"
+       id="rect15-7"
+       style="stroke-width:3;stroke-dasharray:none" />
+    <rect
+       x="430.05627"
+       y="307.87003"
+       width="226.10799"
+       height="124.44191"
+       rx="0"
+       fill="#eaf5f7"
+       stroke="#147d92"
+       stroke-width="2.13878"
+       id="rect15-7-0"
+       style="stroke-width:3.12919;stroke-dasharray:none" />
+    <text
+       x="436.45667"
+       y="215.67142"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="27px"
+       font-weight="700"
+       fill="#202326"
+       id="text16">dco_peripheral</text>
+    <text
+       x="436.45667"
+       y="241.67142"
+       font-family="'IBM Plex Mono', Consolas, monospace"
+       font-size="16px"
+       fill="#147d92"
+       id="text17">dco_peripheral.v</text>
+    <text
+       x="436.45667"
+       y="274.67142"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="19px"
+       fill="#202326"
+       id="text18">Wishbone + DCO control</text>
+    <text
+       x="956.2713"
+       y="405.25705"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="19px"
+       fill="#202326"
+       id="text18-0" />
+    <text
+       x="468.9415"
+       y="318.26019"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="18.9519px"
+       font-weight="700"
+       fill="#202326"
+       id="text20"
+       style="stroke-width:3;stroke-dasharray:none"
+       transform="scale(0.94728743,1.0556458)">dco_measure</text>
+    <text
+       x="471.80023"
+       y="338.67084"
+       font-family="'IBM Plex Mono', Consolas, monospace"
+       font-size="13.2663px"
+       fill="#626970"
+       id="text21"
+       style="stroke-width:3;stroke-dasharray:none"
+       transform="scale(0.94728743,1.0556458)">dco_measure.v</text>
+    <text
+       x="469.42206"
+       y="362.60092"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="15.1615px"
+       fill="#626970"
+       id="text22"
+       style="stroke-width:3;stroke-dasharray:none"
+       transform="scale(0.94728743,1.0556458)">measurement window</text>
+    <text
+       x="468.31876"
+       y="385.10291"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="15.1615px"
+       fill="#626970"
+       id="text23"
+       style="stroke-width:3;stroke-dasharray:none"
+       transform="scale(0.94728743,1.0556458)">count osc edges → done</text>
+    <!-- WB EXT -->
+    <path
+       d="m 346.58446,322.31883 h 26.8722 v -73.55434 l 23.04123,-0.16903"
+       fill="none"
+       stroke="#147d92"
+       stroke-width="5.69062"
+       id="path23"
+       sodipodi:nodetypes="cccc"
+       style="stroke-width:4;stroke-dasharray:none" />
+    <polygon
+       points="470,250 456,242 456,258 "
+       fill="#147d92"
+       id="polygon23"
+       transform="translate(-60.543338,-2.3285899)" />
+    <polygon
+       points="456,242 456,258 470,250 "
+       fill="#147d92"
+       id="polygon23-2"
+       transform="rotate(179.72732,405.58016,286.0437)" />
+    <polygon
+       points="456,258 470,250 456,242 "
+       fill="#147d92"
+       id="polygon23-2-2"
+       transform="rotate(179.72732,404.98094,302.6567)" />
+    <text
+       x="-257.49301"
+       y="369.56049"
+       transform="rotate(-90)"
+       text-anchor="middle"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="16px"
+       fill="#147d92"
+       id="text24">Wishbone EXT</text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Program RAM"
+     id="g29"
+     transform="translate(-75.693291,-122.56716)">
+    <!-- RAM moved below peripheral -->
+    <text
+       x="435.29236"
+       y="529.53558"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="27px"
+       font-weight="700"
+       fill="#202326"
+       id="text25">simple_ram</text>
+    <text
+       x="435.29236"
+       y="555.53558"
+       font-family="'IBM Plex Mono', Consolas, monospace"
+       font-size="16px"
+       fill="#626970"
+       id="text26">simple_ram.v</text>
+    <text
+       x="435.29236"
+       y="590.53558"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="20px"
+       fill="#202326"
+       id="text27">Program + data RAM</text>
+    <text
+       x="435.29236"
+       y="617.53558"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="17px"
+       fill="#626970"
+       id="text28">firmware.hex</text>
+    <!-- WB MEM routed downward -->
+    <path
+       d="m 348.55606,355.84367 28.9006,-0.33807 -0.41164,212.90091 24.59047,-0.41164"
+       fill="none"
+       stroke="#147d92"
+       stroke-width="4"
+       id="path28"
+       sodipodi:nodetypes="cccc" />
+    <polygon
+       points="456,593 470,585 456,577 "
+       fill="#147d92"
+       id="polygon28"
+       transform="translate(-61.707633,-17.464424)" />
+    <text
+       x="-487.67142"
+       y="371.45667"
+       transform="rotate(-90)"
+       text-anchor="middle"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="16px"
+       fill="#147d92"
+       id="text29">Wishbone MEM</text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Replaceable DCO boundary"
+     id="g45"
+     transform="translate(-75.693291,-122.56716)">
+    <!-- Outer module boundary -->
+    <rect
+       x="735.49597"
+       y="180.4184"
+       width="275.80618"
+       height="466.83466"
+       rx="0"
+       fill="#ffffff"
+       stroke="#626970"
+       stroke-width="2.92846"
+       id="rect29" />
+    <text
+       x="760.55627"
+       y="218.47867"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="28px"
+       font-weight="700"
+       fill="#202326"
+       id="text30">dco_core</text>
+    <text
+       x="761.7912"
+       y="245.4247"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="16px"
+       fill="#626970"
+       id="text32">same HDL interface</text>
+    <!-- Digital option -->
+    <rect
+       x="757.80042"
+       y="270.39429"
+       width="232.3615"
+       height="125.85439"
+       rx="0"
+       fill="#eaf5f7"
+       stroke="#147d92"
+       stroke-width="2.43471"
+       id="rect32"
+       style="stroke-width:2.89654;stroke-dasharray:none" />
+    <text
+       x="777.55627"
+       y="302.47867"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="20px"
+       font-weight="700"
+       fill="#147d92"
+       id="text33">HDL / behavioral</text>
+    <text
+       x="777.55627"
+       y="329.47867"
+       font-family="'IBM Plex Mono', Consolas, monospace"
+       font-size="14px"
+       fill="#147d92"
+       id="text34">dco_core.v</text>
+    <text
+       x="877.20862"
+       y="429.36115"
+       text-anchor="middle"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="25.6278px"
+       font-weight="700"
+       fill="#626970"
+       id="text37"
+       style="stroke-width:1.60174">OR</text>
+    <!-- Analog option -->
+    <rect
+       x="759.02625"
+       y="446.45584"
+       width="231.07414"
+       height="160.86716"
+       rx="0"
+       fill="#fff4ea"
+       stroke="#d9772b"
+       stroke-width="2.91445"
+       id="rect37"
+       style="stroke-width:3.93093;stroke-dasharray:none" />
+    <text
+       x="777.55627"
+       y="479.47867"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="20px"
+       font-weight="700"
+       fill="#d9772b"
+       id="text38">SPICE / transistor</text>
+    <text
+       x="777.55627"
+       y="506.47864"
+       font-family="'IBM Plex Mono', Consolas, monospace"
+       font-size="14px"
+       fill="#b65c1e"
+       id="text39">dco.cir.in</text>
+    <text
+       x="777.55627"
+       y="534.47864"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="16px"
+       fill="#202326"
+       id="text40">5-stage MOS ring oscillator</text>
+    <text
+       x="776.04974"
+       y="366.27713"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="18.9547px"
+       fill="#202326"
+       id="text40-7"
+       style="stroke-width:1.18467">Digital model</text>
+    <g
+       id="g52"
+       transform="translate(-32.600259,-5.042691)">
+      <rect
+         x="805.99225"
+         y="565.67139"
+         width="202"
+         height="24"
+         rx="7"
+         fill="#d9772b"
+         id="rect41" />
+      <text
+         x="906.99225"
+         y="582.67139"
+         text-anchor="middle"
+         font-family="Aptos, Inter, Arial, sans-serif"
+         font-size="13px"
+         font-weight="700"
+         fill="#ffffff"
+         id="text42">Replaced by SpiceBind</text>
+    </g>
+    <!-- Interface connections -->
+    <line
+       x1="682.08643"
+       y1="275.47867"
+       x2="729.55627"
+       y2="275.47867"
+       stroke="#147d92"
+       stroke-width="4"
+       id="line42" />
+    <polygon
+       points="831,273 845,265 831,257 "
+       fill="#147d92"
+       id="polygon42"
+       transform="translate(-109.44373,10.478655)" />
+    <text
+       x="710.55627"
+       y="257.47867"
+       text-anchor="middle"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="13px"
+       fill="#147d92"
+       id="text43">enable</text>
+    <line
+       x1="679.97003"
+       y1="320.47867"
+       x2="731.55627"
+       y2="320.47867"
+       stroke="#147d92"
+       stroke-width="4"
+       id="line43" />
+    <polygon
+       points="831,318 845,310 831,302 "
+       fill="#147d92"
+       id="polygon43"
+       transform="translate(-109.44373,10.478655)" />
+    <text
+       x="708.55627"
+       y="302.47867"
+       text-anchor="middle"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="13px"
+       fill="#147d92"
+       id="text44">trim[3:0]</text>
+    <path
+       d="m 735.55628,486.61707 h -25 v -81.13842 h -20"
+       fill="none"
+       stroke="#d9772b"
+       stroke-width="4"
+       id="path44"
+       sodipodi:nodetypes="cccc" />
+    <polygon
+       points="800,395 814,387 814,403 "
+       fill="#d9772b"
+       id="polygon44"
+       transform="translate(-116.13843,10.478655)" />
+    <text
+       x="-448.22769"
+       y="702.55627"
+       transform="rotate(-90)"
+       text-anchor="middle"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="13px"
+       fill="#b65c1e"
+       id="text45">osc</text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Key message"
+     id="g47"
+     transform="translate(-75.693291,-122.56716)">
+    <text
+       xml:space="preserve"
+       id="text51"
+       style="font-weight:bold;font-size:24px;font-family:Aptos, Inter, 'Helvetica Neue', Arial, sans-serif;-inkscape-font-specification:'Aptos, Inter, Helvetica Neue, Arial, sans-serif, Bold';writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect51);display:inline;fill:#000000;stroke:#000000;stroke-width:0.377953" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Footer"
+     id="g50"
+     transform="translate(-75.693291,-122.56716)">
+    <rect
+       x="102.98761"
+       y="613.35791"
+       width="29.606195"
+       height="29.606195"
+       rx="0"
+       fill="#eaf5f7"
+       stroke="#147d92"
+       stroke-width="3.28958"
+       id="rect48"
+       style="stroke-width:3;stroke-dasharray:none" />
+    <text
+       x="145.75211"
+       y="638.02972"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="23.027px"
+       fill="#626970"
+       id="text49"
+       style="stroke-width:1.64479">HDL</text>
+    <rect
+       x="231.28111"
+       y="613.35791"
+       width="29.606195"
+       height="29.606195"
+       rx="0"
+       fill="#fff4ea"
+       stroke="#d9772b"
+       stroke-width="3.28958"
+       id="rect49"
+       style="stroke-width:3;stroke-dasharray:none" />
+    <text
+       x="274.04565"
+       y="638.02972"
+       font-family="Aptos, Inter, Arial, sans-serif"
+       font-size="23.027px"
+       fill="#626970"
+       id="text50"
+       style="stroke-width:1.64479">SPICE</text>
+  </g>
+</svg>

@@ -15,6 +15,7 @@ MMIO
 Wishbone
 servile
 Icarus
+Verilator
 Yosys
 FuseSoC
 datapath
@@ -31,7 +32,12 @@ jitter
 endian
 preloaded
 libc
-pytest
-nanosecond
-microsecond
+OrConf
+Marp
+Tomasz
+libngspice
+CMake
+venv
+
+
 

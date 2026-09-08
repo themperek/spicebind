@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="600"
+   height="330"
+   viewBox="0 0 600 330"
+   version="1.1"
+   id="svg17"
+   sodipodi:docname="digital_event_driven.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs17" />
+  <sodipodi:namedview
+     id="namedview17"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:clip-to-page="false"
+     inkscape:zoom="0.83281465"
+     inkscape:cx="365.62757"
+     inkscape:cy="15.609716"
+     inkscape:window-width="1645"
+     inkscape:window-height="903"
+     inkscape:window-x="2046"
+     inkscape:window-y="39"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg17" />
+  <!-- plot frame -->
+  <!-- labels -->
+  <text
+     x="25.049786"
+     y="95.041786"
+     font-family="Arial, Helvetica, sans-serif"
+     font-size="19.5433px"
+     fill="#626970"
+     id="text3"
+     style="stroke-width:0.930634">clk</text>
+  <text
+     x="25.049786"
+     y="216.0242"
+     font-family="Arial, Helvetica, sans-serif"
+     font-size="19.5433px"
+     fill="#626970"
+     id="text4"
+     style="stroke-width:0.930634">data</text>
+  <!-- time axis -->
+  <line
+     x1="67.858932"
+     y1="312.81009"
+     x2="535.03711"
+     y2="312.81009"
+     stroke="#aab3ba"
+     stroke-width="1.86127"
+     id="line4" />
+  <polygon
+     points="603,463 603,481 620,472 "
+     fill="#aab3ba"
+     id="polygon4"
+     transform="matrix(0.93063379,0,0,0.93063379,-41.955846,-126.44905)" />
+  <text
+     x="542.48218"
+     y="319.32452"
+     font-family="Arial, Helvetica, sans-serif"
+     font-size="16.7514px"
+     fill="#626970"
+     id="text5"
+     style="stroke-width:0.930634">time</text>
+  <!-- event lines -->
+  <g
+     stroke="#d9dee2"
+     stroke-width="2"
+     stroke-dasharray="7, 8"
+     id="g8"
+     transform="matrix(0.93063379,0,0,0.93063379,-41.955846,-126.44905)">
+    <line
+       x1="214"
+       y1="176"
+       x2="214"
+       y2="472"
+       id="line5" />
+    <line
+       x1="326"
+       y1="176"
+       x2="326"
+       y2="472"
+       id="line6" />
+    <line
+       x1="444"
+       y1="176"
+       x2="444"
+       y2="472"
+       id="line7" />
+    <line
+       x1="558"
+       y1="176"
+       x2="558"
+       y2="472"
+       id="line8" />
+  </g>
+  <g
+     stroke="#d9dee2"
+     stroke-width="2"
+     stroke-dasharray="7, 8"
+     id="g8-9"
+     transform="matrix(0.93063379,0,0,0.93063379,12.091589,-129.96988)">
+    <line
+       x1="214"
+       y1="176"
+       x2="214"
+       y2="472"
+       id="line5-0" />
+    <line
+       x1="326"
+       y1="176"
+       x2="326"
+       y2="472"
+       id="line6-2" />
+    <line
+       x1="444"
+       y1="176"
+       x2="444"
+       y2="472"
+       id="line7-3" />
+    <line
+       x1="558"
+       y1="176"
+       x2="558"
+       y2="472"
+       id="line8-9" />
+  </g>
+  <!-- clock waveform -->
+  <path
+     d="M 67.858935,124.82207 H 158.57753 V 68.984041 h 52.91918 v 55.838029 h 52.91917 V 68.984041 h 52.91919 v 55.838029 h 52.91918 V 68.984041 h 52.91918 V 124.82207 H 476.0926 V 68.984041 h 52.91919 v 55.838029 h 13.22979"
+     fill="none"
+     stroke="#147d92"
+     stroke-width="5.62669"
+     stroke-linejoin="miter"
+     id="path8" />
+  <!-- data waveform -->
+  <path
+     d="M 67.858935,243.9432 H 261.43076 V 188.10517 H 371.24555 V 243.9432 H 477.3378 v -55.83803 h 57.6993"
+     fill="none"
+     stroke="#147d92"
+     stroke-width="5.5838"
+     stroke-linejoin="miter"
+     id="path9" />
+  <!-- event dots -->
+  <g
+     fill="#147d92"
+     id="g12"
+     transform="matrix(0.93063379,0,0,0.93063379,-41.955846,-126.44905)">
+    <circle
+       cx="214"
+       cy="270"
+       r="7"
+       id="circle9" />
+    <circle
+       cx="326"
+       cy="398"
+       r="7"
+       id="circle10" />
+    <circle
+       cx="444"
+       cy="338"
+       r="7"
+       id="circle11" />
+    <circle
+       cx="558"
+       cy="398"
+       r="7"
+       id="circle12" />
+  </g>
+  <!-- event labels -->
+  <text
+     x="157.19978"
+     y="26.174885"
+     text-anchor="middle"
+     font-family="Arial, Helvetica, sans-serif"
+     font-size="15.8208px"
+     fill="#626970"
+     id="text12"
+     style="stroke-width:0.930634">event</text>
+  <text
+     x="261.43076"
+     y="26.174885"
+     text-anchor="middle"
+     font-family="Arial, Helvetica, sans-serif"
+     font-size="15.8208px"
+     fill="#626970"
+     id="text13"
+     style="stroke-width:0.930634">event</text>
+  <text
+     x="371.24554"
+     y="26.174885"
+     text-anchor="middle"
+     font-family="Arial, Helvetica, sans-serif"
+     font-size="15.8208px"
+     fill="#626970"
+     id="text14"
+     style="stroke-width:0.930634">event</text>
+  <text
+     x="477.3378"
+     y="26.174885"
+     text-anchor="middle"
+     font-family="Arial, Helvetica, sans-serif"
+     font-size="15.8208px"
+     fill="#626970"
+     id="text15"
+     style="stroke-width:0.930634">event</text>
+  <!-- key idea -->
+</svg>
