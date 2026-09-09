@@ -10,6 +10,13 @@ import os
 import shutil
 import subprocess
 import sys
+from pathlib import Path
+
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib
+
 from sphinx.highlighting import lexers
 
 # Add in-tree extensions to path
@@ -87,7 +94,8 @@ copyright = f"{years}, spicebind contributors"
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = "0.1"
+with Path(__file__).resolve().parents[2].joinpath("pyproject.toml").open("rb") as f:
+    release = tomllib.load(f)["project"]["version"]
 # The short X.Y version.
 version = release
 
