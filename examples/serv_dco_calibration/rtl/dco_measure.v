@@ -26,10 +26,22 @@ module dco_measure #(
     reg [31:0] edges;
     reg        measuring;
     reg        clear_edges;
+    reg        osc_seen;
 
     assign busy = (state != S_IDLE);
 
-    always @(posedge osc or posedge rst or posedge clear_edges) begin
+    // Analog osc is 0 / X / 1. Icarus `posedge osc` also fires on 0->X and X->1.
+    // Hold through X so the counter sees one 0->1 per analog rising edge.
+    always @(osc or posedge rst) begin
+        if (rst)
+            osc_seen <= 1'b0;
+        else if (osc === 1'b0)
+            osc_seen <= 1'b0;
+        else if (osc === 1'b1)
+            osc_seen <= 1'b1;
+    end
+
+    always @(posedge osc_seen or posedge rst or posedge clear_edges) begin
         if (rst || clear_edges)
             edges <= 32'd0;
         else if (measuring)

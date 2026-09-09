@@ -1,0 +1,11 @@
+* Pass HDL vin through to digital y. Mid-rail analog must be HDL X.
+
+.param VCC = {VCC}
+
+Vcc vcc 0 {VCC}
+Vvin vin 0 0 external
+Vy vin y 0
+
+.tran 1ns 1m
+
+.end

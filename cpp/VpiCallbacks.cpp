@@ -153,36 +153,30 @@ auto vpi_timestep_cb(p_cb_data cb_data_p) -> PLI_INT32 {
 
     DBG("enter current_time=%llu next_time_spice=%lld", current_time, g_time_barrier.get_next_spice_step_time());
 
-    // Verilator applies cocotb writes after ico, so cbValueChange on the
-    // instance net often still sees the old value. Sample TOP/parent first.
+    // Verilator applies cocotb writes after ico, so the value-change callback
+    // can observe the old instance net. Sample the parent/TOP aliases before
+    // starting the SPICE retry as well.
     if (g_is_verilator) {
         g_interface->update_all_digital_inputs();
     }
 
     if (add_ngspice_timestep) {
         DBG("add ngspice time step at current_time=%llu", current_time);
-        g_time_barrier.update_no_wait(spice_vpi::TimeBarrier<unsigned long long>::SPICE_ENGINE_ID, current_time);
-        g_time_barrier.set_needs_redo(true);
+        g_time_barrier.update_no_wait(
+            spice_vpi::TimeBarrier<unsigned long long>::SPICE_ENGINE_ID, current_time);
+        g_interface->update_all_digital_inputs();
+        g_time_barrier.request_spice_point(current_time);
     }
 
-    g_time_barrier.update(spice_vpi::TimeBarrier<unsigned long long>::HDL_ENGINE_ID, current_time + 1);
+    g_time_barrier.update(
+        spice_vpi::TimeBarrier<unsigned long long>::HDL_ENGINE_ID, current_time + 1);
     DBG("after time_sync.update (+1) current_time=%llu next_time_spice=%lld", current_time, g_time_barrier.get_next_spice_step_time());
 
-    if (add_ngspice_timestep) {
-        DBG("update_all_digital_inputs after ngspice time new timestep");
+    if (add_ngspice_timestep && g_is_verilator) {
         g_interface->update_all_digital_inputs();
-
-        // TODO: add one more ngspice step (+1) to have inputs rise faster?
     }
     add_ngspice_timestep = false;
 
-    //
-    //  update digital outputs
-    //
-    // Verilator --binary eval order is ico (parent = instance) then timing
-    // resume (#delay checks). AfterDelay runs before eval, so a put there
-    // makes delay-chain bits visible one sample early. Put after eval
-    // (cbReadWriteSynch). Instance regs still hold the previous sample for ico.
     if (g_is_verilator && cb_data_p != nullptr && cb_data_p->reason == cbAfterDelay) {
         schedule_vpi_cb(cbReadWriteSynch, 0, vpi_flush_outputs_cb);
     } else {
