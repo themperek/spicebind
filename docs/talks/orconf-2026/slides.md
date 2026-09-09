@@ -563,8 +563,8 @@ Tomasz Hemperek
   <div class="card">
   <ul>
     <li>Large mixed-signal ASIC for ATLAS at LHC</li>
-    <li>256-channel analog front-end + substantial digital logic</li>
-    <li>Extensive design reviews and verification</li>
+    <li>256-channel analog front-end plus a large digital section</li>
+    <li>Design reviews and a full verification campaign</li>
   </ul>
   </div>
 
@@ -595,22 +595,22 @@ Tomasz Hemperek
 
   <div class="card">
     <h2>Failure symptom</h2>
-    <p><strong>No data output.</strong> The custom SLVS transceiver and its functional Verilog model disagreed on the polarity/meaning of the direction signal.</p>
+    <p><strong>No data output.</strong> The custom SLVS transceiver and its functional Verilog model disagreed on the polarity of the direction signal.</p>
   </div>
 
   <div class="card">
-    <h2>Extensively verified chip</h2>
-    <p>The chip had been extensively verified. The remaining gap was a <strong>mismatch between the functional model and the actual circuit.</strong>.</p>
+    <h2>Reviews and tests were not enough</h2>
+    <p>They still missed a <strong>mismatch between the functional model and the actual circuit</strong>.</p>
   </div>
 
 </div>
 </div>
 
 <div class="card">
-  <h2>How do we catch this class of bug?</h2>
+  <h2>How do we catch bugs like this?</h2>
 
-- Verify across the abstraction boundary, not only inside each domain.
-- Exercise the actual custom circuit from the existing digital testbench.
+- Check the analog/digital boundary, and each side on its own.
+- Drive the real custom circuit from the existing digital testbench.
 - <strong>Replace only the blocks that need circuit-level accuracy.</strong>
 </div>
 
@@ -628,7 +628,7 @@ Tomasz Hemperek
   </div>
 
 - Discrete logic states (0, 1, X, Z)
-- Event-driven — advance to the next event
+- Event-driven: jump to the next event
 - Scales to large systems and long simulations
 
 </div>
@@ -641,14 +641,14 @@ Tomasz Hemperek
   </div>
 
 - Continuous-valued voltages and currents
-- Adaptive timesteps + nonlinear circuit solves
-- Device-level fidelity, but computationally expensive
+- Adaptive timesteps and nonlinear circuit equations
+- Transistor-level accuracy, but slow to run
 
 </div>
 </div>
 
 <div class="card">
-<center><strong>The problem:</strong> <b>mixed-signal designs need both. Behavioral models make system simulation practical, but they can disagree with the actual circuit.</b></center>
+<center><b>Mixed-signal designs need both. Behavioral models keep system simulation fast, but they can disagree with the actual circuit.</b></center>
 </div>
 
 --- 
@@ -665,7 +665,7 @@ Tomasz Hemperek
       <th>Approach</th>
       <th>Top level</th>
       <th>Digital execution</th>
-      <th>Main characteristic</th>
+      <th>What it does</th>
     </tr>
   </thead>
   <tbody>
@@ -702,14 +702,14 @@ Tomasz Hemperek
 </div>
 
 <div class="flow-table">
-* Commercial Verilog-AMS and real-number-modeling flows cover broader use cases; not compared here.
+* Commercial Verilog-AMS and real-number-modeling flows are not compared here.
 </div>
 
 --- 
 
 # SpiceBind
 
-<p class="leadline">Keep digital simulator as the top level. Attach ngspice only to the blocks that need a real circuit.</p>
+<p class="leadline">Keep the digital simulator as the top level. Attach ngspice only to the blocks that need a real circuit.</p>
 
 <br>
 
@@ -761,19 +761,19 @@ Tomasz Hemperek
 <div class="benefit-grid">
 <div class="card">
 <h2>Existing HDL flow</h2>
-<p>Keep RTL, testbench, cocotb, waveform flow, and regressions where they already are.</p>
+<p>Keep the same RTL, testbench, cocotb, waveform viewers, and regressions.</p>
 </div>
 <div class="card">
-<h2>SPICE only where it matters</h2>
-<p>Run SPICE only for the instances where circuit behavior affects the system result.</p>
+<h2>SPICE only for analog blocks</h2>
+<p>Run SPICE only for the instances where the circuit changes what the system does.</p>
 </div>
 <div class="card">
-<h2>Real mixed-signal checks</h2>
-<p>Write tests and sweeps around ADCs, PLLs, DCOs, sensor front-ends, bias loops, and custom I/O.</p>
+<h2>Mixed-signal checks</h2>
+<p>Write tests and sweeps for ADCs, PLLs, DCOs, sensor front-ends, bias loops, and custom I/O.</p>
 </div>
 <div class="card">
 <h2>Open-source stack</h2>
-<p>Icarus Verilog, Verilator, ngspice, cocotb. Standard VPI, BSD-3-Clause. No vendor AMS simulator required.</p>
+<p>Icarus Verilog, Verilator, ngspice, cocotb. Standard VPI, BSD-3-Clause. Works without a vendor AMS simulator.</p>
 </div>
 </div>
 
@@ -812,7 +812,7 @@ Tomasz Hemperek
 
   <div class="card">
     <h2>Same digital system</h2>
-    <p>SERV CPU, RAM, Wishbone, and measurement logic remain normal RTL. The firmware runs unchanged.</p>
+    <p>SERV CPU, RAM, Wishbone, and measurement logic stay RTL. The firmware runs unchanged.</p>
   </div>
 
   <div class="card">
@@ -824,7 +824,7 @@ Tomasz Hemperek
 </div>
 
 <div class="card">
-<center><strong>Firmware, RTL and testbench stay unchanged.</strong> <b>Only the Digitally Controlled Oscillator implementation is replaced.</b></center>
+<center><strong>Firmware, RTL and testbench stay unchanged.</strong> <b>Only the DCO implementation is replaced.</b></center>
 </div>
 
 ---
@@ -856,7 +856,7 @@ Tomasz Hemperek
 </div>
 
 <div class="flow-table">
-* Generic BSIM3 demo models, not a foundry PDK; extracted PDK netlists can be significantly slower.
+* Generic BSIM3 demo models, not a foundry PDK; extracted PDK netlists can be much slower.
 </div>
 
 </div>
@@ -868,39 +868,40 @@ Tomasz Hemperek
 
 <!-- <div class="closing-hero">Put real circuits into your existing HDL tests.</div> -->
 
-SpiceBind adds circuit-level simulation to selected blocks in an otherwise normal RTL verification flow.
-
+SpiceBind adds circuit-level simulation to selected blocks in an RTL verification flow.
 
 <div class="closing-grid">
 <div class="closing-card">
-<h2>Fits the existing RTL flow</h2>
+<h2>Same RTL flow</h2>
 <ul>
-<li>Keep the RTL simulator as top level.</li>
-<li>Use an empty Verilog shell.</li>
-<li>Bind one instance to an ngspice.</li>
+<li>Keep the digital simulator as the top level.</li>
+<li>Empty Verilog shell; bind one instance to ngspice.</li>
+<li>Same testbench and firmware; compare behavioral and SPICE runs.</li>
 </ul>
 </div>
 
 <div class="closing-card">
-<h2>Circuit-level checks in context</h2>
+<h2>Before silicon</h2>
 <ul>
-<li>Use the existing digital verification environment.</li>
-<li>Compare behavioral and SPICE implementations.</li>
-<li>Exercise the circuit together with RTL and firmware.</li>
-</ul>
-</div>
-
-<div class="closing-card">
-<h2>Save engineering time and reduce respin risk</h2>
-<ul>
-<li>Catch model/circuit mismatches before silicon.</li>
+<li>Catch model/circuit mismatches before tape-out.</li>
 <li>Debug mixed-signal behavior in regression.</li>
-<li>Spend SPICE only where it matters.</li>
+<li>Spend SPICE only on the blocks that need it.</li>
 </ul>
 </div>
+
+<div class="closing-card">
+<h2>Icarus, Verilator, VPI</h2>
+<ul>
+<li>Tested with Icarus Verilog and Verilator.</li>
+<li>The plugin is standard VPI.</li>
+<li>Other VPI-capable simulators should work; they are not qualified yet.</li>
+</ul>
 </div>
 
-<center> <strong>Early release — feedback and contributions welcome </strong></center>
+
+</div>
+
+<center> <strong>Early release. Feedback and contributions are welcome.</strong></center>
 
 <div class="closing-bottom">
 <div>
@@ -917,7 +918,7 @@ SpiceBind adds circuit-level simulation to selected blocks in an otherwise norma
 </div>
 
 <div class="support-box">
-Thanks for support to<br>
+Thanks to<br>
 <a href="https://dectris.com/"><img src="figures/DECTRIS_logo.svg"></a>
 </div>
 </div>
