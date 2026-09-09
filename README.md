@@ -10,36 +10,28 @@
 
 **Run SPICE circuits as blocks inside your existing Verilog simulation.**
 
-SpiceBind embeds [ngspice](https://ngspice.sourceforge.io/) into a VPI-capable HDL simulator. Replace only the blocks that need circuit-level simulation while keeping your RTL, testbench, cocotb environment and normal digital verification flow.
+SpiceBind embeds [ngspice](https://ngspice.sourceforge.io/) into a VPI-capable HDL simulator. Replace only the blocks that need circuit-level simulation. RTL, testbench, cocotb, and the digital verification flow stay in the HDL simulator.
 
-This is an HDL-first mixed-signal flow. It is intended for designs where most of the system is digital, but some blocks need circuit-level simulation.
+It is useful for mixed-signal simulation in general, and especially when the digital part is large.
 
-> SpiceBind is currently tested with Icarus Verilog, Verilator, and ngspice. The VPI-based architecture is simulator-independent; other VPI-capable simulators have not yet been qualified.
+> SpiceBind is an early project. It is tested with Icarus Verilog, Verilator, and ngspice. The plugin uses VPI, so it is not tied to those two HDL simulators, but others have not been qualified.
 
 ![SPI ADC mixed-signal simulation in Surfer](docs/assets/spi_adc_surfer.png)
 
 
 The `spi_adc` example above crosses the HDL/SPICE boundary in both directions. `vin` is passed from HDL into ngspice, the ADC code is calculated by the SPICE model, and HDL logic shifts the result out over SPI.
 
-## Key Benefits
+## What it does
 
-- **Keep your existing HDL flow**  
-  RTL, testbenches, cocotb, and the rest of the digital simulation stay in the HDL simulator you already use. SpiceBind does not require moving the design into a new mixed-signal environment.
-
-- **Zero vendor lock-in**  
-  SpiceBind uses the standard VPI interface and is designed to work with any VPI-capable HDL simulator, open-source or commercial. The simulator can be changed without changing the RTL, testbench, or SpiceBind model structure. The current implementation is tested with Icarus Verilog and Verilator; other simulators still need qualification.
-
-- **Replace only the blocks that need SPICE**  
-  Selected HDL instances can be backed by transistor-level or analog SPICE models while the rest of the design continues to run as normal RTL.
-
-- **Synchronized simulation time**  
-  SpiceBind coordinates HDL events with ngspice adaptive timesteps, including digital events that occur inside an analog timestep.
+- RTL, testbenches, cocotb, and digital simulation stay in the HDL simulator you already use. You do not have to move the design into a mixed-signal environment.
+- The plugin uses standard VPI, so it can attach to open-source or commercial HDL simulators. It is tested with Icarus Verilog and Verilator. Other VPI-capable simulators still need qualification. You can change the simulator without changing the RTL, testbench, or how SpiceBind maps instances.
+- Selected HDL instances can be backed by transistor-level or analog SPICE models. The rest of the design stays RTL.
+- HDL events stay in lock-step with ngspice adaptive timesteps, including events that fall inside an analog step.
 
 ## Why HDL-first?
 
-A mixed-signal design is often mostly RTL with a small number of analog blocks. Moving the complete system into a SPICE-centric simulation environment can mean changing the testbench and the way the digital part is simulated.
+A mixed-signal design is often mostly RTL with a few analog blocks. Putting the whole system under SPICE can mean rewriting the testbench and how the digital part is simulated.
 
-SpiceBind takes the opposite approach: keep the HDL simulator as the top-level simulation environment and attach ngspice to selected module instances. Existing RTL and HDL or cocotb testbenches can stay where they are.
 
 ## Architecture
 
@@ -93,13 +85,13 @@ flowchart LR
     style DD fill:#ffffff,stroke:#22808f,stroke-width:2.5px,color:#22808f
 ```
 
-The HDL side sees a normal module instance. The module body itself may be empty. SpiceBind discovers the selected instance through VPI and connects its ports to sources and nodes in the SPICE circuit.
+The HDL side sees a normal module instance. The module body can be empty. SpiceBind finds the selected instance through VPI and connects its ports to sources and nodes in the SPICE circuit.
 
-Digital-to-analog values are passed to ngspice through external voltage sources. Analog results are read back from ngspice and applied to the corresponding HDL outputs.
+Digital-to-analog values go to ngspice through external voltage sources. Analog results are read back and driven onto the corresponding HDL outputs.
 
-The two simulators have independent event and timestep mechanisms, so signal exchange alone is not enough. SpiceBind also synchronizes simulation time. VPI callbacks detect HDL events, ngspice callbacks report analog progress, and a time barrier prevents either engine from running ahead. If an HDL event occurs inside an ngspice step, SpiceBind can request that the SPICE step is redone at the event time.
+The two simulators have independent event and timestep mechanisms, so exchanging values is not enough. SpiceBind also keeps simulation time in lock-step. VPI callbacks detect HDL events, ngspice callbacks report analog progress, and a time barrier stops either engine from running ahead. If an HDL event lands inside an ngspice step, ngspice repeats that step at the event time.
 
-More detail is available in the [timing synchronization documentation](https://themperek.github.io/spicebind/).
+See the [timing synchronization documentation](https://themperek.github.io/spicebind/).
 
 ## Quick start
 
@@ -110,7 +102,7 @@ More detail is available in the [timing synchronization documentation](https://t
 - Verilog VPI compatible simulator (tested with [Icarus Verilog](https://github.com/steveicarus/iverilog) and [Verilator](https://www.veripool.org/verilator/) 5)
 - Python 3.10+
 
-In case Debian/Ubuntu you need:
+On Debian/Ubuntu:
 
 ```bash
 sudo apt install build-essential cmake iverilog ngspice libngspice0-dev python3-venv
@@ -228,16 +220,16 @@ The examples use the cocotb runner or small shell scripts to set this up automat
 
 There are several ways to combine HDL and SPICE. They differ mainly in which simulator owns the top level and how the digital part is executed.
 
-| Approach | Top-level environment | Digital execution | Analog engine | Main characteristic |
+| Approach | Top-level environment | Digital execution | Analog engine | What it does |
 | --- | --- | --- | --- | --- |
-| SpiceBind | HDL simulator | Normal HDL simulation | ngspice shared library | Selected HDL instances are replaced by SPICE while the existing HDL flow remains in place |
+| SpiceBind | HDL simulator | Normal HDL simulation | ngspice shared library | Selected HDL instances are replaced by SPICE while the HDL flow stays in place |
 | ngspice `d_cosim` | ngspice / XSPICE | HDL compiled with Verilator, Icarus Verilog, or GHDL and loaded as an XSPICE model | ngspice | SPICE-first flow with HDL blocks inside the ngspice netlist |
 | Yosys to XSPICE | ngspice / XSPICE | Synthesizable RTL mapped to XSPICE gates and storage elements | ngspice | One simulator at runtime, but the RTL is reduced to synthesized logic |
-| [`cocotbext-ams`](https://github.com/VLSIDA/cocotbext-ams) | cocotb / Python | Normal HDL simulator through cocotb | ngspice or Xyce | Python orchestrates the HDL and analog simulators |
+| [`cocotbext-ams`](https://github.com/VLSIDA/cocotbext-ams) | cocotb / Python | Normal HDL simulator through cocotb | ngspice or Xyce | Python coordinates the HDL and analog simulators |
 
-These approaches are not interchangeable. A SPICE-first flow is a good fit when the analog netlist is naturally the top level. Synthesizing RTL into XSPICE avoids synchronizing two simulators at runtime. SpiceBind is aimed at the other case: a digital simulation already exists and only selected blocks need SPICE.
+A SPICE-first flow fits when the analog netlist is already the top level. Synthesizing RTL into XSPICE avoids synchronizing two simulators at runtime. SpiceBind is for the other case: a digital simulation already exists and only selected blocks need SPICE.
 
-Commercial Verilog-AMS and real-number-modeling flows cover a broader set of use cases and are not compared here.
+Commercial Verilog-AMS and real-number-modeling flows are not compared here.
 
 ## Current scope
 
@@ -250,11 +242,11 @@ SpiceBind currently focuses on:
 - event and timestep synchronization between HDL and ngspice
 - cocotb compatibility, without requiring cocotb
 
-The VPI architecture is not inherently tied to those two simulators, but other HDL simulators have not yet been tested.
+The VPI plugin is not tied to those two HDL simulators, but others have not been tested.
 
 ## Documentation
 
-The full documentation contains tutorials, runtime configuration, API information, and a detailed description of the timing synchronization mechanism:
+Tutorials, configuration, API notes, and timing:
 
 https://themperek.github.io/spicebind/
 
