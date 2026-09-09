@@ -12,7 +12,7 @@ def _sim() -> str:
     return os.getenv("SIM", "icarus")
 
 
-async def run_adc_test(dut):
+async def run_adc_delay_walk(dut):
     dut.adc_in.value = 0.0
     await Timer(20, unit="ns")
     await ReadWrite()
@@ -28,10 +28,13 @@ async def run_adc_test(dut):
     await ReadWrite()
     assert dut.adc_out.value == 0
 
-    # Bits arrive at 2, 4, … 16 ns. Sample at 1.5, 3.5, … ns (between 1 ns
-    # spice ticks). Checking on an integer ns races Icarus AfterDelay vs
-    # cocotb ReadWrite and the concurrent DAC task, so this flake is
-    # seed-dependent (got 0, expected 1 at 63.00 ns).
+    # Bits arrive at 2, 4, … 16 ns. The production netlist uses a 1 ns
+    # analog step, so sample halfway between those edges. Exact-edge checks
+    # live in test_timing_edges.py on a 100 ps fixture.
+    #
+    # Run this walk before DAC/PWM start. Each HDL input change cuts an
+    # analog step, and XSPICE cm_delay samples on every analog point, so a
+    # concurrent DAC hammer can slide the 2 ns taps by about a TSTEP.
     expected = [0, 1, 3, 7, 15, 31, 63, 127, 255, 255]
     dut.adc_in.value = 1.0
     await Timer(1.5, unit="ns")
@@ -63,6 +66,8 @@ async def run_adc_test(dut):
         await Timer(2, unit="ns")
         await ReadWrite()
 
+
+async def run_adc_ramps(dut):
     for i in range(1000):
         await ReadWrite()
         dut.adc_in.value = i * 0.001 - 0.00001
@@ -141,7 +146,9 @@ async def run_pwm_test(dut):
 
 @cocotb.test()
 async def run_test(dut):
-    adc_task = cocotb.start_soon(run_adc_test(dut))
+    await run_adc_delay_walk(dut)
+
+    adc_task = cocotb.start_soon(run_adc_ramps(dut))
     dac_task = cocotb.start_soon(run_dac_test(dut))
     pwm_task = cocotb.start_soon(run_pwm_test(dut))
 

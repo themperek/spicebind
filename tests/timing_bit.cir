@@ -1,0 +1,16 @@
+* Single delayed digital bit. Dummy A1 creates extra analog points.
+
+.param VCC = {VCC}
+
+Vcc vcc 0 {VCC}
+
+VA0 A0 0 0 external
+adelay A0 Y0d vcc mydel
+.model mydel delay(delay=2ns)
+Vout0 Y0d Y0 0
+
+VA1 A1 0 0 external
+
+.tran 100ps 2us
+
+.end

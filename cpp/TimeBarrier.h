@@ -24,7 +24,12 @@ public:
     static constexpr int HDL_ENGINE_ID = 0;
     static constexpr int SPICE_ENGINE_ID = 1;
 
-    TimeBarrier() : times_{TimeT{}, TimeT{}}, is_shutdown_(false), needs_redo_(false), next_spice_step_time_(TimeT{}) {}
+    TimeBarrier()
+        : times_{TimeT{}, TimeT{}},
+          is_shutdown_(false),
+          needs_redo_(false),
+          next_spice_step_time_(TimeT{}),
+          hdl_request_time_(TimeT{}) {}
 
     /**
      * @brief Update time for one engine and wait for synchronization
@@ -65,6 +70,11 @@ public:
     void set_next_spice_step_time(TimeT time);
     TimeT get_next_spice_step_time() const;
 
+    // HDL asks ngspice to place an analog point at `time` (inside the
+    // current proposed step). Location 0 cuts the analog delta to that time.
+    void request_spice_point(TimeT time);
+    TimeT get_hdl_request_time() const;
+
 private:
     mutable std::mutex mutex_;
     std::condition_variable cv_;
@@ -72,6 +82,7 @@ private:
     std::atomic<bool> is_shutdown_;
     std::atomic<bool> needs_redo_;
     std::atomic<TimeT> next_spice_step_time_;
+    std::atomic<TimeT> hdl_request_time_;
     
     void validate_engine_id(int engine_id) const;
 };
@@ -105,6 +116,7 @@ void TimeBarrier<TimeT>::update_no_wait(int engine_id, TimeT current_time) {
     
     std::lock_guard<std::mutex> lock(mutex_);
     times_[engine_id] = current_time;
+    cv_.notify_all();
 }
 
 template<typename TimeT>
@@ -132,6 +144,7 @@ bool TimeBarrier<TimeT>::is_shutdown() const {
 template<typename TimeT>
 void TimeBarrier<TimeT>::set_needs_redo(bool needs_redo) {
     needs_redo_.store(needs_redo);
+    cv_.notify_all();
 }
 
 template<typename TimeT>
@@ -142,6 +155,19 @@ bool TimeBarrier<TimeT>::needs_redo() const {
 template<typename TimeT>
 void TimeBarrier<TimeT>::set_next_spice_step_time(TimeT time) {
     next_spice_step_time_.store(time);
+    cv_.notify_all();
+}
+
+template<typename TimeT>
+void TimeBarrier<TimeT>::request_spice_point(TimeT time) {
+    hdl_request_time_.store(time);
+    needs_redo_.store(true);
+    cv_.notify_all();
+}
+
+template<typename TimeT>
+TimeT TimeBarrier<TimeT>::get_hdl_request_time() const {
+    return hdl_request_time_.load();
 }
 
 template<typename TimeT>
