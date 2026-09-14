@@ -1,4 +1,5 @@
 export SPICE_NETLIST=adder_mos.cir
 export HDL_INSTANCE=adder_tb.dut
 export VCC=3.3
+iverilog -o tb.vvp tb.v
 vvp -m ../../spicebind/spicebind_vpi.vpi tb.vvp
