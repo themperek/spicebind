@@ -2,6 +2,14 @@
 
 Talk: **SpiceBind: Bringing SPICE into RTL Verification**, [OrConf 2026](https://fossi-foundation.org/orconf/2026#spicebind-bringing-spice-into-rtl-verification).
 
+Recording: [YouTube](https://www.youtube.com/watch?v=X9tjylQ0Rv4).
+
+<iframe
+  class="orconf-video"
+  src="https://www.youtube.com/embed/X9tjylQ0Rv4"
+  title="SpiceBind: Bringing SPICE into RTL Verification"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen></iframe>
 
 ```{button-link} talks/orconf-2026/SpiceBind-OrConf-2026.pdf
 :color: primary
@@ -21,7 +29,8 @@ if the embed is too small.
   allowfullscreen></iframe>
 
 <style>
-iframe.orconf-deck {
+iframe.orconf-deck,
+iframe.orconf-video {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
